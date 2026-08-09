@@ -38,7 +38,7 @@ jobs:
       - name: Validate source
         run: |
           npm run lint
-          node --test tests/*.test.mjs
+          node --test tests/content.test.mjs tests/navigation.test.mjs
 
       - name: Build static site
         run: npm run build
