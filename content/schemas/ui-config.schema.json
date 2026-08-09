@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://infoblocks.local/schemas/ui-config.schema.json",
+  "title": "InfoBlocks UI configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "brand", "defaults", "features", "content", "themes"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "brand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "mark", "tagline"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "mark": { "type": "string", "minLength": 1, "maxLength": 4 },
+        "tagline": { "type": "string", "minLength": 1 }
+      }
+    },
+    "defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["topicId", "mode", "theme"],
+      "properties": {
+        "topicId": { "type": "string", "minLength": 1 },
+        "mode": { "enum": ["standard", "story", "challenge"] },
+        "theme": { "enum": ["light", "dark", "system"] }
+      }
+    },
+    "features": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sharing", "resume", "milestones", "challengeHints", "keyboardNavigation"],
+      "properties": {
+        "sharing": { "type": "boolean" },
+        "resume": { "type": "boolean" },
+        "milestones": { "type": "boolean" },
+        "challengeHints": { "type": "boolean" },
+        "keyboardNavigation": { "type": "boolean" }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["windowRadius", "progressStorageKey", "preferencesStorageKey"],
+      "properties": {
+        "windowRadius": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "progressStorageKey": { "type": "string", "minLength": 1 },
+        "preferencesStorageKey": { "type": "string", "minLength": 1 }
+      }
+    },
+    "themes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["light", "dark"],
+      "properties": {
+        "light": { "$ref": "#/$defs/theme" },
+        "dark": { "$ref": "#/$defs/theme" }
+      }
+    }
+  },
+  "$defs": {
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["background", "surface", "surfaceStrong", "text", "muted", "border"],
+      "properties": {
+        "background": { "type": "string" },
+        "surface": { "type": "string" },
+        "surfaceStrong": { "type": "string" },
+        "text": { "type": "string" },
+        "muted": { "type": "string" },
+        "border": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,1522 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "graph-fundamentals",
+  "version": "1.0.0",
+  "title": "Graph Fundamentals: From Traversal to Minimum Spanning Trees",
+  "shortTitle": "Graphs, DSU & MST",
+  "description": "An interview-focused journey from graph vocabulary and traversal through disjoint sets, Kruskal, and Prim—using one weighted network all the way through.",
+  "category": "Data Structures & Algorithms",
+  "accent": "#7C6CF2",
+  "estimatedMinutes": 37,
+  "audience": "Coding-interview candidates who know arrays, functions, and basic Big-O notation",
+  "prerequisites": [
+    "Comfort reading short pseudocode",
+    "Basic arrays, loops, queues, stacks, and recursion",
+    "Basic time and space complexity"
+  ],
+  "learningOutcomes": [
+    "Model a problem as a graph and select an appropriate representation",
+    "Use BFS, DFS, and connected components with clear complexity reasoning",
+    "Implement Disjoint Set Union with union by size and path compression",
+    "Recognize when DSU fits a connectivity problem and when it does not",
+    "Derive and implement Kruskal's and Prim's minimum spanning tree algorithms",
+    "Handle common MST edge cases and transfer the patterns to interview problems"
+  ],
+  "sources": [
+    {
+      "id": "princeton-graphs",
+      "title": "Algorithms, 4th Edition — Section 4.1: Undirected Graphs",
+      "url": "https://algs4.cs.princeton.edu/41graph/"
+    },
+    {
+      "id": "princeton-uf",
+      "title": "Algorithms, 4th Edition — Section 1.5: Case Study: Union-Find",
+      "url": "https://algs4.cs.princeton.edu/15uf/"
+    },
+    {
+      "id": "mit-disjoint-sets",
+      "title": "MIT OpenCourseWare 6.046J — Lecture 16: Disjoint-set Data Structures",
+      "url": "https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2012/resources/mit6_046js12_lec16/"
+    },
+    {
+      "id": "princeton-mst",
+      "title": "Algorithms, 4th Edition — Section 4.3: Minimum Spanning Trees",
+      "url": "https://algs4.cs.princeton.edu/43mst/"
+    },
+    {
+      "id": "mit-mst",
+      "title": "MIT OpenCourseWare 6.046J — Lecture 3: Minimum Spanning Trees I",
+      "url": "https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2012/resources/mit6_046js12_lec03/"
+    },
+    {
+      "id": "mit-mst-ii",
+      "title": "MIT OpenCourseWare 6.046J — Lecture 4: Minimum Spanning Trees II",
+      "url": "https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2012/resources/mit6_046js12_lec04/"
+    }
+  ],
+  "milestones": [
+    {
+      "id": "graph-language",
+      "title": "Read the Map",
+      "shortTitle": "Graph Basics",
+      "description": "Build the vocabulary, representations, and traversal instincts needed for every later step."
+    },
+    {
+      "id": "disjoint-sets",
+      "title": "Track Changing Connections",
+      "shortTitle": "DSU",
+      "description": "Turn incremental connectivity into fast set operations with a parent forest."
+    },
+    {
+      "id": "minimum-spanning-trees",
+      "title": "Connect Everything for Less",
+      "shortTitle": "MST",
+      "description": "Use safe greedy choices to build and reason about minimum spanning trees."
+    }
+  ],
+  "blocks": [
+    {
+      "id": "graph-as-relationships",
+      "milestoneId": "graph-language",
+      "order": 1,
+      "kind": "concept",
+      "eyebrow": "Graph Basics · 1 of 8",
+      "title": "A graph stores relationships",
+      "learningObjective": "Identify vertices and edges and read the stable HarborNet example.",
+      "coreFacts": [
+        "A graph G = (V, E) consists of vertices V and edges E.",
+        "An edge records a relationship between two vertices.",
+        "HarborNet uses vertices A–F and nine weighted undirected edges throughout this topic."
+      ],
+      "estimatedSeconds": 65,
+      "presentations": {
+        "standard": {
+          "hook": "Graphs start with a small shift: store relationships, not rows.",
+          "body": [
+            "A graph G = (V, E) has vertices—also called nodes—and edges that connect them. A vertex might be a city, user, task, or web page; an edge might be a road, friendship, dependency, or link.",
+            "Our running example is HarborNet: six islands A–F joined by possible cable routes. The number on an edge is its construction cost. The same network will make traversal, DSU, and MST feel like one connected idea."
+          ]
+        },
+        "story": {
+          "hook": "Six islands need a communication network.",
+          "body": [
+            "The Harbor Master pins islands A–F on a wall and draws every possible cable route. Islands map to vertices; routes map to edges; route costs map to edge weights.",
+            "Analogy limit: a drawn route is abstract—it need not be physical. In another graph, an edge could mean friendship or a software dependency."
+          ]
+        },
+        "challenge": {
+          "prompt": "In a social-network graph, what should users and friendships become?",
+          "hint": "Ask which objects exist, then which relationship connects pairs of objects.",
+          "answer": "Users are vertices and friendships are edges. If friendship is mutual, those edges are undirected.",
+          "body": [
+            "Interview translation starts by naming V and E. Only after the model is clear should you choose traversal or storage details."
+          ]
+        }
+      },
+      "visual": {
+        "type": "graph",
+        "title": "HarborNet",
+        "caption": "Six vertices and nine possible weighted links.",
+        "alt": "An undirected weighted graph with vertices A through F and edges AB 4, AC 2, BC 1, BD 5, CD 8, CE 10, DE 2, DF 6, and EF 3.",
+        "data": {
+          "nodes": [
+            { "id": "A", "label": "A", "x": 8, "y": 28 },
+            { "id": "B", "label": "B", "x": 34, "y": 12 },
+            { "id": "C", "label": "C", "x": 31, "y": 60 },
+            { "id": "D", "label": "D", "x": 62, "y": 42 },
+            { "id": "E", "label": "E", "x": 82, "y": 72 },
+            { "id": "F", "label": "F", "x": 94, "y": 25 }
+          ],
+          "edges": [
+            { "from": "A", "to": "B", "label": "4" },
+            { "from": "A", "to": "C", "label": "2" },
+            { "from": "B", "to": "C", "label": "1" },
+            { "from": "B", "to": "D", "label": "5" },
+            { "from": "C", "to": "D", "label": "8" },
+            { "from": "C", "to": "E", "label": "10" },
+            { "from": "D", "to": "E", "label": "2" },
+            { "from": "D", "to": "F", "label": "6" },
+            { "from": "E", "to": "F", "label": "3" }
+          ],
+          "directed": false
+        }
+      },
+      "takeaway": "Vertices are the things; edges are the relationships.",
+      "bridge": "Edges can carry direction and cost, which changes the questions a graph can answer.",
+      "sourceIds": ["princeton-graphs"]
+    },
+    {
+      "id": "direction-and-weight",
+      "milestoneId": "graph-language",
+      "order": 2,
+      "kind": "concept",
+      "eyebrow": "Graph Basics · 2 of 8",
+      "title": "Direction and weight change meaning",
+      "learningObjective": "Distinguish directed, undirected, weighted, and unweighted graphs.",
+      "coreFacts": [
+        "An undirected edge {u, v} can be traversed both ways; a directed edge (u, v) points from u to v.",
+        "Weights encode quantities such as cost, distance, or time.",
+        "HarborNet is weighted and undirected."
+      ],
+      "estimatedSeconds": 60,
+      "presentations": {
+        "standard": {
+          "hook": "The same pair of vertices can describe very different systems.",
+          "body": [
+            "An undirected edge A—B says A relates to B symmetrically. A directed edge A→B says the relation has an orientation; B→A is separate. A weighted edge adds a number such as cost or distance.",
+            "HarborNet is undirected because a cable links both islands, and weighted because routes have different costs. BFS ignores these costs; MST algorithms use them."
+          ]
+        },
+        "story": {
+          "hook": "A ferry lane and a one-way shipping permit are not the same route.",
+          "body": [
+            "The Harbor Master draws cable links without arrows because signals travel both ways. She writes a cost beside each link, so the map is weighted and undirected.",
+            "Analogy limit: weights need not be money, and directed graphs can still allow travel both ways when both directed edges are present."
+          ]
+        },
+        "challenge": {
+          "prompt": "A prerequisite relation says Course A must precede Course B. Directed or undirected? Weighted or unweighted?",
+          "hint": "Can you reverse the relationship without changing its meaning? Is a numeric quantity required?",
+          "answer": "Directed and usually unweighted: A→B has a different meaning from B→A, and the relation needs no number unless the problem adds one.",
+          "body": [
+            "Model semantics before selecting an algorithm. Many wrong interview solutions begin by silently treating directed edges as undirected."
+          ]
+        }
+      },
+      "takeaway": "Direction controls reachability; weights control optimization.",
+      "bridge": "Once the model is fixed, choose how to store its edges.",
+      "sourceIds": ["princeton-graphs", "princeton-mst"]
+    },
+    {
+      "id": "graph-representations",
+      "milestoneId": "graph-language",
+      "order": 3,
+      "kind": "concept",
+      "eyebrow": "Graph Basics · 3 of 8",
+      "title": "Choose a representation by operation",
+      "learningObjective": "Compare adjacency lists, adjacency matrices, and edge lists.",
+      "coreFacts": [
+        "Adjacency lists use Θ(V + E) space and enumerate a vertex's neighbors efficiently.",
+        "Adjacency matrices use Θ(V²) space and answer whether an edge exists in Θ(1).",
+        "Edge lists are convenient when algorithms process or sort all edges."
+      ],
+      "estimatedSeconds": 80,
+      "presentations": {
+        "standard": {
+          "hook": "There is no universally best graph container.",
+          "body": [
+            "An adjacency list stores a neighbor list per vertex: ideal for sparse graphs and traversal. A V×V adjacency matrix spends more space but checks an edge in constant time. An edge list stores triples such as (B, C, 1).",
+            "HarborNet is sparse, so traversal prefers an adjacency list. Kruskal later prefers the edge list because it sorts every edge by weight."
+          ]
+        },
+        "story": {
+          "hook": "The Harbor Master keeps three views of the same map.",
+          "body": [
+            "Her island address book lists each island's neighbors—an adjacency list. Her giant grid marks every possible pair—an adjacency matrix. Her contractor sheet lists one route per row—an edge list.",
+            "Analogy limit: these are interchangeable data representations, not three different networks; conversion can cost time and space."
+          ]
+        },
+        "challenge": {
+          "prompt": "You have 100,000 vertices, 120,000 edges, and repeatedly scan neighbors. Which representation is the default choice?",
+          "hint": "Compare V² space with V + E space.",
+          "answer": "An adjacency list. The graph is sparse, and V² matrix cells would be wasteful while neighbor scans are natural.",
+          "body": [
+            "If the main operation were sorting every weighted edge, an edge list would also be useful. Representation follows the dominant operation."
+          ]
+        }
+      },
+      "visual": {
+        "type": "comparison",
+        "title": "Three views of one graph",
+        "caption": "Pick storage around the operations your algorithm performs.",
+        "alt": "Comparison of adjacency lists, adjacency matrices, and edge lists by space and typical use.",
+        "data": {
+          "columns": [
+            { "title": "Adjacency list", "items": ["Θ(V + E) space", "Fast neighbor scans", "Great for sparse graphs"] },
+            { "title": "Adjacency matrix", "items": ["Θ(V²) space", "Θ(1) edge lookup", "Useful for dense graphs"] },
+            { "title": "Edge list", "items": ["Θ(E) space", "Easy to sort", "Natural for Kruskal"] }
+          ]
+        }
+      },
+      "takeaway": "Choose storage for the operations, not by habit.",
+      "bridge": "With HarborNet stored, breadth-first search can explore it layer by layer.",
+      "sourceIds": ["princeton-graphs", "princeton-mst"]
+    },
+    {
+      "id": "breadth-first-search",
+      "milestoneId": "graph-language",
+      "order": 4,
+      "kind": "concept",
+      "eyebrow": "Graph Basics · 4 of 8",
+      "title": "BFS explores in distance layers",
+      "learningObjective": "Use a queue and visited set to find minimum-edge paths in an unweighted graph.",
+      "coreFacts": [
+        "BFS uses a FIFO queue and marks vertices when they are discovered.",
+        "BFS finds shortest paths measured by edge count in an unweighted graph.",
+        "With adjacency lists, BFS runs in Θ(V + E) time."
+      ],
+      "estimatedSeconds": 85,
+      "presentations": {
+        "standard": {
+          "hook": "Need the fewest hops? Explore every distance before going farther.",
+          "body": [
+            "Start BFS at A: mark it and enqueue it. Repeatedly dequeue one vertex, then mark and enqueue each unseen neighbor. If HarborNet neighbors are read alphabetically, the layers are {A}, then {B,C}, then {D,E}, then {F}.",
+            "The first discovery fixes a minimum-edge-count path because the queue processes all k-edge paths before any (k+1)-edge path. Edge weights are irrelevant here."
+          ],
+          "code": {
+            "language": "text",
+            "caption": "BFS skeleton",
+            "lines": [
+              "mark s; queue.push(s)",
+              "while queue not empty:",
+              "  v = queue.pop_front()",
+              "  for w in adj[v]:",
+              "    if unseen(w): mark w; parent[w] = v; queue.push(w)"
+            ]
+          }
+        },
+        "story": {
+          "hook": "A radio call spreads one relay at a time.",
+          "body": [
+            "The Harbor Master calls A, then every island one direct link away, then every island two links away. The call queue is BFS's FIFO queue, and a checkmark prevents an island from receiving duplicate assignments.",
+            "Analogy limit: radio waves may travel simultaneously; the algorithm processes a deterministic queue. Weighted travel time would require another algorithm."
+          ]
+        },
+        "challenge": {
+          "prompt": "From A, which vertices are first reached at distance two edges in HarborNet?",
+          "hint": "Distance one is A's direct neighbors B and C. Expand both, ignoring already seen vertices.",
+          "answer": "D and E. B reaches D; C reaches D and E. F needs a third edge from A in the unweighted view.",
+          "body": [
+            "Mark on enqueue, not dequeue, so D is queued only once when both B and C point to it."
+          ]
+        }
+      },
+      "takeaway": "BFS plus a queue gives shortest paths by number of edges.",
+      "bridge": "When shortest hop count is not the goal, depth-first search offers another exploration shape.",
+      "sourceIds": ["princeton-graphs"]
+    },
+    {
+      "id": "depth-first-search",
+      "milestoneId": "graph-language",
+      "order": 5,
+      "kind": "concept",
+      "eyebrow": "Graph Basics · 5 of 8",
+      "title": "DFS follows one path deeply",
+      "learningObjective": "Use recursion or an explicit stack to traverse a graph and recognize DFS's strengths.",
+      "coreFacts": [
+        "DFS marks a vertex, explores an unseen neighbor recursively, then backtracks.",
+        "An explicit stack can replace recursion.",
+        "With adjacency lists, DFS runs in Θ(V + E) time."
+      ],
+      "estimatedSeconds": 80,
+      "presentations": {
+        "standard": {
+          "hook": "DFS asks: how far can this route go before I backtrack?",
+          "body": [
+            "Starting at A and reading neighbors alphabetically, one valid DFS path is A→B→C→D→E→F. Mark each vertex before exploring neighbors; otherwise an undirected edge can recurse forever between its endpoints.",
+            "DFS does not guarantee a minimum-edge path. It excels as a foundation for reachability, components, cycle detection, topological ideas, and backtracking structure."
+          ],
+          "code": {
+            "language": "text",
+            "caption": "Recursive DFS skeleton",
+            "lines": [
+              "dfs(v):",
+              "  mark v",
+              "  for w in adj[v]:",
+              "    if unseen(w):",
+              "      parent[w] = v",
+              "      dfs(w)"
+            ]
+          }
+        },
+        "story": {
+          "hook": "An inspector follows one cable corridor until it ends.",
+          "body": [
+            "She begins at A, takes the first unchecked route, and keeps going. At a dead end she retraces her log to the most recent island with an unchecked route. That log acts like DFS's call stack.",
+            "Analogy limit: DFS's exact order depends on neighbor ordering, and its first route to an island need not use the fewest links."
+          ]
+        },
+        "challenge": {
+          "prompt": "Why must undirected DFS use a visited set, and why might cycle detection also track each vertex's parent?",
+          "hint": "Visited prevents every kind of revisit; parent identifies the undirected edge used to enter the vertex.",
+          "answer": "Without visited memory, a cycle can recurse forever. During undirected cycle detection, parent tracking additionally lets DFS ignore the edge back to the vertex it just came from while treating an edge to another visited vertex as evidence of a cycle.",
+          "body": [
+            "Mark before recursing. Marking afterward is a classic bug in graphs with cycles."
+          ]
+        }
+      },
+      "takeaway": "DFS trades distance layers for deep exploration and structured backtracking.",
+      "bridge": "Repeated traversal reveals which vertices belong to the same connected region.",
+      "sourceIds": ["princeton-graphs"]
+    },
+    {
+      "id": "connected-components",
+      "milestoneId": "graph-language",
+      "order": 6,
+      "kind": "concept",
+      "eyebrow": "Graph Basics · 6 of 8",
+      "title": "Components partition a graph",
+      "learningObjective": "Find connected components by restarting BFS or DFS from every unseen vertex.",
+      "coreFacts": [
+        "A connected component is a maximal set of mutually reachable vertices in an undirected graph.",
+        "Run BFS or DFS from each unseen vertex to label all components in Θ(V + E).",
+        "HarborNet is connected; closing BD, CD, and CE separates {A,B,C} from {D,E,F}."
+      ],
+      "estimatedSeconds": 70,
+      "presentations": {
+        "standard": {
+          "hook": "One traversal answers reachability from one start; an outer loop labels the whole graph.",
+          "body": [
+            "Scan all vertices. Whenever vertex v is unseen, start BFS or DFS and give every reached vertex the next component ID. Each vertex and edge is still processed only a constant number of times.",
+            "Normal HarborNet has one component. If routes BD, CD, and CE close, it splits into {A,B,C} and {D,E,F}. No remaining path crosses that boundary."
+          ]
+        },
+        "story": {
+          "hook": "A storm tests whether every island can still relay a message.",
+          "body": [
+            "After BD, CD, and CE close, the Harbor Master starts a call at A and reaches A, B, C. Her next unseen island is D, which reaches D, E, F. Those two call groups are connected components.",
+            "Analogy limit: connectivity says a path exists, not that it is cheap, short, fast, or reliable."
+          ]
+        },
+        "challenge": {
+          "prompt": "If a graph has V isolated vertices and no edges, how many DFS launches and components are there?",
+          "hint": "No launch can reach another vertex.",
+          "answer": "V launches and V components. Total time remains Θ(V + E) = Θ(V).",
+          "body": [
+            "The outer loop is essential: a single traversal only covers the start vertex's component."
+          ]
+        }
+      },
+      "takeaway": "Restart traversal from unseen vertices to partition an undirected graph into components.",
+      "bridge": "Inside a component, cycles and trees describe whether routes are redundant.",
+      "sourceIds": ["princeton-graphs"]
+    },
+    {
+      "id": "cycles-trees-spanning-trees",
+      "milestoneId": "graph-language",
+      "order": 7,
+      "kind": "concept",
+      "eyebrow": "Graph Basics · 7 of 8",
+      "title": "A spanning tree removes every cycle",
+      "learningObjective": "Relate cycles, trees, and spanning trees in undirected graphs.",
+      "coreFacts": [
+        "A simple cycle starts and ends at the same vertex without repeating any other vertex.",
+        "A tree is connected and acyclic; a tree on V vertices has V − 1 edges.",
+        "A spanning tree contains every graph vertex and a cycle-free subset of its edges."
+      ],
+      "estimatedSeconds": 80,
+      "presentations": {
+        "standard": {
+          "hook": "Connected plus no redundancy is exactly a tree.",
+          "body": [
+            "HarborNet contains cycle A—B—C—A. Removing one edge from a cycle preserves connectivity along the remaining route. Repeating that idea until no cycles remain produces a spanning tree.",
+            "For an undirected graph, any two of these imply the third: connected, acyclic, and exactly V−1 edges. A disconnected graph has no spanning tree covering all vertices."
+          ]
+        },
+        "story": {
+          "hook": "The budget committee wants connection without duplicate loops.",
+          "body": [
+            "A cable loop offers more than one route between some islands. The Harbor Master can remove one loop edge while keeping those islands connected. When all six remain connected with five links, the network is a spanning tree.",
+            "Analogy limit: real networks value redundancy; a mathematical spanning tree deliberately removes it and optimizes only the stated objective."
+          ]
+        },
+        "challenge": {
+          "prompt": "A connected undirected graph has 6 vertices and 5 edges. Can it contain a cycle?",
+          "hint": "A tree on V vertices has V−1 edges. What would a cycle force elsewhere?",
+          "answer": "No. A connected graph with V−1 edges is a tree, so it is acyclic. With a cycle, one edge could be removed while retaining connectivity, contradicting the minimum edge count.",
+          "body": [
+            "The edge-count shortcut is valid only together with connectivity or acyclicity—not by itself."
+          ]
+        }
+      },
+      "visual": {
+        "type": "mermaid",
+        "title": "One HarborNet spanning tree",
+        "caption": "Five edges connect all six vertices without a cycle; this is also the MST found later.",
+        "alt": "A tree containing A-C, C-B, B-D, D-E, and E-F with respective weights 2, 1, 5, 2, and 3.",
+        "definition": "graph LR\n  A((A)) ---|2| C((C))\n  C ---|1| B((B))\n  B ---|5| D((D))\n  D ---|2| E((E))\n  E ---|3| F((F))"
+      },
+      "takeaway": "A spanning tree keeps every vertex connected using exactly V−1 cycle-free edges.",
+      "bridge": "Before changing connectivity dynamically, lock in the traversal choices.",
+      "sourceIds": ["princeton-graphs", "princeton-mst"]
+    },
+    {
+      "id": "graph-foundations-checkpoint",
+      "milestoneId": "graph-language",
+      "order": 8,
+      "kind": "recap",
+      "eyebrow": "Milestone 1 · Checkpoint",
+      "title": "Choose the question before the algorithm",
+      "learningObjective": "Select a representation and traversal from the problem's required operation.",
+      "coreFacts": [
+        "BFS gives minimum edge-count paths in unweighted graphs.",
+        "DFS gives deep exploration and supports structural analysis.",
+        "A spanning tree connects every vertex without cycles."
+      ],
+      "estimatedSeconds": 75,
+      "presentations": {
+        "standard": {
+          "hook": "You now have the graph interview decision tree.",
+          "body": [
+            "Model vertices, edges, direction, and weights. Choose storage around the dominant operation. Use BFS for minimum hops, DFS or BFS for reachability and components, and recognize a tree as connected plus acyclic.",
+            "The next milestone changes the setting: edges arrive over time, and queries repeatedly ask whether two vertices are already connected."
+          ],
+          "bullets": [
+            "Minimum hops → BFS",
+            "Reachability/components → BFS or DFS",
+            "Sort all weighted edges → edge list",
+            "Fast incremental connectivity → DSU next"
+          ]
+        },
+        "story": {
+          "hook": "The Harbor Master can now read, explore, and simplify her map.",
+          "body": [
+            "Her address book stores neighbors, her queue spreads a call in layers, and her inspection log explores deeply. She can label isolated groups and recognize a cycle-free spanning plan.",
+            "Analogy limit: these tools describe a fixed snapshot. The next chapter handles additions efficiently, but not arbitrary route removals."
+          ]
+        },
+        "challenge": {
+          "prompt": "You need the fewest friendship introductions from user s to user t in an unweighted network. BFS, DFS, or DSU?",
+          "hint": "The output is a shortest path, not just whether a path exists.",
+          "answer": "BFS. It explores by edge distance and can reconstruct a minimum-hop path with parent pointers. DSU only answers whether users share a component; it does not return the path.",
+          "body": [
+            "State the requested output precisely. Reachability, an actual path, and a cheapest structure are different problems."
+          ]
+        }
+      },
+      "takeaway": "Problem semantics determine representation and traversal.",
+      "bridge": "Now replace repeated full traversals with a structure that tracks components as edges arrive.",
+      "sourceIds": ["princeton-graphs", "princeton-uf"]
+    },
+    {
+      "id": "dynamic-connectivity",
+      "milestoneId": "disjoint-sets",
+      "order": 9,
+      "kind": "concept",
+      "eyebrow": "DSU · 1 of 10",
+      "title": "Repeated connectivity needs memory",
+      "learningObjective": "Recognize incremental connectivity as the problem DSU is designed to solve.",
+      "coreFacts": [
+        "Incremental connectivity supports edge additions and same-component queries.",
+        "Re-running BFS or DFS per query can repeat Θ(V + E) work.",
+        "DSU maintains a partition of vertices into disjoint connected sets."
+      ],
+      "estimatedSeconds": 65,
+      "presentations": {
+        "standard": {
+          "hook": "One reachability query is traversal; thousands of interleaved updates and queries suggest a data structure.",
+          "body": [
+            "Start with every HarborNet island separate. Each new cable merges two connected groups. A query such as “are A and F connected?” only needs to test whether they now belong to the same group.",
+            "Disjoint Set Union—also called union-find—stores that evolving partition. It avoids rediscovering unchanged connectivity from scratch."
+          ]
+        },
+        "story": {
+          "hook": "New cables open one by one, and dispatchers keep asking who can communicate.",
+          "body": [
+            "Instead of tracing the entire map after every opening, the Harbor Master maintains a ledger of communication groups. Opening a route combines two ledger groups; a query compares group leaders.",
+            "Analogy limit: the ledger summarizes membership only. It forgets the exact route connecting two islands."
+          ]
+        },
+        "challenge": {
+          "prompt": "You receive 200,000 operations: add an undirected edge or ask whether u reaches v. Edges are never removed. What pattern should you consider?",
+          "hint": "The graph changes incrementally, but each query asks only yes or no.",
+          "answer": "DSU. It maintains connected components under edge additions and answers whether find(u) equals find(v).",
+          "body": [
+            "BFS per query may revisit the graph repeatedly. DSU pays tiny amortized cost by preserving component information between operations."
+          ]
+        }
+      },
+      "takeaway": "DSU remembers components as undirected edges are added.",
+      "bridge": "The partition becomes concrete when each set is stored as a parent tree.",
+      "sourceIds": ["princeton-uf", "mit-disjoint-sets"]
+    },
+    {
+      "id": "parent-forest",
+      "milestoneId": "disjoint-sets",
+      "order": 10,
+      "kind": "concept",
+      "eyebrow": "DSU · 2 of 10",
+      "title": "Represent each set as a rooted tree",
+      "learningObjective": "Explain the parent-array invariant and set representatives.",
+      "coreFacts": [
+        "parent[x] points toward the root representing x's set.",
+        "A root satisfies parent[root] = root.",
+        "The collection of disjoint parent trees is a forest."
+      ],
+      "estimatedSeconds": 65,
+      "presentations": {
+        "standard": {
+          "hook": "A set needs one stable answer to: which group is this element in?",
+          "body": [
+            "Store parent[x] for every element. Follow pointers until a vertex points to itself; that root is the set representative. Two elements are in the same set exactly when their root representatives match.",
+            "Initially parent[A]=A through parent[F]=F, so HarborNet begins as six one-vertex trees and six components."
+          ]
+        },
+        "story": {
+          "hook": "Every island reports through a chain to one group captain.",
+          "body": [
+            "At first each island is its own captain. Later, an island's ledger entry may point to another island, and following entries eventually reaches the captain who points to themself. Captains are DSU roots.",
+            "Analogy limit: the captain has no semantic superiority and may change after a merge; the root is an implementation representative."
+          ]
+        },
+        "challenge": {
+          "prompt": "Given parent = {A:A, B:A, C:B, D:D}, which vertices share a set?",
+          "hint": "Follow each pointer until it points to itself.",
+          "answer": "A, B, and C share root A; D is alone with root D. C's immediate parent B is not necessarily its representative.",
+          "body": [
+            "Connectivity compares roots, not immediate parent values. That distinction prevents subtle union-find bugs."
+          ]
+        }
+      },
+      "visual": {
+        "type": "dsu",
+        "title": "DSU starts with singleton sets",
+        "caption": "Each vertex is its own root before any edges arrive.",
+        "alt": "Six disjoint groups rooted at A, B, C, D, E, and F, each containing only its root.",
+        "data": {
+          "groups": [
+            { "root": "A", "members": ["A"] },
+            { "root": "B", "members": ["B"] },
+            { "root": "C", "members": ["C"] },
+            { "root": "D", "members": ["D"] },
+            { "root": "E", "members": ["E"] },
+            { "root": "F", "members": ["F"] }
+          ]
+        }
+      },
+      "takeaway": "A DSU set is identified by the root reached through parent pointers.",
+      "bridge": "The find operation follows those pointers to return the representative.",
+      "sourceIds": ["princeton-uf", "mit-disjoint-sets"]
+    },
+    {
+      "id": "find-operation",
+      "milestoneId": "disjoint-sets",
+      "order": 11,
+      "kind": "concept",
+      "eyebrow": "DSU · 3 of 10",
+      "title": "find follows parents to the root",
+      "learningObjective": "Implement find and use representatives for connectivity queries.",
+      "coreFacts": [
+        "find(x) returns the root representative of x's set.",
+        "connected(x, y) is equivalent to find(x) == find(y).",
+        "Without balancing, a parent tree can degrade into a long chain."
+      ],
+      "estimatedSeconds": 70,
+      "presentations": {
+        "standard": {
+          "hook": "Connectivity reduces to comparing two representatives.",
+          "body": [
+            "Basic find repeatedly replaces x with parent[x] until x is a root. If C→B→A→A, find(C) returns A. Therefore connected(C,A) is true when both finds return A.",
+            "The code is tiny, but its speed depends on tree height. Arbitrary unions can create a chain, making a find linear in the worst case."
+          ],
+          "code": {
+            "language": "text",
+            "caption": "Iterative find before compression",
+            "lines": [
+              "find(x):",
+              "  while x != parent[x]:",
+              "    x = parent[x]",
+              "  return x"
+            ]
+          }
+        },
+        "story": {
+          "hook": "To identify C's group, follow the reporting chain to its captain.",
+          "body": [
+            "C's ledger may say B, B's may say A, and A's says A. The final self-reference identifies group A. Comparing final captains answers whether two islands share communication coverage.",
+            "Analogy limit: following managers in a real organization may carry meaning; DSU parent links exist only to find a representative efficiently."
+          ]
+        },
+        "challenge": {
+          "prompt": "parent = [0,0,1,2] for elements 0–3. What does find(3) return, and how many parent edges does it follow?",
+          "hint": "Trace 3→2→1→0.",
+          "answer": "It returns 0 after following three parent edges. The chain shows why uncontrolled tree height can make find slow.",
+          "body": [
+            "The next heuristics prevent or repair such chains without changing the partition represented."
+          ]
+        }
+      },
+      "takeaway": "find walks to a root; equal roots mean equal sets.",
+      "bridge": "To connect two sets, union links their roots—not arbitrary vertices.",
+      "sourceIds": ["princeton-uf", "mit-disjoint-sets"]
+    },
+    {
+      "id": "union-operation",
+      "milestoneId": "disjoint-sets",
+      "order": 12,
+      "kind": "concept",
+      "eyebrow": "DSU · 4 of 10",
+      "title": "union merges roots",
+      "learningObjective": "Implement union while preserving the parent-forest invariant.",
+      "coreFacts": [
+        "union(x, y) first computes roots rx and ry.",
+        "If rx equals ry, the sets are already merged and union does nothing.",
+        "Otherwise linking one root beneath the other merges exactly two trees."
+      ],
+      "estimatedSeconds": 70,
+      "presentations": {
+        "standard": {
+          "hook": "Merge the groups, not merely the two endpoints.",
+          "body": [
+            "For union(B,C), compute rootB=find(B) and rootC=find(C). If they differ, set one root's parent to the other. If they match, B and C were already connected; changing pointers is unnecessary.",
+            "Linking parent[B]=C directly is unsafe when B is not a root: it may move only part of B's tree or create structural trouble. Always link representatives."
+          ],
+          "code": {
+            "language": "text",
+            "caption": "Basic union",
+            "lines": [
+              "union(x, y):",
+              "  rx = find(x); ry = find(y)",
+              "  if rx == ry: return false",
+              "  parent[ry] = rx",
+              "  return true"
+            ]
+          }
+        },
+        "story": {
+          "hook": "When B–C opens, their entire communication groups combine.",
+          "body": [
+            "The Harbor Master finds each endpoint's captain. If the captains differ, one captain reports to the other, combining every island beneath them. If the captains match, the new cable is redundant for connectivity.",
+            "Analogy limit: the new physical cable still exists even when union returns false; DSU records only whether it changes component membership."
+          ]
+        },
+        "challenge": {
+          "prompt": "Why should union(C,D) attach root(C) to root(D), rather than simply set parent[C]=D?",
+          "hint": "C may have a parent or children already.",
+          "answer": "Only roots represent whole sets. Linking roots merges two complete trees; rewiring a non-root can detach or misrepresent part of a tree and violates the intended invariant.",
+          "body": [
+            "A robust union begins with two find calls and treats equal roots as a no-op."
+          ]
+        }
+      },
+      "takeaway": "Union preserves correctness by linking one representative root to the other.",
+      "bridge": "Correctness is not enough: the choice of which root goes below the other controls height.",
+      "sourceIds": ["princeton-uf", "mit-disjoint-sets"]
+    },
+    {
+      "id": "union-by-size-rank",
+      "milestoneId": "disjoint-sets",
+      "order": 13,
+      "kind": "concept",
+      "eyebrow": "DSU · 5 of 10",
+      "title": "Attach the smaller tree",
+      "learningObjective": "Use union by size or rank to limit parent-tree height.",
+      "coreFacts": [
+        "Union by size attaches the smaller tree's root beneath the larger tree's root.",
+        "Union by rank attaches the lower-rank root beneath the higher-rank root and increments rank only on a tie.",
+        "Either heuristic limits height to O(log V) even without path compression."
+      ],
+      "estimatedSeconds": 80,
+      "presentations": {
+        "standard": {
+          "hook": "A merge policy prevents long chains before they form.",
+          "body": [
+            "Maintain size[root], the number of elements in each root's tree. When roots differ, make the smaller root point to the larger and update the winning root's size. A vertex's depth can increase only when its tree at least doubles.",
+            "Rank is a related upper-bound proxy for height. Pick size or rank and implement it consistently; do not mix their update rules."
+          ]
+        },
+        "story": {
+          "hook": "A small dispatch team joins a larger command group.",
+          "body": [
+            "When a two-island group meets a four-island group, the smaller captain reports to the larger captain. Few reporting paths become deeper, so the ledger stays shallow.",
+            "Analogy limit: real organizations might choose leaders by expertise. DSU chooses solely to bound computation, and “size” counts elements rather than authority."
+          ]
+        },
+        "challenge": {
+          "prompt": "Trees rooted at A and D have sizes 4 and 2. After union(A,D) by size, which root should become the parent and what is its new size?",
+          "hint": "Attach smaller under larger.",
+          "answer": "D points to A, and size[A] becomes 6. size[D] no longer matters for union decisions because D is not a root.",
+          "body": [
+            "Only root metadata is authoritative. Reading size from a non-root is another common implementation mistake."
+          ]
+        }
+      },
+      "visual": {
+        "type": "dsu",
+        "title": "Smaller joins larger",
+        "caption": "The {D,E} root attaches beneath the {A,B,C} root; F remains separate.",
+        "alt": "A DSU with group B containing A, B, C, D, E after the smaller D-E group joins the A-B-C group, plus singleton F.",
+        "data": {
+          "groups": [
+            { "root": "B", "members": ["A", "B", "C", "D", "E"] },
+            { "root": "F", "members": ["F"] }
+          ],
+          "paths": ["E", "D", "B"]
+        }
+      },
+      "takeaway": "Union by size or rank keeps trees shallow by attaching smaller beneath larger.",
+      "bridge": "Path compression improves the other half: it repairs paths whenever find traverses them.",
+      "sourceIds": ["princeton-uf", "mit-disjoint-sets"]
+    },
+    {
+      "id": "path-compression",
+      "milestoneId": "disjoint-sets",
+      "order": 14,
+      "kind": "concept",
+      "eyebrow": "DSU · 6 of 10",
+      "title": "find can flatten its own path",
+      "learningObjective": "Implement path compression and explain why it preserves set membership.",
+      "coreFacts": [
+        "Path compression rewires nodes visited by find directly toward the root.",
+        "Compression does not change which representative a node reaches.",
+        "It makes future finds on the same region faster."
+      ],
+      "estimatedSeconds": 75,
+      "presentations": {
+        "standard": {
+          "hook": "Every expensive lookup can make later lookups cheaper.",
+          "body": [
+            "For path E→D→B, find(E) already discovers that B is the representative. Assigning parent[E]=B on the return path preserves membership and shortens future searches. Recursive find expresses this in one assignment.",
+            "Path halving—pointing each visited node to its grandparent—is a common iterative alternative. Both work with union by size or rank."
+          ],
+          "code": {
+            "language": "text",
+            "caption": "Recursive find with path compression",
+            "lines": [
+              "find(x):",
+              "  if parent[x] != x:",
+              "    parent[x] = find(parent[x])",
+              "  return parent[x]"
+            ]
+          }
+        },
+        "story": {
+          "hook": "E learns the captain's direct number during a lookup.",
+          "body": [
+            "E once called D, which called B. After learning that B is captain, E updates the ledger to call B directly next time. Other islands on a longer lookup path can do the same.",
+            "Analogy limit: compression changes reporting links but not real cable routes; it is purely an internal shortcut."
+          ]
+        },
+        "challenge": {
+          "prompt": "Before find(E), the path is E→D→B→B. With full path compression, what changes?",
+          "hint": "Every non-root visited learns the final root; D already points there.",
+          "answer": "E changes to point directly to B; D already points to B, and B remains its own parent. Set membership is unchanged, but E's path drops from two edges to one.",
+          "body": [
+            "Compression is safe because every rewired node already reached B before the update."
+          ]
+        }
+      },
+      "takeaway": "Path compression turns completed finds into shortcuts for future operations.",
+      "bridge": "The two heuristics together yield an unusually strong amortized bound.",
+      "sourceIds": ["princeton-uf", "mit-disjoint-sets"]
+    },
+    {
+      "id": "dsu-amortized-complexity",
+      "milestoneId": "disjoint-sets",
+      "order": 15,
+      "kind": "concept",
+      "eyebrow": "DSU · 7 of 10",
+      "title": "Almost constant—over a sequence",
+      "learningObjective": "State DSU's amortized complexity accurately and build intuition for it.",
+      "coreFacts": [
+        "With union by size or rank plus path compression, m operations on n elements take O(m α(n)) time after initialization.",
+        "α(n), the inverse Ackermann function, grows extraordinarily slowly.",
+        "The bound is amortized over a sequence, not a promise that every individual operation is constant time."
+      ],
+      "estimatedSeconds": 75,
+      "presentations": {
+        "standard": {
+          "hook": "DSU is fast because merges avoid tall trees and finds flatten what remains.",
+          "body": [
+            "Combining union by rank or size with path compression gives O(m α(n)) total time for m operations on n initialized elements. Inverse Ackermann α(n) is below 5 for any practical input size, so DSU behaves nearly like constant time per operation.",
+            "Say “amortized” in interviews: one find may traverse several parents, but those traversals reshape the forest and reduce future work. Initialization still costs Θ(n)."
+          ]
+        },
+        "story": {
+          "hook": "Occasional long calls reorganize the whole phone tree.",
+          "body": [
+            "A dispatcher may follow several handoffs once, but every handoff learned becomes a direct shortcut. Across a long day, almost every group lookup feels immediate.",
+            "Analogy limit: “almost constant” is a formal amortized statement involving α(n), not a guarantee that every single lookup takes one step."
+          ]
+        },
+        "challenge": {
+          "prompt": "Is it correct to claim that optimized DSU find is worst-case O(1) for every call?",
+          "hint": "Separate one operation from the average over a sequence.",
+          "answer": "No. The standard guarantee is amortized O(α(n)) per operation over a sequence when both heuristics are used; an individual find can still traverse multiple links.",
+          "body": [
+            "Precise complexity language signals that you understand why path compression pays forward its work."
+          ]
+        }
+      },
+      "takeaway": "Optimized DSU costs O(α(n)) amortized per operation—effectively tiny, but not literally worst-case constant.",
+      "bridge": "Now trace the exact edge decisions that turn six sets into one.",
+      "sourceIds": ["princeton-uf", "mit-disjoint-sets"]
+    },
+    {
+      "id": "dsu-harbornet-trace",
+      "milestoneId": "disjoint-sets",
+      "order": 16,
+      "kind": "concept",
+      "eyebrow": "DSU · 8 of 10",
+      "title": "Trace: six sets become one",
+      "learningObjective": "Trace union results and component counts across a stable HarborNet edge stream.",
+      "coreFacts": [
+        "A successful union reduces the component count by one.",
+        "A redundant edge has endpoints with equal roots and does not change the partition.",
+        "After V−1 successful unions, V vertices are connected."
+      ],
+      "estimatedSeconds": 90,
+      "presentations": {
+        "standard": {
+          "hook": "Watch component count, not parent-array cosmetics.",
+          "body": [
+            "Process HarborNet edges BC, AC, DE, EF, AB, BD. The first four successful unions form groups {A,B,C} and {D,E,F}; component count falls from 6 to 2. AB is redundant because A and B already share a root.",
+            "BD then merges the two groups, leaving one component. Exact roots may differ with tie-breaking, but the partition and success/failure decisions must agree."
+          ]
+        },
+        "story": {
+          "hook": "Four openings create two fleets; one duplicate changes nothing; the final bridge unites the harbor.",
+          "body": [
+            "BC and AC create the western group. DE and EF create the eastern group. AB adds a physical shortcut but no new membership. BD finally lets every island communicate, so the ledger shows one group.",
+            "Analogy limit: DSU cannot tell whether AB improves travel resilience or distance; it records only component merges."
+          ]
+        },
+        "challenge": {
+          "prompt": "After successful unions BC, AC, DE, EF, what should union(A,B) return, and why?",
+          "hint": "BC and AC already place A, B, and C together.",
+          "answer": "It should return false or report no merge because find(A) equals find(B). Component count stays 2; AB would create a cycle within the western component.",
+          "body": [
+            "This boolean “did merge?” result will become Kruskal's accept-or-reject test."
+          ]
+        }
+      },
+      "visual": {
+        "type": "dsu",
+        "title": "HarborNet after four successful merges",
+        "caption": "Before BD, DSU holds two components; AB is redundant inside the western group.",
+        "alt": "Two DSU groups: B containing A, B, C and D containing D, E, F, with A pointing to B.",
+        "data": {
+          "groups": [
+            { "root": "B", "members": ["A", "B", "C"] },
+            { "root": "D", "members": ["D", "E", "F"] }
+          ],
+          "paths": ["A", "B"]
+        }
+      },
+      "takeaway": "A union changes connectivity only when its endpoints previously had different roots.",
+      "bridge": "That power is narrow; knowing DSU's limits prevents using it for the wrong graph question.",
+      "sourceIds": ["princeton-uf", "mit-disjoint-sets"]
+    },
+    {
+      "id": "dsu-fit-and-limits",
+      "milestoneId": "disjoint-sets",
+      "order": 17,
+      "kind": "concept",
+      "eyebrow": "DSU · 9 of 10",
+      "title": "DSU answers membership, not paths",
+      "learningObjective": "Select DSU only for problems matching its connectivity model.",
+      "coreFacts": [
+        "DSU is excellent for undirected incremental connectivity, component merging, cycle checks, and Kruskal.",
+        "Basic DSU does not reconstruct paths or support shortest-path queries.",
+        "Basic DSU does not efficiently handle arbitrary edge deletions or directed reachability."
+      ],
+      "estimatedSeconds": 75,
+      "presentations": {
+        "standard": {
+          "hook": "A fast answer to one narrow question is not a general graph engine.",
+          "body": [
+            "Use DSU when operations merge equivalence classes: online edge additions, detecting whether an undirected edge closes a cycle, offline grouping, or Kruskal. It answers whether two elements share a representative.",
+            "Use traversal or specialized dynamic graph techniques when you need an actual path, shortest distance, directed reachability, or arbitrary deletions. Deleting a tree edge may split one DSU set, which basic union-find cannot undo."
+          ]
+        },
+        "story": {
+          "hook": "The group ledger knows who can communicate—but not how.",
+          "body": [
+            "The Harbor Master can instantly confirm that A and F share a group. Her ledger cannot print the cable route, identify the cheapest trip, or repair membership when a cable is removed.",
+            "Analogy limit: a real operations center retains route details elsewhere. DSU intentionally discards them for speed."
+          ]
+        },
+        "challenge": {
+          "prompt": "A network repeatedly removes roads and asks whether cities remain connected. Is basic DSU sufficient online?",
+          "hint": "Union can merge sets. What operation splits one set after deletion?",
+          "answer": "No. Basic DSU has no efficient split operation. Offline reversal may turn deletions into additions in some problems; otherwise use a dynamic-connectivity technique or fresh traversal.",
+          "body": [
+            "Interview clues matter: “only additions” strongly favors DSU; unrestricted deletions change the problem class."
+          ]
+        }
+      },
+      "visual": {
+        "type": "comparison",
+        "title": "DSU fit check",
+        "caption": "Use the narrow tool when the query matches its contract.",
+        "alt": "Comparison of questions DSU answers well and questions requiring another graph method.",
+        "data": {
+          "columns": [
+            { "title": "Good fit", "items": ["Add undirected edges", "Same component?", "Would this edge form a cycle?", "Merge groups"] },
+            { "title": "Use another tool", "items": ["Return the actual path", "Shortest distance", "Directed reachability", "Arbitrary online deletions"] }
+          ]
+        }
+      },
+      "takeaway": "DSU maintains equivalence classes under merges; it is not a path or deletion data structure.",
+      "bridge": "One final checkpoint turns the parent-forest mechanics into an interview-ready template.",
+      "sourceIds": ["princeton-uf", "mit-disjoint-sets"]
+    },
+    {
+      "id": "dsu-checkpoint",
+      "milestoneId": "disjoint-sets",
+      "order": 18,
+      "kind": "recap",
+      "eyebrow": "Milestone 2 · Checkpoint",
+      "title": "The DSU invariant is the whole game",
+      "learningObjective": "Reconstruct an optimized DSU and its correctness checks from memory.",
+      "coreFacts": [
+        "Every element reaches exactly one self-parent root.",
+        "find compresses paths; union links distinct roots using size or rank.",
+        "Successful unions count component merges and expose cycle-forming edges."
+      ],
+      "estimatedSeconds": 80,
+      "presentations": {
+        "standard": {
+          "hook": "Two arrays and two operations solve a large family of interview problems.",
+          "body": [
+            "Initialize parent[x]=x and size[x]=1. find returns the root while compressing its path. union finds both roots, exits on equality, attaches smaller beneath larger, updates root metadata, and reports success.",
+            "The equality test detects redundancy: if an undirected edge's endpoints already share a root, adding it closes a cycle. Kruskal will use exactly this test."
+          ]
+        },
+        "story": {
+          "hook": "The Harbor ledger is now fast, compact, and honest about its limits.",
+          "body": [
+            "Captains identify groups, smaller groups join larger ones, and every lookup shortens future reporting chains. A route inside one group is marked redundant for connectivity.",
+            "Analogy limit: a redundant route may still be valuable in the real world. The upcoming optimization assumes total construction cost is the only objective."
+          ]
+        },
+        "challenge": {
+          "prompt": "Spot the bug: union(x,y) sets parent[y]=x after checking x!=y, without calling find.",
+          "hint": "x and y may be non-roots even when their sets are already equal.",
+          "answer": "It compares elements instead of representatives and rewires arbitrary nodes. Correct code computes rx=find(x), ry=find(y), returns if rx==ry, then links one root beneath the other and updates root metadata.",
+          "body": [
+            "In an interview, narrate the root invariant while coding. It catches both cycle and metadata errors."
+          ]
+        }
+      },
+      "takeaway": "Find representatives, merge only distinct roots, and keep optimization metadata on roots.",
+      "bridge": "Sort weighted edges and DSU becomes the engine inside Kruskal's minimum spanning tree algorithm.",
+      "sourceIds": ["princeton-uf", "mit-disjoint-sets", "princeton-mst"]
+    },
+    {
+      "id": "mst-objective",
+      "milestoneId": "minimum-spanning-trees",
+      "order": 19,
+      "kind": "concept",
+      "eyebrow": "MST · 1 of 10",
+      "title": "Minimize the whole connecting structure",
+      "learningObjective": "Define a minimum spanning tree and distinguish it from shortest paths.",
+      "coreFacts": [
+        "An MST is a spanning tree of a connected weighted undirected graph with minimum total edge weight.",
+        "Every spanning tree on V vertices has V−1 edges.",
+        "An MST minimizes total tree weight, not distance from a source or between every pair."
+      ],
+      "estimatedSeconds": 75,
+      "presentations": {
+        "standard": {
+          "hook": "Connecting everyone cheaply is different from making every trip short.",
+          "body": [
+            "For connected, weighted, undirected HarborNet, a spanning tree chooses five of the nine routes so all six islands remain connected. The MST is the spanning tree whose edge weights have the smallest possible sum.",
+            "This global construction objective is not a shortest-path objective. The MST path from A to F need not be the cheapest A-to-F path in the original graph."
+          ]
+        },
+        "story": {
+          "hook": "The council funds one backbone, not the fastest trip between every pair.",
+          "body": [
+            "The Harbor Master must connect all six islands while minimizing total cable construction cost. A cycle would add a removable route, so a cheapest connected backbone can be a tree with five links.",
+            "Analogy limit: real infrastructure may require redundancy, capacity, or latency targets. A basic MST optimizes only the sum of listed edge weights."
+          ]
+        },
+        "challenge": {
+          "prompt": "Does an MST guarantee the shortest weighted path from A to every other vertex?",
+          "hint": "Compare minimizing one sum over chosen edges with minimizing each source-to-target route.",
+          "answer": "No. MST minimizes the total weight of a connecting tree. A shortest-path tree minimizes distances from a chosen source; the objectives and resulting trees can differ.",
+          "body": [
+            "Interview signal: “connect all points at minimum total cost” suggests MST; “cheapest route from s to t” suggests a shortest-path algorithm."
+          ]
+        }
+      },
+      "takeaway": "An MST is the minimum-total-weight way to keep every vertex connected without cycles.",
+      "bridge": "Greedy MST algorithms work because a light edge crossing the right boundary is safe.",
+      "sourceIds": ["princeton-mst", "mit-mst"]
+    },
+    {
+      "id": "cut-property",
+      "milestoneId": "minimum-spanning-trees",
+      "order": 20,
+      "kind": "concept",
+      "eyebrow": "MST · 2 of 10",
+      "title": "The cut property certifies safe edges",
+      "learningObjective": "Use the cut property to justify greedy MST choices.",
+      "coreFacts": [
+        "A cut partitions vertices into two nonempty groups.",
+        "An edge crosses the cut when its endpoints lie on opposite sides.",
+        "The current accepted forest must be extendable to an MST, and the cut must respect that forest.",
+        "A lightest edge crossing a cut that respects the current forest is safe: some MST contains it with the forest."
+      ],
+      "estimatedSeconds": 85,
+      "presentations": {
+        "standard": {
+          "hook": "Greedy is correct only when each local choice has a proof.",
+          "body": [
+            "Assume the current forest is a subset of some MST. Split vertices into nonempty sides S and V−S without cutting through any chosen tree. A minimum-weight edge crossing that cut is safe: the enlarged forest is still a subset of some MST.",
+            "Exchange intuition: if an MST lacks the chosen edge, adding it creates a cycle that crosses the cut again. Remove an equal-or-heavier crossing edge from that cycle; connectivity remains and total weight does not increase."
+          ]
+        },
+        "story": {
+          "hook": "Draw a channel dividing islands into two shores.",
+          "body": [
+            "Any complete backbone must cross that channel. Choosing a cheapest crossing cable is safe: if another optimal plan crossed elsewhere, swap its crossing cable for this one without raising cost.",
+            "Analogy limit: the drawn channel is a mathematical partition, not geography. A valid proof also requires the cut to respect edges already committed."
+          ]
+        },
+        "challenge": {
+          "prompt": "Across cut {A} | {B,C,D,E,F}, HarborNet has AB weight 4 and AC weight 2. Which edge is certified safe?",
+          "hint": "Pick a lightest edge whose endpoints lie on opposite sides.",
+          "answer": "AC with weight 2. It is the unique lightest crossing edge, so some MST—and in this case every MST—contains AC.",
+          "body": [
+            "With tied lightest edges, each tied choice can be safe for some MST, but no single tied edge must appear in every MST."
+          ]
+        }
+      },
+      "visual": {
+        "type": "graph",
+        "title": "A cut around A",
+        "caption": "AC is lighter than AB, the only other edge crossing this cut.",
+        "alt": "HarborNet with vertex A visited and edge AC active while edge AB is rejected for the cut comparison.",
+        "data": {
+          "nodes": [
+            { "id": "A", "label": "A", "x": 8, "y": 28, "state": "visited" },
+            { "id": "B", "label": "B", "x": 34, "y": 12 },
+            { "id": "C", "label": "C", "x": 31, "y": 60 },
+            { "id": "D", "label": "D", "x": 62, "y": 42 },
+            { "id": "E", "label": "E", "x": 82, "y": 72 },
+            { "id": "F", "label": "F", "x": 94, "y": 25 }
+          ],
+          "edges": [
+            { "from": "A", "to": "B", "label": "4", "state": "rejected" },
+            { "from": "A", "to": "C", "label": "2", "state": "active" },
+            { "from": "B", "to": "C", "label": "1" },
+            { "from": "B", "to": "D", "label": "5" },
+            { "from": "C", "to": "D", "label": "8" },
+            { "from": "C", "to": "E", "label": "10" },
+            { "from": "D", "to": "E", "label": "2" },
+            { "from": "D", "to": "F", "label": "6" },
+            { "from": "E", "to": "F", "label": "3" }
+          ],
+          "directed": false
+        }
+      },
+      "takeaway": "A lightest edge across a cut that respects the current forest is safe for an MST.",
+      "bridge": "Kruskal repeatedly exposes such cuts by keeping separate DSU components.",
+      "sourceIds": ["princeton-mst", "mit-mst"]
+    },
+    {
+      "id": "kruskal-algorithm",
+      "milestoneId": "minimum-spanning-trees",
+      "order": 21,
+      "kind": "concept",
+      "eyebrow": "MST · 3 of 10",
+      "title": "Kruskal grows a forest",
+      "learningObjective": "Implement Kruskal's algorithm using a sorted edge list and DSU.",
+      "coreFacts": [
+        "Kruskal processes edges in nondecreasing weight order.",
+        "It accepts an edge exactly when its endpoints are in different DSU components.",
+        "For a connected graph, it stops after V−1 accepted edges."
+      ],
+      "estimatedSeconds": 85,
+      "presentations": {
+        "standard": {
+          "hook": "Take the cheapest edge that does not close a cycle.",
+          "body": [
+            "Sort the edge list by weight. For each edge (u,v,w), compare find(u) and find(v). Different roots mean the edge connects two current trees, so accept it and union the roots. Equal roots mean it would create a cycle, so skip it.",
+            "The accepted edges form a forest until the final merge. DSU supplies both the cycle test and the component update."
+          ],
+          "code": {
+            "language": "text",
+            "caption": "Kruskal skeleton",
+            "lines": [
+              "sort edges by weight",
+              "mst = []",
+              "for (u, v, w) in edges:",
+              "  if union(u, v):",
+              "    mst.push((u, v, w))",
+              "    if len(mst) == V - 1: break"
+            ]
+          }
+        },
+        "story": {
+          "hook": "The council opens bids from cheapest to most expensive.",
+          "body": [
+            "For each bid, the Harbor Master checks the group ledger. If the route joins two separate island groups, she approves it and merges the groups. If both ends already communicate, she rejects the cycle-forming bid.",
+            "Analogy limit: Kruskal assumes all candidate edges and weights are known and comparable; real procurement may have dependencies or changing prices."
+          ]
+        },
+        "challenge": {
+          "prompt": "Why is “take every cheap edge” incomplete as a Kruskal description?",
+          "hint": "Three cheap edges can form a triangle.",
+          "answer": "Kruskal takes a cheap edge only when it joins different current components. Without the DSU cycle test, accepted edges could form a cycle and waste cost without connecting a new vertex group.",
+          "body": [
+            "The invariant is that accepted edges always form a forest that is extendable to an MST."
+          ]
+        }
+      },
+      "takeaway": "Kruskal is sort edges, accept cross-component edges, union their components.",
+      "bridge": "Run that loop on HarborNet to see every accept and reject decision.",
+      "sourceIds": ["princeton-mst", "mit-mst", "princeton-uf"]
+    },
+    {
+      "id": "kruskal-worked-example",
+      "milestoneId": "minimum-spanning-trees",
+      "order": 22,
+      "kind": "concept",
+      "eyebrow": "MST · 4 of 10",
+      "title": "Kruskal trace: total cost 13",
+      "learningObjective": "Execute Kruskal on HarborNet and justify each accepted or rejected edge.",
+      "coreFacts": [
+        "HarborNet's chosen MST edges are BC(1), AC(2), DE(2), EF(3), and BD(5).",
+        "AB(4) is rejected because A and B are already connected through C.",
+        "The five chosen weights sum to 13."
+      ],
+      "estimatedSeconds": 95,
+      "presentations": {
+        "standard": {
+          "hook": "The first rejected edge is where DSU earns its place.",
+          "body": [
+            "Sort: BC1, AC2, DE2, EF3, AB4, BD5, DF6, CD8, CE10. Accept the first four; they create components {A,B,C} and {D,E,F}. Reject AB4 because A and B already share a root.",
+            "Accept BD5 to merge the two components. Five edges now span six vertices, so stop. Total cost is 1+2+2+3+5=13. The tie between AC2 and DE2 is harmless because they touch separate components."
+          ]
+        },
+        "story": {
+          "hook": "Five bids build the backbone; one tempting bid is redundant.",
+          "body": [
+            "The Harbor Master approves BC, AC, DE, and EF. AB looks affordable, but A already reaches B through C, so it would create a loop. BD is the cheapest remaining bridge between west and east, completing the backbone for 13.",
+            "Analogy limit: rejection means unnecessary for this minimum backbone, not useless for reliability or traffic capacity."
+          ]
+        },
+        "challenge": {
+          "prompt": "After choosing BC, AC, DE, and EF, why is AB rejected but BD accepted?",
+          "hint": "Name the two DSU components before each decision.",
+          "answer": "AB lies entirely inside {A,B,C}, so it creates a cycle. BD crosses from {A,B,C} to {D,E,F}, so it merges components and is accepted.",
+          "body": [
+            "The decision depends on current component membership, not merely on the edge's absolute weight."
+          ]
+        }
+      },
+      "visual": {
+        "type": "edge-sort",
+        "title": "HarborNet edges in Kruskal order",
+        "caption": "Chosen edges reach V−1 after BD; later edges need not be processed.",
+        "alt": "Sorted edge list showing BC, AC, DE, EF, and BD chosen; AB rejected; DF, CD, and CE pending after completion.",
+        "data": {
+          "edges": [
+            { "label": "B—C", "weight": 1, "state": "chosen" },
+            { "label": "A—C", "weight": 2, "state": "chosen" },
+            { "label": "D—E", "weight": 2, "state": "chosen" },
+            { "label": "E—F", "weight": 3, "state": "chosen" },
+            { "label": "A—B", "weight": 4, "state": "rejected" },
+            { "label": "B—D", "weight": 5, "state": "chosen" },
+            { "label": "D—F", "weight": 6, "state": "pending" },
+            { "label": "C—D", "weight": 8, "state": "pending" },
+            { "label": "C—E", "weight": 10, "state": "pending" }
+          ]
+        }
+      },
+      "takeaway": "Kruskal's HarborNet MST costs 13, and every accepted edge merges two components.",
+      "bridge": "The cut property turns this trace into a correctness proof and the sort gives its runtime.",
+      "sourceIds": ["princeton-mst", "mit-mst"]
+    },
+    {
+      "id": "kruskal-correctness-complexity",
+      "milestoneId": "minimum-spanning-trees",
+      "order": 23,
+      "kind": "concept",
+      "eyebrow": "MST · 5 of 10",
+      "title": "Why Kruskal is correct—and fast",
+      "learningObjective": "Connect Kruskal's invariant to the cut property and derive its complexity.",
+      "coreFacts": [
+        "Kruskal's accepted edges remain acyclic and extendable to an MST.",
+        "The next accepted edge is lightest across a cut between current components and is therefore safe.",
+        "Sorting dominates at O(E log E); DSU processing adds O(E α(V))."
+      ],
+      "estimatedSeconds": 85,
+      "presentations": {
+        "standard": {
+          "hook": "The proof mirrors the code's component boundary.",
+          "body": [
+            "Before an accepted edge uv, u and v lie in different forest components. Consider the cut separating u's component from the rest. Earlier lighter crossing edges would already have merged these components, so uv is a lightest eligible crossing edge and is safe by the cut property.",
+            "Sorting costs O(E log E). At most E DSU checks cost O(E α(V)) amortized, so the standard total is O(E log E), with O(V) DSU storage plus the edge list."
+          ]
+        },
+        "story": {
+          "hook": "Every approved bid is the cheapest available bridge across a current group boundary.",
+          "body": [
+            "The ledger defines the two shores of a cut. Because bids are reviewed in sorted order, an approved crossing bid is safe; a cheaper useful crossing bid could not have been skipped earlier.",
+            "Analogy limit: this proof relies on fixed numeric weights and exact sorted order. It does not justify greedy choices for arbitrary constraints."
+          ]
+        },
+        "challenge": {
+          "prompt": "What dominates Kruskal's runtime on an unsorted edge list: DSU or sorting?",
+          "hint": "Compare E log E with E α(V).",
+          "answer": "Sorting dominates, giving O(E log E). Optimized DSU contributes only O(E α(V)) amortized, which grows much more slowly.",
+          "body": [
+            "If edges arrive already sorted, the remaining scan plus DSU is near-linear."
+          ]
+        }
+      },
+      "takeaway": "Kruskal is safe by component cuts and costs O(E log E), dominated by sorting.",
+      "bridge": "Prim uses the same cut principle but grows one connected tree instead of a forest.",
+      "sourceIds": ["princeton-mst", "mit-mst", "princeton-uf"]
+    },
+    {
+      "id": "prim-algorithm",
+      "milestoneId": "minimum-spanning-trees",
+      "order": 24,
+      "kind": "concept",
+      "eyebrow": "MST · 6 of 10",
+      "title": "Prim grows one tree from a start",
+      "learningObjective": "Implement Prim's algorithm with an adjacency list and minimum-priority queue.",
+      "coreFacts": [
+        "Prim maintains a visited tree and repeatedly chooses the lightest edge leaving it.",
+        "A priority queue tracks the cheapest known connection for unvisited vertices.",
+        "With adjacency lists and a binary heap, Prim runs in O(E log V)."
+      ],
+      "estimatedSeconds": 90,
+      "presentations": {
+        "standard": {
+          "hook": "Kruskal scans globally; Prim expands a single frontier.",
+          "body": [
+            "Start at A. Maintain the cheapest edge connecting each unvisited vertex to the visited set. Repeatedly extract the smallest key, add that vertex and edge, then relax its outgoing edges. The visited/unvisited boundary is the cut proving each choice safe.",
+            "On HarborNet, one valid order is AC2, CB1, BD5, DE2, EF3—again totaling 13. The start vertex changes growth order, not the minimum total cost."
+          ],
+          "code": {
+            "language": "text",
+            "caption": "Binary-heap Prim with stale-entry skipping",
+            "lines": [
+              "key[start] = 0; push((0, start))",
+              "while heap not empty:",
+              "  best, v = pop_min()",
+              "  if visited[v]: continue",
+              "  mark v",
+              "  if v != start: mst.push((parent[v], v, best))",
+              "  for (v, w, weight) in adj[v]:",
+              "    if unseen(w) and weight < key[w]:",
+              "      key[w] = weight; parent[w] = v; push((weight, w))"
+            ]
+          }
+        },
+        "story": {
+          "hook": "Build outward from the islands already served.",
+          "body": [
+            "Beginning at A, the Harbor Master keeps a live board of the cheapest cable that could bring each outside island into the served region. She always funds the smallest entry, then updates offers exposed by the new island.",
+            "Analogy limit: the priority queue may contain stale offers in a common implementation; the algorithm must ignore entries for already visited vertices."
+          ]
+        },
+        "challenge": {
+          "prompt": "Prim starts at A. Between AB4 and AC2, which enters first? After C enters, can BC1 enter before AB4?",
+          "hint": "Recompute the cheapest frontier edge whenever a new vertex joins.",
+          "answer": "AC2 enters first. Then BC1 is exposed from visited C to unvisited B and becomes the lightest frontier edge, so it enters before AB4.",
+          "body": [
+            "Prim compares the current cut's crossing edges, not a fixed first-round list."
+          ]
+        }
+      },
+      "takeaway": "Prim repeatedly takes the cheapest edge from one growing tree to an unvisited vertex.",
+      "bridge": "Kruskal and Prim share a proof idea but favor different data and growth styles.",
+      "sourceIds": ["princeton-mst", "mit-mst-ii"]
+    },
+    {
+      "id": "kruskal-vs-prim",
+      "milestoneId": "minimum-spanning-trees",
+      "order": 25,
+      "kind": "concept",
+      "eyebrow": "MST · 7 of 10",
+      "title": "Kruskal or Prim? Follow the input",
+      "learningObjective": "Choose between Kruskal and Prim based on representation and constraints.",
+      "coreFacts": [
+        "Kruskal grows many components and naturally consumes an edge list plus DSU.",
+        "Prim grows one tree and naturally consumes adjacency lists plus a priority queue.",
+        "Both are justified by the cut property and produce an MST on connected weighted undirected graphs."
+      ],
+      "estimatedSeconds": 75,
+      "presentations": {
+        "standard": {
+          "hook": "The best MST algorithm is often the one matching the data already in your hand.",
+          "body": [
+            "Choose Kruskal when edges arrive as a list, sorting is convenient, or DSU is already part of the problem. Choose Prim when adjacency lists are natural and you want to expand from a vertex with a heap.",
+            "Typical sparse-graph bounds are O(E log E) for Kruskal and O(E log V) for binary-heap Prim. A simple array Prim runs in O(V²), which can be attractive for dense graphs or implicit weights."
+          ]
+        },
+        "story": {
+          "hook": "Review every bid globally, or expand the served coastline locally.",
+          "body": [
+            "Kruskal sorts all cable bids and joins fleets. Prim stands inside one served region and always chooses its cheapest outward cable. Both obey the same safe-crossing principle.",
+            "Analogy limit: neither is universally faster; representation, density, and whether edges are explicit determine practical cost."
+          ]
+        },
+        "challenge": {
+          "prompt": "The input is an unsorted list of 200,000 weighted edges and the prompt already asks you to use DSU for cycle checks. Which MST method is the natural fit?",
+          "hint": "One algorithm is defined by sorting an edge list and calling union.",
+          "answer": "Kruskal. Sort the list, use DSU to accept cross-component edges, and stop at V−1 accepted edges if connected.",
+          "body": [
+            "Prim remains correct, but you would first build adjacency lists and use a heap; Kruskal matches the supplied form directly."
+          ]
+        }
+      },
+      "visual": {
+        "type": "comparison",
+        "title": "Two views of the same greedy proof",
+        "caption": "Choose the implementation that matches the graph's available representation.",
+        "alt": "Comparison of Kruskal's edge-list forest growth and Prim's adjacency-list single-tree growth.",
+        "data": {
+          "columns": [
+            { "title": "Kruskal", "items": ["Grows a forest", "Edge list + sort", "DSU cycle check", "O(E log E)"] },
+            { "title": "Prim", "items": ["Grows one tree", "Adjacency list + heap", "Visited frontier", "O(E log V) with binary heap"] }
+          ]
+        }
+      },
+      "takeaway": "Kruskal fits global edge lists; Prim fits local adjacency frontiers.",
+      "bridge": "Whichever you choose, ties, negative weights, and disconnected inputs deserve explicit handling.",
+      "sourceIds": ["princeton-mst", "mit-mst", "mit-mst-ii"]
+    },
+    {
+      "id": "mst-edge-cases",
+      "milestoneId": "minimum-spanning-trees",
+      "order": 26,
+      "kind": "concept",
+      "eyebrow": "MST · 8 of 10",
+      "title": "Ties and negative weights are fine",
+      "learningObjective": "Handle non-unique weights, negative weights, and disconnected graphs correctly.",
+      "coreFacts": [
+        "Tied weights can produce multiple different MSTs with the same minimum total weight.",
+        "Negative edge weights do not invalidate Kruskal or Prim.",
+        "A disconnected graph has no single spanning tree; the algorithms can produce a minimum spanning forest."
+      ],
+      "estimatedSeconds": 85,
+      "presentations": {
+        "standard": {
+          "hook": "MST assumptions are narrower—and more forgiving—than many candidates remember.",
+          "body": [
+            "Distinct weights guarantee a unique MST, but uniqueness can still occur with ties. With ties, deterministic secondary sorting can stabilize output without changing optimality. Negative edges are safe: a minimum connecting tree benefits from cheap negative weight, and cycles are still excluded.",
+            "If the graph has C components, no edge set can span all vertices as one tree. Kruskal yields a minimum spanning forest with V−C edges; Prim must restart from each unseen component."
+          ],
+          "bullets": [
+            "Self-loops never help a spanning tree",
+            "Among parallel edges, a heavier duplicate is never preferable",
+            "Verify acceptedEdges == V−1 when the problem demands full connectivity"
+          ]
+        },
+        "story": {
+          "hook": "Equal bids, rebates, and isolated islands do not break the method.",
+          "body": [
+            "Two equally priced cables may lead to two different but equally cheap backbones. A subsidized cable can have negative net cost and should be considered early. An island with no possible route makes one harbor-wide tree impossible.",
+            "Analogy limit: negative construction cost is unusual, but algorithmic weights are abstract numbers and the MST proof does not require nonnegative values."
+          ]
+        },
+        "challenge": {
+          "prompt": "Kruskal finishes with only V−2 accepted edges after scanning every edge. What does that prove?",
+          "hint": "A spanning tree requires exactly V−1 accepted edges.",
+          "answer": "The graph is disconnected, so no spanning tree exists. The accepted edges belong to a minimum spanning forest; return failure if the task requires one connected network.",
+          "body": [
+            "Do not silently return a partial cost when the specification says every vertex must be connected."
+          ]
+        }
+      },
+      "takeaway": "MSTs allow ties and negative weights; only disconnection prevents one spanning tree.",
+      "bridge": "The final checkpoint is recognizing which interview story hides traversal, DSU, or MST.",
+      "sourceIds": ["princeton-mst", "mit-mst"]
+    },
+    {
+      "id": "interview-transfer-lab",
+      "milestoneId": "minimum-spanning-trees",
+      "order": 27,
+      "kind": "recap",
+      "eyebrow": "Milestone 3 · Transfer Lab",
+      "title": "Translate wording into invariants",
+      "learningObjective": "Classify interview problems as traversal, DSU, Kruskal, or Prim and state the decisive clue.",
+      "coreFacts": [
+        "Paths and distances require traversal or shortest-path machinery, not DSU.",
+        "Incremental undirected component queries suggest DSU.",
+        "Minimum total cost to connect all vertices suggests MST after verifying graph assumptions."
+      ],
+      "estimatedSeconds": 95,
+      "presentations": {
+        "standard": {
+          "hook": "Ignore the story nouns; underline operations and requested output.",
+          "body": [
+            "“Fewest transfers” means BFS on an unweighted graph. “Merge accounts and ask whether two IDs belong together” means DSU. “Connect every office for minimum total cable cost” means MST—often Kruskal for an edge list or Prim for adjacency data.",
+            "Before coding, state direction, weighting, update type, required output, and disconnected behavior. Then name the invariant: BFS layers, DFS reachability, DSU representatives, or MST safe cuts."
+          ],
+          "bullets": [
+            "Need an actual route? Preserve parent pointers in traversal",
+            "Only edge additions and same-group queries? DSU",
+            "Cheapest connected backbone? MST",
+            "Need all vertices connected? Verify V−1 accepted edges"
+          ]
+        },
+        "story": {
+          "hook": "The Harbor Master now chooses a tool before touching the map.",
+          "body": [
+            "For minimum relay hops she takes the queue. For a deep inspection she takes the stack. For a changing group ledger she uses DSU. For the cheapest full backbone she chooses Kruskal's bid list or Prim's frontier.",
+            "Analogy limit: problem stories can disguise directed edges, deletions, or shortest paths. Translate the exact operations instead of matching surface words like “network.”"
+          ]
+        },
+        "challenge": {
+          "prompt": "A company gives candidate links (u,v,cost), wants every office connected as cheaply as possible, and requires −1 if impossible. Give the algorithm and final validity check.",
+          "hint": "The input is an edge list and the objective is total connection cost.",
+          "answer": "Use Kruskal: sort by cost, accept edges whose DSU roots differ, and sum them. Return the sum only if exactly V−1 edges were accepted; otherwise return −1 because the graph is disconnected.",
+          "body": [
+            "Explain complexity as O(E log E) time and O(V) DSU space beyond the edge storage. Mention that negative costs and ties remain valid."
+          ]
+        }
+      },
+      "takeaway": "Classify by operations and output, then code around the algorithm's invariant.",
+      "bridge": "Close the journey by compressing the full chain from graph model to safe greedy tree.",
+      "sourceIds": ["princeton-graphs", "princeton-uf", "princeton-mst", "mit-mst"]
+    },
+    {
+      "id": "graph-journey-complete",
+      "milestoneId": "minimum-spanning-trees",
+      "order": 28,
+      "kind": "completion",
+      "eyebrow": "Journey Complete",
+      "title": "You can connect the whole chain",
+      "learningObjective": "Summarize the conceptual dependency from graph modeling through optimized MST construction.",
+      "coreFacts": [
+        "Graph modeling determines valid representations and algorithms.",
+        "BFS and DFS reveal static structure; DSU maintains incremental component membership.",
+        "The cut property justifies both Kruskal's forest and Prim's growing tree."
+      ],
+      "estimatedSeconds": 80,
+      "presentations": {
+        "standard": {
+          "hook": "The topic is one sequence, not three disconnected tricks.",
+          "body": [
+            "Vertices and edges create the model. Representations expose neighbors or edges. BFS and DFS reveal reachability, components, cycles, and trees. DSU preserves components under merges. Kruskal uses DSU to reject cycles, while Prim uses a frontier; the cut property proves both greedy choices safe.",
+            "You can now explain the invariant, implementation, complexity, and failure modes for each tool—and choose among them from interview wording."
+          ]
+        },
+        "story": {
+          "hook": "HarborNet is mapped, connected, and built for the minimum total cost.",
+          "body": [
+            "The Harbor Master learned to explore calls by queue or stack, maintain changing fleets with a compressed ledger, and approve a five-link backbone costing 13 through safe boundary choices.",
+            "Analogy limit: production networks optimize reliability, capacity, policy, and change—not cost alone. The algorithms here are precise foundations for those richer models."
+          ]
+        },
+        "challenge": {
+          "prompt": "Without looking back, name the decisive invariant for BFS, DSU, and Kruskal.",
+          "hint": "Think layers, representatives, and a safe crossing edge.",
+          "answer": "BFS processes vertices in nondecreasing edge distance; DSU elements are connected exactly when their root representatives match; Kruskal's accepted forest remains extendable to an MST because each chosen cross-component light edge is safe by the cut property.",
+          "body": [
+            "If you can state those invariants and derive the code around them, you are reasoning rather than memorizing templates."
+          ]
+        }
+      },
+      "visual": {
+        "type": "mermaid",
+        "title": "The learning dependency chain",
+        "caption": "Each idea supplies the next algorithm's vocabulary or invariant.",
+        "alt": "A flow from graph model to representations and traversal, then components and trees, then DSU, cut property, and Kruskal or Prim.",
+        "definition": "flowchart LR\n  M[Graph model] --> R[Representations]\n  R --> T[BFS and DFS]\n  T --> C[Components and trees]\n  C --> D[DSU]\n  C --> P[Cut property]\n  D --> K[Kruskal]\n  P --> K\n  P --> Q[Prim]"
+      },
+      "takeaway": "Model first, preserve the invariant, and let the required output choose the algorithm.",
+      "bridge": "Next step: solve one unfamiliar connectivity problem and justify the choice before writing code.",
+      "sourceIds": ["princeton-graphs", "mit-disjoint-sets", "princeton-mst", "mit-mst"]
+    }
+  ]
+}

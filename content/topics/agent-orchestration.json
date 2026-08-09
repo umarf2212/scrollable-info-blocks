@@ -1,0 +1,1496 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "agent-orchestration",
+  "version": "1.0.0",
+  "title": "AI Agent Orchestration",
+  "shortTitle": "Agent Orchestration",
+  "description": "Learn how to choose, coordinate, constrain, and evaluate single- and multi-agent systems—from the agent loop to a production-ready workflow.",
+  "category": "Artificial Intelligence",
+  "accent": "#7C6CF2",
+  "estimatedMinutes": 28,
+  "audience": "Software developers who understand LLM prompts and API calls but are new to production agent systems.",
+  "prerequisites": [
+    "Basic familiarity with large language models",
+    "Comfort reading simple pseudocode and system diagrams",
+    "Basic understanding of APIs and asynchronous tasks"
+  ],
+  "learningOutcomes": [
+    "Distinguish agents from deterministic workflows and recognize when either is appropriate",
+    "Select sequential, routing, parallel, supervisor, or review patterns from task constraints",
+    "Design explicit task contracts, context boundaries, state, permissions, and budgets",
+    "Add termination, retry, idempotency, evaluation, tracing, and human-approval controls",
+    "Sketch and critique an end-to-end orchestration for a real software task"
+  ],
+  "sources": [
+    {
+      "id": "anthropic-effective-agents",
+      "title": "Anthropic: Building effective agents",
+      "url": "https://www.anthropic.com/engineering/building-effective-agents"
+    },
+    {
+      "id": "openai-orchestration",
+      "title": "OpenAI Agents SDK: Agent orchestration",
+      "url": "https://openai.github.io/openai-agents-python/multi_agent/"
+    },
+    {
+      "id": "openai-handoffs",
+      "title": "OpenAI Agents SDK: Handoffs",
+      "url": "https://openai.github.io/openai-agents-python/handoffs/"
+    },
+    {
+      "id": "microsoft-patterns",
+      "title": "Microsoft Azure Architecture Center: AI agent orchestration patterns",
+      "url": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns"
+    },
+    {
+      "id": "google-patterns",
+      "title": "Google Cloud Architecture Center: Choose a design pattern for your agentic AI system",
+      "url": "https://docs.cloud.google.com/architecture/choose-design-pattern-agentic-ai-system"
+    },
+    {
+      "id": "anthropic-context",
+      "title": "Anthropic: Effective context engineering for AI agents",
+      "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+    },
+    {
+      "id": "aws-idempotency",
+      "title": "Amazon Builders' Library: Making retries safe with idempotent APIs",
+      "url": "https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/"
+    },
+    {
+      "id": "anthropic-evals",
+      "title": "Anthropic: Demystifying evals for AI agents",
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+    },
+    {
+      "id": "openai-tracing",
+      "title": "OpenAI Agents SDK: Tracing",
+      "url": "https://openai.github.io/openai-agents-python/tracing/"
+    },
+    {
+      "id": "openai-hitl",
+      "title": "OpenAI Agents SDK: Human-in-the-loop",
+      "url": "https://openai.github.io/openai-agents-python/human_in_the_loop/"
+    },
+    {
+      "id": "openai-guardrails",
+      "title": "OpenAI Agents SDK: Guardrails",
+      "url": "https://openai.github.io/openai-agents-python/guardrails/"
+    }
+  ],
+  "milestones": [
+    {
+      "id": "mental-model",
+      "title": "Build the mental model",
+      "shortTitle": "Mental model",
+      "description": "Start with the agent loop, then decide how much autonomy and coordination the task actually needs."
+    },
+    {
+      "id": "patterns",
+      "title": "Choose an orchestration pattern",
+      "shortTitle": "Patterns",
+      "description": "Match sequential, routing, parallel, supervisor, and review structures to the shape of the work."
+    },
+    {
+      "id": "coordination",
+      "title": "Engineer coordination",
+      "shortTitle": "Coordination",
+      "description": "Make delegation reliable with contracts, dependencies, bounded context, durable state, and permissions."
+    },
+    {
+      "id": "reliability",
+      "title": "Control and observe the system",
+      "shortTitle": "Reliability",
+      "description": "Contain loops and failures, verify results, trace decisions, and pause consequential actions for people."
+    },
+    {
+      "id": "walkthrough",
+      "title": "Assemble a production workflow",
+      "shortTitle": "Walkthrough",
+      "description": "Apply the ideas to one software-delivery task and leave with a reusable design checklist."
+    }
+  ],
+  "blocks": [
+    {
+      "id": "agent-loop",
+      "milestoneId": "mental-model",
+      "order": 1,
+      "kind": "concept",
+      "eyebrow": "Mental model · 1",
+      "title": "An agent is a controlled loop",
+      "learningObjective": "Identify the four stages of an agent loop and its termination condition.",
+      "coreFacts": [
+        "An agent combines a model, instructions, tools, and a run loop.",
+        "The loop alternates between model decisions and observed tool results.",
+        "Execution must stop on a final result, an explicit condition, or a configured limit."
+      ],
+      "estimatedSeconds": 55,
+      "presentations": {
+        "standard": {
+          "hook": "A model predicts text; an agent can repeatedly decide, act, and inspect what happened.",
+          "body": [
+            "Give the model a goal, instructions, and a catalog of tools. It chooses either a tool call or a final answer. The runtime executes permitted calls, returns observations, and asks the model what to do next. A stop condition—success, error, approval pause, turn limit, or budget—keeps that loop bounded."
+          ],
+          "bullets": [
+            "Decide: choose the next action",
+            "Act: invoke a tool or specialist",
+            "Observe: return structured results",
+            "Stop: finish or enforce a limit"
+          ]
+        },
+        "story": {
+          "hook": "At Harborlight, Mira receives one goal: ship accessible search.",
+          "body": [
+            "Mira reads the brief, sends Scout to inspect the codebase, studies the report, then chooses the next assignment. Here Mira maps to the model-driven agent, assignments to tool calls, reports to observations, and the shift bell to a stop condition. Unlike a human harbor master, a model has no persistent intent outside the runtime and context it is given."
+          ]
+        },
+        "challenge": {
+          "prompt": "A model calls a search tool once and returns its result. What turns this into an agent loop rather than a one-shot tool call?",
+          "hint": "Focus on what happens after the tool returns.",
+          "answer": "The tool result is fed back to the model so it can choose another action or finish, under explicit limits.",
+          "body": [
+            "Agency comes from repeated model-directed decisions, not merely possessing a tool. The runtime supplies observations and enforces termination; without that control, the system can wander or spend indefinitely."
+          ]
+        }
+      },
+      "visual": {
+        "type": "mermaid",
+        "title": "The bounded agent loop",
+        "caption": "Every cycle returns evidence to the model; every run has an exit.",
+        "alt": "A user goal enters an agent. The agent selects a tool, receives an observation, and loops until it produces a final result or reaches a limit.",
+        "definition": "flowchart LR\n  G[User goal] --> A[Agent decides]\n  A -->|tool call| T[Tool executes]\n  T --> O[Observation]\n  O --> A\n  A -->|done or limit| R[Final result]"
+      },
+      "takeaway": "An agent is a model inside a tool-and-observation loop with enforced exits.",
+      "bridge": "Once the loop is clear, separate dynamic agents from workflows whose path is already known.",
+      "sourceIds": ["anthropic-effective-agents", "openai-orchestration"]
+    },
+    {
+      "id": "workflow-vs-agent",
+      "milestoneId": "mental-model",
+      "order": 2,
+      "kind": "concept",
+      "eyebrow": "Mental model · 2",
+      "title": "Workflow or agent? Follow the uncertainty",
+      "learningObjective": "Distinguish code-directed workflows from model-directed agents.",
+      "coreFacts": [
+        "A workflow follows predefined code paths.",
+        "An agent dynamically chooses its process and tool use.",
+        "Hybrid systems use deterministic code around selected model decisions."
+      ],
+      "estimatedSeconds": 50,
+      "presentations": {
+        "standard": {
+          "hook": "The useful boundary is not 'AI versus no AI'; it is who chooses the next step.",
+          "body": [
+            "If the path is stable—extract, validate, then publish—encode it in code and use models inside known steps. If the path depends on discoveries, let an agent choose within limits. Most production systems are hybrid: code owns policy, budgets, and irreversible actions; models handle ambiguous classification, planning, or recovery."
+          ]
+        },
+        "story": {
+          "hook": "Some Harborlight cargo follows a printed route; storm-damaged cargo needs Mira's judgment.",
+          "body": [
+            "The printed route maps to a workflow; Mira choosing a new dock maps to an agent. Harbor shipping is only a metaphor: software can enforce every allowed transition exactly, while a human organization relies more on judgment and convention."
+          ]
+        },
+        "challenge": {
+          "prompt": "A support system always classifies a ticket, fetches policy, drafts a reply, and waits for approval. Agent or workflow?",
+          "hint": "Ask whether the model chooses the sequence.",
+          "answer": "Primarily a workflow: code fixes the sequence, even though models may perform individual steps.",
+          "body": [
+            "Model calls do not automatically make a system agentic. If classification changes which branch runs, that decision can be agent-like while the surrounding process remains deterministic."
+          ]
+        }
+      },
+      "visual": {
+        "type": "comparison",
+        "title": "Control of the next step",
+        "caption": "Choose the least dynamic mechanism that handles the real uncertainty.",
+        "alt": "Comparison of code-directed workflows, model-directed agents, and hybrid systems.",
+        "data": {
+          "columns": [
+            {"title": "Workflow", "items": ["Next step: code", "Predictability: high", "Best fit: known path"]},
+            {"title": "Agent", "items": ["Next step: model", "Predictability: lower", "Best fit: open-ended path"]},
+            {"title": "Hybrid", "items": ["Next step: shared", "Predictability: controlled", "Best fit: most products"]}
+          ]
+        }
+      },
+      "takeaway": "Put known paths in code and reserve model discretion for genuine ambiguity.",
+      "bridge": "Whether code or a model directs the path, orchestration is the layer that makes the flow coherent.",
+      "sourceIds": ["anthropic-effective-agents", "openai-orchestration"]
+    },
+    {
+      "id": "what-orchestration-controls",
+      "milestoneId": "mental-model",
+      "order": 3,
+      "kind": "concept",
+      "eyebrow": "Mental model · 3",
+      "title": "Orchestration owns the flow",
+      "learningObjective": "Explain the responsibilities of an orchestration layer.",
+      "coreFacts": [
+        "Orchestration determines which component runs, when, and with what input.",
+        "It coordinates dependencies, state, limits, failures, and final assembly.",
+        "Flow decisions may be encoded in code, delegated to a model, or mixed."
+      ],
+      "estimatedSeconds": 48,
+      "presentations": {
+        "standard": {
+          "hook": "Multiple capable agents do not become a system until something coordinates them.",
+          "body": [
+            "The orchestrator translates one goal into controlled execution: select workers, shape inputs, respect dependencies, collect outputs, handle failures, and decide when the result is complete. It is less like a group chat and more like a runtime plus policy layer."
+          ]
+        },
+        "story": {
+          "hook": "Mira's real work is not lifting cargo; it is sequencing the whole harbor.",
+          "body": [
+            "Mira maps to orchestration: she assigns crews, waits for prerequisites, records outcomes, and closes the job. The docks map to tools and specialists. The analogy stops at enforcement—software orchestration must encode permissions and failure behavior rather than trust social norms."
+          ]
+        },
+        "challenge": {
+          "prompt": "Three specialists each return excellent answers, but they duplicate work and disagree on the final recommendation. What is missing?",
+          "hint": "Individual capability is not coordination.",
+          "answer": "An orchestration contract that partitions work, defines outputs, and owns synthesis and conflict handling.",
+          "body": [
+            "The system failed between agents, not inside them. Orchestration makes interfaces, ordering, and completion explicit so local success can become global success."
+          ]
+        }
+      },
+      "visual": {
+        "type": "agent-flow",
+        "title": "One goal, controlled execution",
+        "caption": "The orchestrator mediates delegation and assembly.",
+        "alt": "A user goal reaches an orchestrator, which delegates to research and build agents before a final synthesis step.",
+        "data": {
+          "nodes": [
+            {"id": "goal", "label": "Goal", "role": "input"},
+            {"id": "orch", "label": "Orchestrator", "role": "coordinator"},
+            {"id": "research", "label": "Research", "role": "specialist"},
+            {"id": "build", "label": "Build", "role": "specialist"},
+            {"id": "result", "label": "Result", "role": "output"}
+          ],
+          "edges": [
+            {"from": "goal", "to": "orch", "label": "request"},
+            {"from": "orch", "to": "research", "label": "task"},
+            {"from": "orch", "to": "build", "label": "task"},
+            {"from": "research", "to": "result", "label": "evidence"},
+            {"from": "build", "to": "result", "label": "artifact"}
+          ]
+        }
+      },
+      "takeaway": "Orchestration turns independent capabilities into a bounded, stateful execution plan.",
+      "bridge": "The first architecture choice is whether one agent is enough or specialization earns its overhead.",
+      "sourceIds": ["openai-orchestration", "microsoft-patterns"]
+    },
+    {
+      "id": "single-vs-multi-agent",
+      "milestoneId": "mental-model",
+      "order": 4,
+      "kind": "concept",
+      "eyebrow": "Mental model · 4",
+      "title": "Start with one agent",
+      "learningObjective": "Decide when multi-agent specialization is justified.",
+      "coreFacts": [
+        "A single agent is usually simpler to prompt, test, trace, and operate.",
+        "Multiple agents can isolate context, tools, expertise, and security boundaries.",
+        "Multi-agent systems add model calls, latency, cost, and coordination failure modes."
+      ],
+      "estimatedSeconds": 52,
+      "presentations": {
+        "standard": {
+          "hook": "More agents are an architectural cost, not a maturity badge.",
+          "body": [
+            "Begin with one agent and a focused toolset. Split only when measurements reveal overloaded prompts, confused tool choice, separable parallel work, distinct security boundaries, or expertise that benefits from isolated context. Compare the multi-agent design against a strong single-agent baseline."
+          ]
+        },
+        "story": {
+          "hook": "Mira first tries one versatile crew before opening four specialist docks.",
+          "body": [
+            "The crew maps to a single agent; dedicated docks map to specialists with bounded tools and context. Unlike harbor labor, duplicating model workers is easy—but each new worker still adds inference cost, coordination, and another place to fail."
+          ]
+        },
+        "challenge": {
+          "prompt": "A single agent reliably handles six tools in two turns. Should you split it into specialists for scalability?",
+          "hint": "Look for measured pain, not hypothetical elegance.",
+          "answer": "Not yet. Keep the reliable simpler design until requirements or evidence justify specialization.",
+          "body": [
+            "A multi-agent system may scale organizationally, but it also multiplies calls and interfaces. Establish a baseline, then split around observed boundaries such as permissions, context, or independent concurrency."
+          ]
+        }
+      },
+      "visual": {
+        "type": "comparison",
+        "title": "The specialization trade",
+        "caption": "Multi-agent architecture should buy a concrete advantage.",
+        "alt": "A comparison showing that single agents have lower coordination cost while multiple agents provide stronger isolation and specialization.",
+        "data": {
+          "columns": [
+            {"title": "Single agent", "items": ["Coordination: simple", "Isolation: shared context and tools", "Cost: fewer calls"]},
+            {"title": "Multiple agents", "items": ["Coordination: explicitly designed", "Isolation: per-specialist boundaries", "Cost: usually more calls"]}
+          ]
+        }
+      },
+      "takeaway": "Earn every additional agent with a measured need for separation or concurrency.",
+      "bridge": "Before studying patterns, lock in the four questions that prevent accidental complexity.",
+      "sourceIds": ["anthropic-effective-agents", "google-patterns", "microsoft-patterns"]
+    },
+    {
+      "id": "mental-model-checkpoint",
+      "milestoneId": "mental-model",
+      "order": 5,
+      "kind": "recap",
+      "eyebrow": "Checkpoint · Mental model",
+      "title": "Choose control deliberately",
+      "learningObjective": "Recall the core decisions that precede pattern selection.",
+      "coreFacts": [
+        "Bound every agent loop.",
+        "Distinguish known code paths from model-selected paths.",
+        "Add specialists only for a concrete reason."
+      ],
+      "estimatedSeconds": 40,
+      "presentations": {
+        "standard": {
+          "hook": "A sound design begins with four questions.",
+          "body": [
+            "Who chooses the next step? What evidence returns after each action? What stops the run? Why is more than one agent necessary? If any answer is vague, the architecture is not ready for a more complex pattern."
+          ]
+        },
+        "story": {
+          "hook": "Before Harborlight opens, Mira checks the route, reports, bell, and crew list.",
+          "body": [
+            "Those map to control flow, observations, termination, and specialization. The metaphor's limit matters: a software system needs machine-checkable answers, not a coordinator's intuition."
+          ]
+        },
+        "challenge": {
+          "prompt": "Name the four design questions you should answer before adding a second agent.",
+          "hint": "Think control, feedback, exit, and justification.",
+          "answer": "Who chooses the next step? What observation returns? What stops the run? What measured need requires another agent?",
+          "body": [
+            "Together these questions expose unbounded loops, fake autonomy, unclear interfaces, and needless complexity before they become production failures."
+          ]
+        }
+      },
+      "takeaway": "Control, observation, termination, and justified specialization form the foundation.",
+      "bridge": "Now match five reusable orchestration patterns to five different task shapes.",
+      "sourceIds": ["anthropic-effective-agents", "openai-orchestration", "google-patterns"]
+    },
+    {
+      "id": "sequential-pipeline",
+      "milestoneId": "patterns",
+      "order": 6,
+      "kind": "concept",
+      "eyebrow": "Patterns · 1",
+      "title": "Sequential: each step sharpens the next",
+      "learningObjective": "Recognize when a fixed pipeline is the right orchestration pattern.",
+      "coreFacts": [
+        "Sequential orchestration runs specialists in a predefined order.",
+        "Each step receives a validated output from the previous step.",
+        "The pattern is predictable but accumulates latency and can propagate early errors."
+      ],
+      "estimatedSeconds": 52,
+      "presentations": {
+        "standard": {
+          "hook": "Use a pipeline when dependencies are real and the order rarely changes.",
+          "body": [
+            "A requirements agent emits a structured brief; an implementation agent consumes it; a reviewer checks the result. Validate every boundary so malformed output fails near its source. Sequential flow is easy to trace, but total latency is roughly the sum of its steps."
+          ]
+        },
+        "story": {
+          "hook": "Scout charts the channel before Forge can build, and Vale inspects only after construction.",
+          "body": [
+            "Scout → Forge → Vale maps to a sequential pipeline with dependent outputs. The harbor analogy fits ordering, but model output is nondeterministic, so each handoff needs schema checks rather than a spoken confirmation."
+          ]
+        },
+        "challenge": {
+          "prompt": "Can research, implementation, and review safely run at the same time for one new feature?",
+          "hint": "Ask whether later work needs earlier output.",
+          "answer": "Usually no. Implementation depends on the researched constraints, and review depends on the artifact.",
+          "body": [
+            "Parallelizing true dependencies creates rework or invented assumptions. Encode the dependency chain, then look for smaller independent tasks inside each stage."
+          ]
+        }
+      },
+      "visual": {
+        "type": "sequence",
+        "title": "A validated pipeline",
+        "caption": "Every arrow is an interface, not an unstructured transcript dump.",
+        "alt": "Requirements passes a brief to implementation, which passes an artifact to review, which returns an approved result.",
+        "data": {
+          "steps": [
+            {"actor": "Requirements", "action": "Pass a validated brief to Implementation", "status": "complete"},
+            {"actor": "Implementation", "action": "Pass the artifact and test evidence to Review", "status": "complete"},
+            {"actor": "Review", "action": "Return bounded feedback or approval", "status": "decision"}
+          ]
+        }
+      },
+      "takeaway": "Use sequential flow for real dependencies, with validation at every boundary.",
+      "bridge": "When the next specialist depends on the request type rather than a fixed stage, route instead.",
+      "sourceIds": ["microsoft-patterns", "google-patterns", "anthropic-effective-agents"]
+    },
+    {
+      "id": "routing-and-handoffs",
+      "milestoneId": "patterns",
+      "order": 7,
+      "kind": "concept",
+      "eyebrow": "Patterns · 2",
+      "title": "Route or hand off to a specialist",
+      "learningObjective": "Differentiate bounded routing from conversational handoff.",
+      "coreFacts": [
+        "A router classifies input and selects a specialist or path.",
+        "A handoff transfers control so the selected specialist becomes active.",
+        "Confidence thresholds and fallback routes contain misclassification."
+      ],
+      "estimatedSeconds": 55,
+      "presentations": {
+        "standard": {
+          "hook": "Use routing when requests vary, but each category has a focused handler.",
+          "body": [
+            "A router emits a small structured decision such as {route, confidence, reason}. Code validates the route and chooses a specialist. In a handoff, the chosen specialist takes over the interaction; in manager-style routing, it returns a bounded result to the manager. Add an unknown route or human fallback instead of forcing every input into a category."
+          ]
+        },
+        "story": {
+          "hook": "Mira sends code questions to Forge and policy questions to Vale.",
+          "body": [
+            "Mira's intake desk maps to a router; giving the visitor directly to Vale maps to a handoff. Unlike a harbor signpost, model classification can be uncertain, so low-confidence cases need a safe fallback."
+          ]
+        },
+        "challenge": {
+          "prompt": "A triage agent is only 58% confident between billing and security. Should it pick the top route?",
+          "hint": "A top score is not automatically an acceptable score.",
+          "answer": "No. Apply a confidence or policy threshold and use clarification, a general fallback, or human review.",
+          "body": [
+            "Routing errors send the entire remaining context down the wrong path. Explicit abstention is a feature, especially when routes have different permissions."
+          ]
+        }
+      },
+      "visual": {
+        "type": "agent-flow",
+        "title": "Triage with a safe fallback",
+        "caption": "The router chooses one bounded destination and may abstain.",
+        "alt": "A triage router sends requests to a code specialist, policy specialist, or clarification fallback.",
+        "data": {
+          "nodes": [
+            {"id": "request", "label": "Request", "role": "input"},
+            {"id": "router", "label": "Triage", "role": "router"},
+            {"id": "code", "label": "Code specialist", "role": "specialist"},
+            {"id": "policy", "label": "Policy specialist", "role": "specialist"},
+            {"id": "fallback", "label": "Clarify / human", "role": "fallback"}
+          ],
+          "edges": [
+            {"from": "request", "to": "router", "label": "classify"},
+            {"from": "router", "to": "code", "label": "code"},
+            {"from": "router", "to": "policy", "label": "policy"},
+            {"from": "router", "to": "fallback", "label": "low confidence"}
+          ]
+        }
+      },
+      "takeaway": "Route with structured decisions, abstention, and permission-aware fallbacks.",
+      "bridge": "Routing chooses one path; parallel fan-out intentionally chooses several independent paths.",
+      "sourceIds": ["anthropic-effective-agents", "openai-handoffs", "microsoft-patterns"]
+    },
+    {
+      "id": "parallel-fan-out",
+      "milestoneId": "patterns",
+      "order": 8,
+      "kind": "concept",
+      "eyebrow": "Patterns · 3",
+      "title": "Parallel: fan out, then gather",
+      "learningObjective": "Identify independent work that can safely execute concurrently.",
+      "coreFacts": [
+        "Parallel orchestration dispatches independent tasks concurrently.",
+        "A gather step validates, reconciles, and synthesizes returned results.",
+        "Latency can approach the slowest branch rather than the sum, while cost and merge complexity rise."
+      ],
+      "estimatedSeconds": 52,
+      "presentations": {
+        "standard": {
+          "hook": "Concurrency reduces waiting only when branches do not depend on one another.",
+          "body": [
+            "Run security review, accessibility review, and performance review together against the same frozen artifact. Give each branch a disjoint rubric and deadline. The gatherer must preserve disagreements, handle missing branches, and avoid treating a fluent consensus as evidence."
+          ]
+        },
+        "story": {
+          "hook": "Forge, Scout, and Vale inspect different sides of the same vessel at once.",
+          "body": [
+            "The simultaneous inspections map to parallel agents; Mira's logbook merge maps to gathering. The metaphor breaks if inspectors edit the vessel concurrently—shared mutable state creates races unless explicitly coordinated."
+          ]
+        },
+        "challenge": {
+          "prompt": "Three independent checks take 8, 12, and 10 seconds. Ignoring overhead, sequential or parallel latency?",
+          "hint": "Add for sequential; take the maximum for parallel.",
+          "answer": "About 30 seconds sequential versus 12 seconds parallel.",
+          "body": [
+            "Parallelism saves wall-clock time but still pays for all three calls. The gather step and rate limits add overhead, so measure actual—not theoretical—latency."
+          ]
+        }
+      },
+      "visual": {
+        "type": "agent-flow",
+        "title": "Fan-out and gather",
+        "caption": "Independent rubrics run together; one step reconciles results.",
+        "alt": "One artifact fans out to security, accessibility, and performance reviews whose reports gather into a synthesis.",
+        "data": {
+          "nodes": [
+            {"id": "artifact", "label": "Frozen artifact", "role": "input"},
+            {"id": "security", "label": "Security", "role": "specialist"},
+            {"id": "a11y", "label": "Accessibility", "role": "specialist"},
+            {"id": "perf", "label": "Performance", "role": "specialist"},
+            {"id": "gather", "label": "Gather + reconcile", "role": "coordinator"}
+          ],
+          "edges": [
+            {"from": "artifact", "to": "security", "label": "same version"},
+            {"from": "artifact", "to": "a11y", "label": "same version"},
+            {"from": "artifact", "to": "perf", "label": "same version"},
+            {"from": "security", "to": "gather", "label": "findings"},
+            {"from": "a11y", "to": "gather", "label": "findings"},
+            {"from": "perf", "to": "gather", "label": "findings"}
+          ]
+        }
+      },
+      "takeaway": "Parallelize independent reads; design the gather step as carefully as the fan-out.",
+      "bridge": "For dynamic decomposition and final ownership, place a supervisor above bounded workers.",
+      "sourceIds": ["google-patterns", "openai-orchestration", "anthropic-effective-agents"]
+    },
+    {
+      "id": "supervisor-workers",
+      "milestoneId": "patterns",
+      "order": 9,
+      "kind": "concept",
+      "eyebrow": "Patterns · 4",
+      "title": "Supervisor and workers",
+      "learningObjective": "Explain manager-style orchestration and when it adds value.",
+      "coreFacts": [
+        "A supervisor decomposes work, calls specialists, and owns final synthesis.",
+        "Workers should receive bounded tasks and return structured artifacts.",
+        "The supervisor needs delegation limits and a rule against redundant assignments."
+      ],
+      "estimatedSeconds": 55,
+      "presentations": {
+        "standard": {
+          "hook": "Use a supervisor when decomposition depends on what the system discovers.",
+          "body": [
+            "The supervisor retains the user-facing goal and invokes specialists as tools. Workers do not need the full conversation; they need a task, relevant evidence, constraints, and a return schema. This central ownership simplifies synthesis but can make the supervisor a latency, context, and quality bottleneck."
+          ]
+        },
+        "story": {
+          "hook": "Mira keeps the customer brief while dispatching Scout, Forge, and Vale for narrow jobs.",
+          "body": [
+            "Mira maps to a supervisor; crews map to agents-as-tools; their manifests map to structured outputs. Unlike real crews, model workers may repeat convincing errors, so central synthesis still needs evidence and tests."
+          ]
+        },
+        "challenge": {
+          "prompt": "Should every worker receive the entire user transcript so it has maximum context?",
+          "hint": "More context can add distraction and sensitive data.",
+          "answer": "No. Send the smallest sufficient task packet and let the supervisor retain global context.",
+          "body": [
+            "Bounded context improves focus, reduces token cost, and limits exposure. Include only information required to satisfy the worker's explicit contract."
+          ]
+        }
+      },
+      "visual": {
+        "type": "agent-flow",
+        "title": "Manager-style ownership",
+        "caption": "Workers return artifacts; the supervisor owns the answer.",
+        "alt": "A supervisor delegates bounded tasks to research, implementation, and review workers, then synthesizes the final answer.",
+        "data": {
+          "nodes": [
+            {"id": "supervisor", "label": "Supervisor", "role": "coordinator"},
+            {"id": "scout", "label": "Research worker", "role": "specialist"},
+            {"id": "forge", "label": "Build worker", "role": "specialist"},
+            {"id": "vale", "label": "Review worker", "role": "specialist"},
+            {"id": "final", "label": "Final result", "role": "output"}
+          ],
+          "edges": [
+            {"from": "supervisor", "to": "scout", "label": "bounded task"},
+            {"from": "supervisor", "to": "forge", "label": "bounded task"},
+            {"from": "supervisor", "to": "vale", "label": "bounded task"},
+            {"from": "scout", "to": "supervisor", "label": "artifact"},
+            {"from": "forge", "to": "supervisor", "label": "artifact"},
+            {"from": "vale", "to": "supervisor", "label": "verdict"},
+            {"from": "supervisor", "to": "final", "label": "synthesize"}
+          ]
+        }
+      },
+      "takeaway": "A supervisor should own global intent while workers own narrow, testable tasks.",
+      "bridge": "Some goals need not just delegation, but an explicit plan–execute–review loop.",
+      "sourceIds": ["openai-orchestration", "google-patterns", "anthropic-effective-agents"]
+    },
+    {
+      "id": "planner-executor-reviewer",
+      "milestoneId": "patterns",
+      "order": 10,
+      "kind": "concept",
+      "eyebrow": "Patterns · 5",
+      "title": "Plan, execute, review—then stop",
+      "learningObjective": "Design a bounded refinement loop with separate planning and verification roles.",
+      "coreFacts": [
+        "A planner decomposes a goal into explicit tasks and dependencies.",
+        "Executors produce artifacts; reviewers judge them against predefined criteria.",
+        "A pass threshold and maximum iteration count prevent endless refinement."
+      ],
+      "estimatedSeconds": 58,
+      "presentations": {
+        "standard": {
+          "hook": "Separate proposing from judging when quality criteria can be made explicit.",
+          "body": [
+            "The planner emits a dependency-aware task list. Executors work from those contracts. A reviewer checks artifacts with tests or a rubric and returns pass, bounded revisions, or escalation. Never use 'keep improving' as an exit condition; set measurable acceptance criteria and an iteration cap."
+          ]
+        },
+        "story": {
+          "hook": "Mira draws the loading plan, Forge performs it, and Vale checks the manifest before release.",
+          "body": [
+            "Plan, work, and inspection map to planner, executor, and reviewer. The analogy's limit is independence: two model roles can share the same blind spots, so Vale needs external tests and evidence, not a different title alone."
+          ]
+        },
+        "challenge": {
+          "prompt": "The reviewer says 'could be better' after every revision. What two controls are missing?",
+          "hint": "One defines success; one bounds effort.",
+          "answer": "A measurable acceptance rubric and a maximum iteration or budget limit.",
+          "body": [
+            "Without a crisp pass condition, the loop cannot know when quality is sufficient. Without a cap, nondeterministic critique can consume unbounded time and tokens."
+          ]
+        }
+      },
+      "visual": {
+        "type": "mermaid",
+        "title": "Bounded review loop",
+        "caption": "Feedback returns only while criteria fail and budget remains.",
+        "alt": "A planner sends tasks to an executor, then a reviewer either approves the artifact, requests a bounded revision, or escalates when the limit is reached.",
+        "definition": "flowchart LR\n  P[Plan tasks] --> E[Execute]\n  E --> V[Verify against rubric]\n  V -->|pass| D[Done]\n  V -->|revise and budget remains| E\n  V -->|limit reached| H[Escalate]"
+      },
+      "takeaway": "Refinement is reliable only when evidence defines 'done' and limits define 'enough.'",
+      "bridge": "Pattern names matter less than matching the coordination shape to the task.",
+      "sourceIds": ["google-patterns", "microsoft-patterns", "anthropic-effective-agents"]
+    },
+    {
+      "id": "patterns-checkpoint",
+      "milestoneId": "patterns",
+      "order": 11,
+      "kind": "recap",
+      "eyebrow": "Checkpoint · Patterns",
+      "title": "Match the pattern to the dependency",
+      "learningObjective": "Select a basic pattern from the task's dependency and control structure.",
+      "coreFacts": [
+        "Sequential handles fixed dependencies.",
+        "Routing selects one path; parallel runs independent paths.",
+        "Supervisors decompose dynamically; review loops refine to a bounded criterion."
+      ],
+      "estimatedSeconds": 42,
+      "presentations": {
+        "standard": {
+          "hook": "Draw arrows before choosing a framework.",
+          "body": [
+            "One chain suggests sequential flow. One-of-many suggests routing. Many independent branches suggest parallel fan-out. Dynamic decomposition suggests a supervisor. Repeated evidence-based improvement suggests a review loop. Real systems compose these primitives."
+          ]
+        },
+        "story": {
+          "hook": "Mira now sees routes, forks, crews, and inspections—not a mysterious 'multi-agent swarm.'",
+          "body": [
+            "Those harbor shapes map directly to pipeline, routing, parallel, supervisor, and review patterns. The map is a design aid, not proof; production choice still requires measured cost, latency, and quality."
+          ]
+        },
+        "challenge": {
+          "prompt": "You must run three independent audits, combine findings, then revise until tests pass. Which composition fits?",
+          "hint": "There are two patterns in sequence.",
+          "answer": "Parallel fan-out and gather for the audits, followed by a bounded review-and-revision loop.",
+          "body": [
+            "Patterns are building blocks. Compose them around actual dependencies while keeping each boundary explicit and observable."
+          ]
+        }
+      },
+      "takeaway": "Choose patterns from the graph of work, not from their novelty.",
+      "bridge": "A pattern becomes dependable only after its agents agree on contracts, context, and state.",
+      "sourceIds": ["google-patterns", "microsoft-patterns", "openai-orchestration"]
+    },
+    {
+      "id": "task-contracts",
+      "milestoneId": "coordination",
+      "order": 12,
+      "kind": "concept",
+      "eyebrow": "Coordination · 1",
+      "title": "Delegate contracts, not vague intentions",
+      "learningObjective": "Write a bounded task contract for a specialist agent.",
+      "coreFacts": [
+        "A task contract defines goal, inputs, allowed actions, output schema, evidence, and completion criteria.",
+        "Structured outputs make validation and downstream use safer.",
+        "Explicit non-goals reduce overlap and scope drift."
+      ],
+      "estimatedSeconds": 55,
+      "presentations": {
+        "standard": {
+          "hook": "'Investigate this' is a prompt; a contract says what usable completion looks like.",
+          "body": [
+            "Name one deliverable, provide only relevant inputs, list permitted tools, declare non-goals, and require a machine-checkable output. Include evidence such as file paths, source IDs, or test results. The caller validates the schema and acceptance criteria before unblocking dependents."
+          ],
+          "code": {
+            "language": "json",
+            "caption": "Minimal worker contract",
+            "lines": [
+              "{",
+              "  \"goal\": \"Map auth call sites\",",
+              "  \"nonGoals\": [\"Edit files\"],",
+              "  \"return\": \"paths + evidence\",",
+              "  \"doneWhen\": \"all entry points checked\"",
+              "}"
+            ]
+          }
+        },
+        "story": {
+          "hook": "Mira does not tell Scout 'look around'; she requests a chart with named hazards by noon.",
+          "body": [
+            "The chart request maps to a task contract: scope, deliverable, evidence, deadline, and non-goals. Unlike a trusted colleague, a model cannot infer durable team conventions unless the runtime supplies them."
+          ]
+        },
+        "challenge": {
+          "prompt": "Which delegation is safer: 'review security' or 'list auth bypasses with file evidence; do not edit; return severity and test'?",
+          "hint": "Which result can code validate and another worker consume?",
+          "answer": "The second. It bounds authority, names evidence, and defines a structured deliverable.",
+          "body": [
+            "Specificity reduces accidental overlap and makes failure visible. A worker may still be wrong, but the system can now test whether it fulfilled the contract."
+          ]
+        }
+      },
+      "takeaway": "Every delegation should be a small, testable interface with explicit authority and evidence.",
+      "bridge": "Contracts become executable plans when dependencies are represented as a task graph.",
+      "sourceIds": ["openai-orchestration", "anthropic-effective-agents"]
+    },
+    {
+      "id": "dependency-graph",
+      "milestoneId": "coordination",
+      "order": 13,
+      "kind": "concept",
+      "eyebrow": "Coordination · 2",
+      "title": "Schedule the dependency graph",
+      "learningObjective": "Represent orchestration as a directed acyclic graph of tasks where possible.",
+      "coreFacts": [
+        "Edges express prerequisites, not mere chronological preference.",
+        "Ready tasks have all dependencies satisfied and may run concurrently.",
+        "Cycles require an intentional loop with state, exit criteria, and limits."
+      ],
+      "estimatedSeconds": 52,
+      "presentations": {
+        "standard": {
+          "hook": "A task graph reveals both required order and safe parallelism.",
+          "body": [
+            "Create nodes for bounded contracts and edges for artifacts they require. Dispatch every ready node within concurrency and budget limits. Freeze artifact versions so parallel workers read the same input. If the graph contains a cycle, model it as a named refinement loop rather than an accidental dependency."
+          ]
+        },
+        "story": {
+          "hook": "Harborlight can survey tides and inspect cranes together, but loading waits for both reports.",
+          "body": [
+            "The reports map to prerequisite artifacts; loading maps to a dependent node. The harbor metaphor hides computation limits, so software must also cap concurrent workers and API rate."
+          ]
+        },
+        "challenge": {
+          "prompt": "Research and environment setup are independent; implementation needs both; review needs implementation. What can run first?",
+          "hint": "Find nodes with no unmet prerequisites.",
+          "answer": "Research and setup can run in parallel, then implementation, then review.",
+          "body": [
+            "Dependency-aware scheduling captures the speedup without letting implementation guess at missing inputs."
+          ]
+        }
+      },
+      "visual": {
+        "type": "mermaid",
+        "title": "A small orchestration DAG",
+        "caption": "Research and setup are ready together; later work waits on evidence.",
+        "alt": "Research and environment setup run in parallel. Both feed implementation, which then feeds review.",
+        "definition": "flowchart LR\n  R[Research] --> I[Implement]\n  S[Set up environment] --> I\n  I --> V[Review and test]"
+      },
+      "takeaway": "Use dependencies to unlock safe concurrency and block work that lacks required evidence.",
+      "bridge": "The graph says when to hand off; context engineering decides what crosses each edge.",
+      "sourceIds": ["google-patterns", "openai-orchestration"]
+    },
+    {
+      "id": "context-boundaries",
+      "milestoneId": "coordination",
+      "order": 14,
+      "kind": "concept",
+      "eyebrow": "Coordination · 3",
+      "title": "Pass the smallest sufficient context",
+      "learningObjective": "Construct focused context packets for worker and handoff boundaries.",
+      "coreFacts": [
+        "Context includes instructions, tools, history, retrieved data, state, and constraints.",
+        "More tokens can increase distraction, cost, and sensitive-data exposure.",
+        "A handoff summary should preserve decisions, unresolved questions, evidence, and provenance."
+      ],
+      "estimatedSeconds": 58,
+      "presentations": {
+        "standard": {
+          "hook": "Context is a finite working set, not an archive dump.",
+          "body": [
+            "For each specialist, assemble the contract, relevant artifacts, current decisions, allowed tools, and unresolved questions. Omit unrelated transcript and secrets. Preserve provenance so claims can be checked, and store large artifacts outside the prompt with references when possible."
+          ]
+        },
+        "story": {
+          "hook": "Mira gives Forge the approved blueprint and hazard notes—not every conversation held at the docks.",
+          "body": [
+            "The packet maps to curated context; archive references map to external artifacts. Unlike paper, tokens compete for model attention, so adding every document can make the useful signal harder to recover."
+          ]
+        },
+        "challenge": {
+          "prompt": "A worker needs two files and one decision. Is sending the full 200-message transcript safer because nothing is omitted?",
+          "hint": "Completeness and relevance are different properties.",
+          "answer": "No. Send the files, decision, provenance, and necessary constraints; retain the transcript outside the worker context.",
+          "body": [
+            "Curated context improves focus and reduces leakage. Record what was omitted so the worker can request missing information through a controlled path."
+          ]
+        }
+      },
+      "visual": {
+        "type": "comparison",
+        "title": "Archive versus working context",
+        "caption": "Store broadly; sample deliberately for each inference.",
+        "alt": "The durable archive contains full history and artifacts, while the model context contains only the current contract, relevant evidence, decisions, and constraints.",
+        "data": {
+          "columns": [
+            {"title": "Durable state", "items": ["Scope: complete record", "Size: potentially large", "Purpose: recovery and audit"]},
+            {"title": "Model context", "items": ["Scope: current working set", "Size: intentionally bounded", "Purpose: next decision"]}
+          ]
+        }
+      },
+      "takeaway": "Persist the full record, but curate a focused working set for each agent call.",
+      "bridge": "Because context is temporary, durable state and versioned artifacts must carry the workflow forward.",
+      "sourceIds": ["anthropic-context", "openai-handoffs", "google-patterns"]
+    },
+    {
+      "id": "state-and-artifacts",
+      "milestoneId": "coordination",
+      "order": 15,
+      "kind": "concept",
+      "eyebrow": "Coordination · 4",
+      "title": "Separate state from conversation",
+      "learningObjective": "Design durable workflow state and immutable artifact references.",
+      "coreFacts": [
+        "Conversation history is not a reliable workflow database.",
+        "Durable state records task status, owners, attempts, versions, and approvals.",
+        "Immutable artifacts and provenance prevent workers from reviewing different realities."
+      ],
+      "estimatedSeconds": 55,
+      "presentations": {
+        "standard": {
+          "hook": "If a process must resume correctly, its truth cannot live only inside a prompt.",
+          "body": [
+            "Store each task's status, dependency IDs, attempt count, artifact version, timestamps, and approval state in durable application storage. Treat worker outputs as versioned artifacts. Messages may explain decisions, but the state machine decides what is ready, running, paused, completed, or failed."
+          ]
+        },
+        "story": {
+          "hook": "Harborlight uses a signed manifest instead of relying on everyone's memory of the morning meeting.",
+          "body": [
+            "The manifest maps to durable workflow state; sealed blueprint revisions map to immutable artifacts. Unlike people, an agent call may have no memory beyond supplied context, making external records essential."
+          ]
+        },
+        "challenge": {
+          "prompt": "After a crash, the orchestrator remembers the transcript but not whether an email was sent. Can it safely resume?",
+          "hint": "A narrated intention is not committed state.",
+          "answer": "No. It needs a durable action record and idempotency key to distinguish pending from completed work.",
+          "body": [
+            "External side effects require machine-readable status. Otherwise resumption can skip required work or repeat irreversible actions."
+          ]
+        }
+      },
+      "visual": {
+        "type": "sequence",
+        "title": "Commit state around side effects",
+        "caption": "The orchestrator records intent and outcome outside the model transcript.",
+        "alt": "The orchestrator writes a pending action to durable state, calls a tool with an idempotency key, then records the result and artifact version.",
+        "data": {
+          "steps": [
+            {"actor": "Orchestrator", "action": "Record the pending action and idempotency key", "status": "pending"},
+            {"actor": "Tool", "action": "Execute once for that key", "status": "running"},
+            {"actor": "Tool", "action": "Return a structured result", "status": "returned"},
+            {"actor": "Orchestrator", "action": "Commit the result and artifact version", "status": "complete"}
+          ]
+        }
+      },
+      "takeaway": "Use prompts for reasoning and durable state for truth, recovery, and audit.",
+      "bridge": "With state in place, enforce who may read, write, spend, and escalate.",
+      "sourceIds": ["anthropic-context", "openai-hitl"]
+    },
+    {
+      "id": "permissions-and-budgets",
+      "milestoneId": "coordination",
+      "order": 16,
+      "kind": "concept",
+      "eyebrow": "Coordination · 5",
+      "title": "Give each agent a capability envelope",
+      "learningObjective": "Constrain agent authority with least privilege and explicit budgets.",
+      "coreFacts": [
+        "Tool access should be scoped per role and task, not shared globally.",
+        "Read, propose, and execute permissions are distinct capabilities.",
+        "Budgets should limit turns, tokens, time, tool calls, concurrency, and spend."
+      ],
+      "estimatedSeconds": 55,
+      "presentations": {
+        "standard": {
+          "hook": "A correct plan should not automatically imply authority to execute it.",
+          "body": [
+            "Give a research worker read-only access, an implementation worker a scoped workspace, and a deployment action an approval gate. Enforce controls in code and credentials, not prompt text. Pass decreasing sub-budgets to children so nested delegation cannot exceed the parent's envelope."
+          ]
+        },
+        "story": {
+          "hook": "Scout gets a telescope, Forge gets one workshop, and only Mira holds the launch key.",
+          "body": [
+            "Tools and keys map to scoped capabilities; the shift allowance maps to budgets. Unlike badges at a harbor, prompt instructions alone cannot enforce access—credentials and runtime policy must do it."
+          ]
+        },
+        "challenge": {
+          "prompt": "A reviewer only needs to inspect a repository. Should it inherit the supervisor's deploy token?",
+          "hint": "Convenience is not least privilege.",
+          "answer": "No. Give it read-only repository access and no deployment capability.",
+          "body": [
+            "Role-specific credentials reduce blast radius if the model misinterprets instructions or malicious content attempts to redirect it."
+          ]
+        }
+      },
+      "visual": {
+        "type": "comparison",
+        "title": "Capability envelopes",
+        "caption": "Access follows the task contract, not the org chart.",
+        "alt": "Research can read sources, implementation can edit a scoped workspace, review can read and test, and deployment requires human approval.",
+        "data": {
+          "columns": [
+            {"title": "Research", "items": ["Read: scoped sources", "Write: none", "External action: none"]},
+            {"title": "Implementation", "items": ["Read: workspace", "Write: scoped workspace", "External action: none"]},
+            {"title": "Review", "items": ["Read: candidate artifact", "Write: none", "External action: none"]},
+            {"title": "Deploy", "items": ["Read/write: release scope", "External action: approval required"]}
+          ]
+        }
+      },
+      "takeaway": "Constrain tools, credentials, and budgets in the runtime—never only in prose.",
+      "bridge": "Contracts, context, state, and capability envelopes now form one coordination protocol.",
+      "sourceIds": ["google-patterns", "openai-hitl", "openai-guardrails"]
+    },
+    {
+      "id": "coordination-checkpoint",
+      "milestoneId": "coordination",
+      "order": 17,
+      "kind": "recap",
+      "eyebrow": "Checkpoint · Coordination",
+      "title": "Make every edge inspectable",
+      "learningObjective": "Recall the five elements of a reliable agent-to-agent boundary.",
+      "coreFacts": [
+        "Contracts define completion.",
+        "Dependencies define readiness; context defines the working set.",
+        "Durable state and capability envelopes define truth and authority."
+      ],
+      "estimatedSeconds": 42,
+      "presentations": {
+        "standard": {
+          "hook": "A handoff is reliable when a machine can answer five questions.",
+          "body": [
+            "What is the contract? Which prerequisites are satisfied? What context and artifact versions were supplied? What state transition occurred? What tools and budget are allowed? These answers turn a conversational relay into an operable system."
+          ]
+        },
+        "story": {
+          "hook": "Every Harborlight transfer now carries a job card, prerequisite stamps, sealed packet, ledger entry, and access badge.",
+          "body": [
+            "Those map to contract, dependency, context, state, and capability. The metaphor's limit is verification: software should validate these fields automatically before dispatch."
+          ]
+        },
+        "challenge": {
+          "prompt": "A worker returns a polished report with no source IDs and an unexpected database write. Which two boundaries failed?",
+          "hint": "One concerns evidence; the other concerns authority.",
+          "answer": "The output contract failed to require provenance, and the capability envelope allowed an unnecessary write.",
+          "body": [
+            "Quality and safety are interface properties. Tighten the schema and credentials before tuning the worker's prose."
+          ]
+        }
+      },
+      "takeaway": "Reliable coordination is explicit about work, readiness, context, truth, and authority.",
+      "bridge": "Next, assume components will fail and design how the system contains, explains, and recovers from failure.",
+      "sourceIds": ["anthropic-context", "google-patterns", "openai-guardrails"]
+    },
+    {
+      "id": "failure-map",
+      "milestoneId": "reliability",
+      "order": 18,
+      "kind": "concept",
+      "eyebrow": "Reliability · 1",
+      "title": "Expect coordination failures",
+      "learningObjective": "Classify common multi-agent failure modes by where they occur.",
+      "coreFacts": [
+        "Failures occur inside workers and at routing, handoff, state, merge, and termination boundaries.",
+        "Common symptoms include loops, duplicated work, context drift, conflicting outputs, and silent partial success.",
+        "Containment begins with explicit ownership and invariants at every boundary."
+      ],
+      "estimatedSeconds": 55,
+      "presentations": {
+        "standard": {
+          "hook": "A system can fail even when every individual response looks plausible.",
+          "body": [
+            "A router may choose the wrong worker; two workers may repeat one task; a stale artifact may reach review; the gatherer may erase disagreement; a refinement loop may never stop. Log and test the transitions between components, not only final prose."
+          ]
+        },
+        "story": {
+          "hook": "At Harborlight, each crew finishes its job—yet two load the same crate and one uses yesterday's manifest.",
+          "body": [
+            "Duplicate loading maps to repeated work; the stale manifest maps to context drift. The harbor metaphor is limited because model outputs can appear fluent even when the underlying state transition is wrong."
+          ]
+        },
+        "challenge": {
+          "prompt": "All workers report success, but the final artifact omits one branch's findings. Worker failure or orchestration failure?",
+          "hint": "The missing work was completed but not assembled.",
+          "answer": "Orchestration failure at the gather or synthesis boundary.",
+          "body": [
+            "Monitor expected versus received branch IDs and make completeness an invariant before synthesis can succeed."
+          ]
+        }
+      },
+      "visual": {
+        "type": "comparison",
+        "title": "Where failures hide",
+        "caption": "Test boundaries as first-class components.",
+        "alt": "A comparison of routing, execution, merge, state, and termination failures with their typical symptoms.",
+        "data": {
+          "columns": [
+            {"title": "Route", "items": ["Wrong specialist", "Unsafe fallback"]},
+            {"title": "Execute", "items": ["Bad artifact", "Tool error"]},
+            {"title": "Gather", "items": ["Missing disagreement", "Silent partial success"]},
+            {"title": "State or exit", "items": ["Stale input", "Loop or duplicate action"]}
+          ]
+        }
+      },
+      "takeaway": "Evaluate the seams—routing, artifacts, merges, state, and exits—not just each agent.",
+      "bridge": "The first seam to harden is failure recovery: timeouts, retries, cancellation, and idempotency.",
+      "sourceIds": ["google-patterns", "anthropic-evals", "openai-tracing"]
+    },
+    {
+      "id": "timeouts-retries-idempotency",
+      "milestoneId": "reliability",
+      "order": 19,
+      "kind": "concept",
+      "eyebrow": "Reliability · 2",
+      "title": "Retry safely—or do not retry",
+      "learningObjective": "Apply timeout, retry, cancellation, and idempotency rules to agent tool calls.",
+      "coreFacts": [
+        "Every remote action needs a timeout and explicit retry policy.",
+        "Retry transient failures with bounded attempts and backoff; do not blindly retry validation or policy failures.",
+        "Side-effecting operations need idempotency keys or reconciliation before retry."
+      ],
+      "estimatedSeconds": 60,
+      "presentations": {
+        "standard": {
+          "hook": "A timeout means 'outcome unknown,' not necessarily 'nothing happened.'",
+          "body": [
+            "Classify errors before retrying. Bound attempts, apply backoff, and propagate cancellation to child tasks. For actions such as sending, charging, or deploying, attach a stable operation ID so repeats have one semantic effect—or query durable state before another attempt."
+          ]
+        },
+        "story": {
+          "hook": "Mira radios 'launch crate 42,' hears static, and refuses to launch another until the ledger is checked.",
+          "body": [
+            "Crate 42 maps to an idempotency key; the ledger check maps to reconciliation after an unknown outcome. Unlike physical crates, some APIs provide no idempotent contract, so the safest response may be human review rather than retry."
+          ]
+        },
+        "challenge": {
+          "prompt": "A deployment call times out after the server receives it. Should the agent immediately call deploy again?",
+          "hint": "Timeout does not reveal whether the side effect occurred.",
+          "answer": "Only if the operation is idempotent with the same key; otherwise reconcile deployment state or escalate.",
+          "body": [
+            "Blind retry can create duplicate or conflicting side effects. Recovery must preserve the original operation identity and inspect committed state."
+          ]
+        }
+      },
+      "visual": {
+        "type": "sequence",
+        "title": "Recover from an unknown outcome",
+        "caption": "Reuse operation identity and reconcile before repeating a side effect.",
+        "alt": "An orchestrator calls a tool with an idempotency key, times out, checks status using the same key, and either accepts the committed result or retries safely.",
+        "data": {
+          "steps": [
+            {"actor": "Orchestrator", "action": "Execute with key op-42", "status": "sent"},
+            {"actor": "Tool", "action": "Response times out; outcome remains unknown", "status": "unknown"},
+            {"actor": "Orchestrator", "action": "Reconcile durable state for op-42", "status": "checking"},
+            {"actor": "State", "action": "Report committed or safe to retry", "status": "resolved"}
+          ]
+        }
+      },
+      "takeaway": "Treat timeouts as unknown outcomes and make retries bounded, classified, and idempotent.",
+      "bridge": "Safe execution is necessary; evidence-based verification decides whether the result is actually good.",
+      "sourceIds": ["aws-idempotency", "openai-hitl"]
+    },
+    {
+      "id": "verification-and-evals",
+      "milestoneId": "reliability",
+      "order": 20,
+      "kind": "concept",
+      "eyebrow": "Reliability · 3",
+      "title": "Verify artifacts, not confidence",
+      "learningObjective": "Combine deterministic checks, rubric graders, and repeated trials to evaluate agent work.",
+      "coreFacts": [
+        "Agent evaluations should test trajectories, tool use, state changes, and final outcomes.",
+        "Deterministic checks are strongest where executable truth exists.",
+        "Nondeterministic systems require multiple trials and failure-category analysis."
+      ],
+      "estimatedSeconds": 58,
+      "presentations": {
+        "standard": {
+          "hook": "A reviewer agent is another model call—not an oracle.",
+          "body": [
+            "Run unit tests, schema validation, policy checks, and artifact diffs before model-based grading. For subjective criteria, use a clear rubric and preserve the review evidence. Evaluate full tasks across multiple trials because one successful run can hide unstable routing or tool behavior."
+          ]
+        },
+        "story": {
+          "hook": "Vale does not approve the vessel because Forge sounds certain; she checks the gauge and checklist.",
+          "body": [
+            "Gauges map to deterministic tests; the checklist maps to a rubric; repeated sea trials map to multiple eval trials. The analogy's limit is correlated judgment: planner and reviewer models may share blind spots."
+          ]
+        },
+        "challenge": {
+          "prompt": "A coding agent passes once and fails the same task twice. Is the task 'solved'?",
+          "hint": "Model behavior varies across runs.",
+          "answer": "Not reliably. Report the trial distribution and investigate the failure modes.",
+          "body": [
+            "Agent quality is not captured by a showcase run. Multiple trials expose instability, while trajectory logs reveal whether failures came from planning, tools, or verification."
+          ]
+        }
+      },
+      "visual": {
+        "type": "agent-flow",
+        "title": "Layered verification",
+        "caption": "Use executable truth first; reserve model judgment for what remains subjective.",
+        "alt": "An artifact passes through schema checks, tests, policy checks, and then a rubric reviewer before acceptance or bounded revision.",
+        "data": {
+          "nodes": [
+            {"id": "artifact", "label": "Artifact", "role": "input"},
+            {"id": "schema", "label": "Schema", "role": "check"},
+            {"id": "tests", "label": "Tests", "role": "check"},
+            {"id": "policy", "label": "Policy", "role": "check"},
+            {"id": "rubric", "label": "Rubric review", "role": "reviewer"},
+            {"id": "decision", "label": "Accept / revise", "role": "output"}
+          ],
+          "edges": [
+            {"from": "artifact", "to": "schema", "label": "validate"},
+            {"from": "schema", "to": "tests", "label": "pass"},
+            {"from": "tests", "to": "policy", "label": "pass"},
+            {"from": "policy", "to": "rubric", "label": "pass"},
+            {"from": "rubric", "to": "decision", "label": "evidence"}
+          ]
+        }
+      },
+      "takeaway": "Ground quality in tests and evidence, then measure reliability across repeated end-to-end trials.",
+      "bridge": "To explain why a trial passed or failed, capture the complete execution trace.",
+      "sourceIds": ["anthropic-evals", "google-patterns", "openai-guardrails"]
+    },
+    {
+      "id": "tracing-observability",
+      "milestoneId": "reliability",
+      "order": 21,
+      "kind": "concept",
+      "eyebrow": "Reliability · 4",
+      "title": "Trace the whole run",
+      "learningObjective": "Define the minimum observability record for an orchestrated run.",
+      "coreFacts": [
+        "A trace links one end-to-end workflow to nested spans for agents, model calls, tools, handoffs, and guardrails.",
+        "Useful records include timing, usage, status, artifact versions, and routing decisions.",
+        "Sensitive inputs and outputs require redaction, access controls, and retention policy."
+      ],
+      "estimatedSeconds": 55,
+      "presentations": {
+        "standard": {
+          "hook": "Final output tells you what happened; a trace helps explain how.",
+          "body": [
+            "Assign one trace ID to the user goal and parent-child span IDs to every model call, tool, handoff, approval, and custom stage. Record latency, usage, route, retries, artifact references, and error class. Redact secrets and avoid collecting sensitive content by default."
+          ]
+        },
+        "story": {
+          "hook": "Mira's ledger records every handoff, clock, crate seal, retry, and sign-off.",
+          "body": [
+            "The ledger maps to an end-to-end trace; each entry maps to a span. Unlike a public harbor log, production traces may contain prompts and tool data, so access and retention must be deliberately restricted."
+          ]
+        },
+        "challenge": {
+          "prompt": "A run is slow. You logged only total duration and final text. Can you identify the bottleneck?",
+          "hint": "The total hides nested work.",
+          "answer": "No. You need timed spans for model turns, tools, workers, retries, and gather stages.",
+          "body": [
+            "Hierarchical traces reveal the critical path and parallel overlap. Usage and route metadata also show whether the system invoked unnecessary specialists."
+          ]
+        }
+      },
+      "visual": {
+        "type": "sequence",
+        "title": "One trace, nested spans",
+        "caption": "Parent-child IDs reconstruct the critical path.",
+        "alt": "A workflow trace contains supervisor, research tool, implementation agent, test tool, and reviewer spans with timing and status.",
+        "data": {
+          "steps": [
+            {"actor": "Supervisor", "action": "Open the workflow trace and research span", "status": "running"},
+            {"actor": "Research", "action": "Return an artifact with timing and usage", "status": "complete"},
+            {"actor": "Build", "action": "Implement and run tests in child spans", "status": "complete"},
+            {"actor": "Review", "action": "Verify and attach verdict evidence", "status": "complete"},
+            {"actor": "Supervisor", "action": "Close the trace with final status", "status": "closed"}
+          ]
+        }
+      },
+      "takeaway": "Trace decisions, actions, evidence, cost, and time—with privacy controls built in.",
+      "bridge": "Some traced actions should pause before execution, because observability after harm is too late.",
+      "sourceIds": ["openai-tracing", "anthropic-evals"]
+    },
+    {
+      "id": "guardrails-and-human-approval",
+      "milestoneId": "reliability",
+      "order": 22,
+      "kind": "concept",
+      "eyebrow": "Reliability · 5",
+      "title": "Place people at consequence boundaries",
+      "learningObjective": "Choose where guardrails and human approvals belong in an agent workflow.",
+      "coreFacts": [
+        "Guardrails validate or block inputs, tool calls, and outputs at defined boundaries.",
+        "Human approval should gate high-impact, irreversible, sensitive, or subjective actions.",
+        "Approval pauses need serializable state so the original run can resume safely."
+      ],
+      "estimatedSeconds": 58,
+      "presentations": {
+        "standard": {
+          "hook": "Do not review every token; review the points where consequences change.",
+          "body": [
+            "Automatically validate schemas, policies, permissions, and tool arguments. Pause before actions such as deployment, payment, deletion, or external communication when risk warrants human judgment. Show the approver the proposed action, evidence, scope, and reversible alternatives; persist the paused state for safe resumption."
+          ]
+        },
+        "story": {
+          "hook": "Vale can inspect automatically, but only a harbor officer may turn the launch key.",
+          "body": [
+            "Inspection rules map to guardrails; the launch key maps to human approval at a consequential boundary. The metaphor's limit is scale: humans cannot inspect every low-risk action, so risk-tiered automation is essential."
+          ]
+        },
+        "challenge": {
+          "prompt": "Where is approval most useful: before reading public docs, after sending an email, or before sending it?",
+          "hint": "Put the pause before the irreversible external effect.",
+          "answer": "Before sending the email, with its recipients and content visible to the reviewer.",
+          "body": [
+            "Approval after execution is only audit. Gating the tool call preserves human control while leaving low-risk research automated."
+          ]
+        }
+      },
+      "visual": {
+        "type": "sequence",
+        "title": "Pause, decide, resume",
+        "caption": "The pending action stays inert until policy or a person decides.",
+        "alt": "An agent proposes an external action, guardrails check it, a human approves or rejects it, and the saved run resumes only on approval.",
+        "data": {
+          "steps": [
+            {"actor": "Agent", "action": "Propose an external action", "status": "pending"},
+            {"actor": "Guardrail", "action": "Validate policy and pause with evidence", "status": "paused"},
+            {"actor": "Human", "action": "Approve or reject the exact action", "status": "decision"},
+            {"actor": "Tool", "action": "Execute only after approval", "status": "conditional"}
+          ]
+        }
+      },
+      "takeaway": "Automate validation, but pause before consequences that require accountable judgment.",
+      "bridge": "Combine these controls into a compact reliability checklist before assembling the full workflow.",
+      "sourceIds": ["openai-hitl", "openai-guardrails", "google-patterns"]
+    },
+    {
+      "id": "reliability-checkpoint",
+      "milestoneId": "reliability",
+      "order": 23,
+      "kind": "recap",
+      "eyebrow": "Checkpoint · Reliability",
+      "title": "Assume failure, preserve evidence",
+      "learningObjective": "Recall the controls required around nondeterministic, tool-using systems.",
+      "coreFacts": [
+        "Bound loops and classify failures.",
+        "Make retries safe and outcomes verifiable.",
+        "Trace execution and gate consequential actions."
+      ],
+      "estimatedSeconds": 44,
+      "presentations": {
+        "standard": {
+          "hook": "Reliability is a stack of controls, not a better system prompt.",
+          "body": [
+            "Set exit and budget limits. Add timeouts, cancellation, classified retries, and idempotency. Verify artifacts with deterministic checks before rubric review. Trace every boundary with privacy controls. Require approval before high-impact actions."
+          ]
+        },
+        "story": {
+          "hook": "Harborlight now has shift limits, duplicate-safe manifests, inspections, a ledger, and a launch officer.",
+          "body": [
+            "These map to bounded execution, idempotency, verification, tracing, and approval. The analogy ends where software begins: each control must be executable and testable, not merely a workplace custom."
+          ]
+        },
+        "challenge": {
+          "prompt": "Put these in causal order: approve deploy, execute with key, verify tests, trace result.",
+          "hint": "Evidence before permission; identity during action; record throughout.",
+          "answer": "Verify tests, approve deploy, execute with an idempotency key, and record all stages in the trace.",
+          "body": [
+            "In practice tracing surrounds the whole sequence. The order prevents approval of unverified work and makes a retry distinguishable from a new deployment."
+          ]
+        }
+      },
+      "takeaway": "Bound, recover, verify, trace, and approve—the core reliability loop.",
+      "bridge": "Now apply every layer to one feature from intake to a finite, evidence-backed finish.",
+      "sourceIds": ["aws-idempotency", "anthropic-evals", "openai-tracing", "openai-hitl"]
+    },
+    {
+      "id": "end-to-end-walkthrough",
+      "milestoneId": "walkthrough",
+      "order": 24,
+      "kind": "concept",
+      "eyebrow": "Walkthrough · 1",
+      "title": "Ship one feature through the system",
+      "learningObjective": "Trace a software task through intake, planning, parallel investigation, implementation, testing, review, and approval.",
+      "coreFacts": [
+        "Deterministic code owns lifecycle state, budgets, and gates.",
+        "Agents handle bounded research, planning, implementation, and review tasks.",
+        "Every transition carries a versioned artifact and evidence."
+      ],
+      "estimatedSeconds": 70,
+      "presentations": {
+        "standard": {
+          "hook": "Goal: add accessible search to a mature application.",
+          "body": [
+            "Code validates intake and asks a planner for a task DAG. Repository research and accessibility research run in parallel. After both reports validate, an implementation worker edits a scoped branch and runs tests. Security, accessibility, and regression reviews fan out over the same commit. The gatherer preserves findings; bounded revision follows failures. A person approves deployment, then the orchestrator records the release and stops."
+          ]
+        },
+        "story": {
+          "hook": "Harborlight's accessible-search vessel finally follows the complete route.",
+          "body": [
+            "Mira plans; Scout and Vale survey in parallel; Forge builds; three inspectors review one sealed version; the launch officer approves. These roles map to planner, workers, gatherer, and human gate. Unlike a voyage, software can branch, replay, and verify each state transition exactly."
+          ]
+        },
+        "challenge": {
+          "prompt": "The accessibility review and security review examined different commits. May the gatherer approve the feature?",
+          "hint": "A merge is meaningful only when evidence refers to one artifact.",
+          "answer": "No. Re-run the stale review against the exact candidate commit before synthesis.",
+          "body": [
+            "Versioned artifact identity is an invariant. Without it, individually valid reports do not establish the quality of the release candidate."
+          ]
+        }
+      },
+      "visual": {
+        "type": "mermaid",
+        "title": "Accessible-search delivery graph",
+        "caption": "Code schedules the graph; agents solve bounded nodes; evidence unlocks each edge.",
+        "alt": "Validated intake leads to planning, then parallel repository and accessibility research. Both lead to implementation and tests, then parallel reviews gather before human deployment approval and completion.",
+        "definition": "flowchart TD\n  I[Validate intake] --> P[Plan task DAG]\n  P --> R[Repository research]\n  P --> A[Accessibility research]\n  R --> B[Implement in scoped branch]\n  A --> B\n  B --> T[Run tests]\n  T --> S[Security review]\n  T --> X[Accessibility review]\n  T --> G[Regression review]\n  S --> M[Gather findings]\n  X --> M\n  G --> M\n  M -->|pass| H[Human deploy approval]\n  M -->|bounded revision| B\n  H --> D[Deploy and stop]"
+      },
+      "takeaway": "A production workflow alternates bounded agent judgment with deterministic state, checks, and gates.",
+      "bridge": "Before adopting the design, score its quality gain against coordination, latency, cost, and risk.",
+      "sourceIds": ["openai-orchestration", "google-patterns", "anthropic-evals", "openai-hitl"]
+    },
+    {
+      "id": "tradeoffs-and-checklist",
+      "milestoneId": "walkthrough",
+      "order": 25,
+      "kind": "concept",
+      "eyebrow": "Walkthrough · 2",
+      "title": "Prove the orchestration earns its cost",
+      "learningObjective": "Evaluate an orchestration design across quality, latency, cost, operability, and risk.",
+      "coreFacts": [
+        "More model calls can improve coverage while increasing latency, spend, and failure surface.",
+        "Parallelism reduces critical-path time only for independent work and may raise peak load.",
+        "Architecture decisions should be tested against a simpler baseline with end-to-end evals."
+      ],
+      "estimatedSeconds": 60,
+      "presentations": {
+        "standard": {
+          "hook": "The best orchestration is the smallest one that meets the measured requirement.",
+          "body": [
+            "Compare the design with a single-agent or deterministic baseline. Measure task success, failure categories, p50/p95 latency, tokens and tool cost, human-review load, and recovery behavior. Remove a worker if it adds no independent evidence or measurable quality. Prefer code routing when a fixed rule performs as well as a model."
+          ],
+          "bullets": [
+            "Can each agent's purpose be stated in one sentence?",
+            "Are contracts, exits, budgets, permissions, and artifact versions enforced?",
+            "Can traces and evals explain both success and failure?"
+          ]
+        },
+        "story": {
+          "hook": "Mira closes any dock that adds ceremony but no safer or faster shipment.",
+          "body": [
+            "Dock value maps to measured agent contribution; total voyage time maps to critical-path latency. The metaphor cannot price inference by intuition, so telemetry and controlled evals must decide which roles stay."
+          ]
+        },
+        "challenge": {
+          "prompt": "A second reviewer improves pass rate from 82% to 83%, doubles review cost, and adds 40% latency. Keep it?",
+          "hint": "Judge marginal value against the product's risk tolerance.",
+          "answer": "Probably not unless that 1% covers uniquely severe failures; inspect failure categories before deciding.",
+          "body": [
+            "Aggregate accuracy alone can hide high-impact wins. Make the decision from marginal evidence, latency, spend, and consequence—not agent count."
+          ]
+        }
+      },
+      "visual": {
+        "type": "comparison",
+        "title": "Architecture scorecard",
+        "caption": "Optimize the whole system, not one attractive metric.",
+        "alt": "A scorecard compares a single agent, deterministic workflow, and orchestrated agents on flexibility, latency, cost, isolation, and operational complexity.",
+        "data": {
+          "columns": [
+            {"title": "Single agent", "items": ["Flexibility: high", "Predictability: medium", "Latency/cost: lower", "Isolation: low", "Operations: simpler"]},
+            {"title": "Workflow", "items": ["Flexibility: low", "Predictability: high", "Latency/cost: often lowest", "Isolation: by step", "Operations: explicit"]},
+            {"title": "Orchestrated agents", "items": ["Flexibility: high", "Predictability: medium", "Latency/cost: usually highest", "Isolation: by specialist", "Operations: most complex"]}
+          ]
+        }
+      },
+      "takeaway": "Benchmark against simplicity and keep only coordination that buys measurable value.",
+      "bridge": "One final synthesis turns the patterns and controls into a reusable design habit.",
+      "sourceIds": ["anthropic-effective-agents", "google-patterns", "microsoft-patterns", "anthropic-evals"]
+    },
+    {
+      "id": "agent-orchestration-complete",
+      "milestoneId": "walkthrough",
+      "order": 26,
+      "kind": "completion",
+      "eyebrow": "Topic complete",
+      "title": "Design the system between the agents",
+      "learningObjective": "Synthesize a practical method for designing reliable agent orchestration.",
+      "coreFacts": [
+        "Choose the simplest control structure that fits the uncertainty.",
+        "Treat every delegation as a bounded, versioned, observable contract.",
+        "Reliability requires enforced exits, recovery, verification, tracing, and consequence-aware approval."
+      ],
+      "estimatedSeconds": 55,
+      "presentations": {
+        "standard": {
+          "hook": "You can now turn 'use multiple agents' into an architecture that can be tested.",
+          "body": [
+            "Start from the dependency graph. Keep known control in code; add model decisions only where ambiguity warrants them. Give every worker a contract, focused context, scoped capability, budget, and versioned artifact. Then bound failures, verify outcomes, trace execution, and place people before high-impact actions."
+          ],
+          "bullets": [
+            "Practice: sketch one workflow you know as a DAG",
+            "Label each edge with its artifact and acceptance check",
+            "Remove any agent whose unique value you cannot state or measure"
+          ]
+        },
+        "story": {
+          "hook": "Harborlight succeeds because the route, manifests, limits, inspections, and launch authority fit together.",
+          "body": [
+            "Mira and the crews map to orchestrator and specialists, but the real lesson is the system around them. The metaphor ends here: reliable software coordination comes from executable contracts and evidence, not heroic characters."
+          ]
+        },
+        "challenge": {
+          "prompt": "Your next task is 'build an agent team.' What should you draw first?",
+          "hint": "Start with work and dependencies, not roles.",
+          "answer": "Draw the task and artifact dependency graph, then decide which nodes need models, code, tools, or humans.",
+          "body": [
+            "This order prevents agent-first architecture. Roles emerge from bounded work, genuine uncertainty, permissions, and measurable quality needs."
+          ]
+        }
+      },
+      "visual": {
+        "type": "agent-flow",
+        "title": "The reusable design loop",
+        "caption": "Begin simple, measure, and add coordination only where evidence supports it.",
+        "alt": "A loop moves from map work to choose control, define boundaries, add safeguards, evaluate, and simplify.",
+        "data": {
+          "nodes": [
+            {"id": "map", "label": "Map work", "role": "step"},
+            {"id": "control", "label": "Choose control", "role": "step"},
+            {"id": "boundaries", "label": "Define boundaries", "role": "step"},
+            {"id": "safeguards", "label": "Add safeguards", "role": "step"},
+            {"id": "evaluate", "label": "Evaluate", "role": "step"},
+            {"id": "simplify", "label": "Simplify", "role": "step"}
+          ],
+          "edges": [
+            {"from": "map", "to": "control", "label": "dependencies"},
+            {"from": "control", "to": "boundaries", "label": "contracts"},
+            {"from": "boundaries", "to": "safeguards", "label": "risk"},
+            {"from": "safeguards", "to": "evaluate", "label": "evidence"},
+            {"from": "evaluate", "to": "simplify", "label": "marginal value"},
+            {"from": "simplify", "to": "map", "label": "iterate"}
+          ]
+        }
+      },
+      "takeaway": "Orchestration quality lives in the boundaries, evidence, and controls between intelligent components.",
+      "bridge": "Next step: apply the checklist to a workflow from your own codebase and test it against a simpler baseline.",
+      "sourceIds": ["anthropic-effective-agents", "openai-orchestration", "anthropic-context", "anthropic-evals"]
+    }
+  ]
+}

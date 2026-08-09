@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://infoblocks.local/schemas/topic.schema.json",
+  "title": "InfoBlocks topic",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "version",
+    "title",
+    "shortTitle",
+    "description",
+    "category",
+    "accent",
+    "estimatedMinutes",
+    "audience",
+    "prerequisites",
+    "learningOutcomes",
+    "sources",
+    "milestones",
+    "blocks"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "id": { "$ref": "#/$defs/id" },
+    "version": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "shortTitle": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "category": { "type": "string", "minLength": 1 },
+    "accent": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "estimatedMinutes": { "type": "integer", "minimum": 1 },
+    "audience": { "type": "string", "minLength": 1 },
+    "prerequisites": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "learningOutcomes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "milestones": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/milestone" }
+    },
+    "blocks": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/block" }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "url"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "title": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "pattern": "^https?://" }
+      }
+    },
+    "milestone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "shortTitle", "description"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "title": { "type": "string", "minLength": 1 },
+        "shortTitle": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    },
+    "code": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["language", "caption", "lines"],
+      "properties": {
+        "language": { "type": "string", "minLength": 1 },
+        "caption": { "type": "string", "minLength": 1 },
+        "lines": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 14,
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "standardPresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hook", "body"],
+      "properties": {
+        "hook": { "type": "string", "minLength": 1 },
+        "body": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "bullets": {
+          "type": "array",
+          "maxItems": 5,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "code": { "$ref": "#/$defs/code" }
+      }
+    },
+    "challengePresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prompt", "hint", "answer", "body"],
+      "properties": {
+        "prompt": { "type": "string", "minLength": 1 },
+        "hint": { "type": "string", "minLength": 1 },
+        "answer": { "type": "string", "minLength": 1 },
+        "body": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "bullets": {
+          "type": "array",
+          "maxItems": 5,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "code": { "$ref": "#/$defs/code" }
+      }
+    },
+    "visual": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "title", "caption", "alt"],
+      "properties": {
+        "type": {
+          "enum": [
+            "mermaid",
+            "agent-flow",
+            "sequence",
+            "graph",
+            "dsu",
+            "edge-sort",
+            "comparison"
+          ]
+        },
+        "title": { "type": "string", "minLength": 1 },
+        "caption": { "type": "string", "minLength": 1 },
+        "alt": { "type": "string", "minLength": 1 },
+        "definition": { "type": "string", "minLength": 1 },
+        "data": { "type": "object" }
+      }
+    },
+    "block": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "milestoneId",
+        "order",
+        "kind",
+        "eyebrow",
+        "title",
+        "learningObjective",
+        "coreFacts",
+        "estimatedSeconds",
+        "presentations",
+        "takeaway",
+        "bridge",
+        "sourceIds"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "milestoneId": { "$ref": "#/$defs/id" },
+        "order": { "type": "integer", "minimum": 1 },
+        "kind": { "enum": ["concept", "recap", "completion"] },
+        "eyebrow": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "learningObjective": { "type": "string", "minLength": 1 },
+        "coreFacts": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "estimatedSeconds": { "type": "integer", "minimum": 10, "maximum": 300 },
+        "presentations": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["standard", "story", "challenge"],
+          "properties": {
+            "standard": { "$ref": "#/$defs/standardPresentation" },
+            "story": { "$ref": "#/$defs/standardPresentation" },
+            "challenge": { "$ref": "#/$defs/challengePresentation" }
+          }
+        },
+        "visual": { "$ref": "#/$defs/visual" },
+        "takeaway": { "type": "string", "minLength": 1 },
+        "bridge": { "type": "string", "minLength": 1 },
+        "sourceIds": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/id" }
+        }
+      }
+    }
+  }
+}

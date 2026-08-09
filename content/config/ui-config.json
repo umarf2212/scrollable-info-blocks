@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0.0",
+  "brand": {
+    "name": "InfoBlocks",
+    "mark": "IB",
+    "tagline": "Scroll with somewhere to arrive."
+  },
+  "defaults": {
+    "topicId": "agent-orchestration",
+    "mode": "standard",
+    "theme": "system"
+  },
+  "features": {
+    "sharing": true,
+    "resume": true,
+    "milestones": true,
+    "challengeHints": true,
+    "keyboardNavigation": true
+  },
+  "content": {
+    "windowRadius": 2,
+    "progressStorageKey": "infoblocks.progress.v1",
+    "preferencesStorageKey": "infoblocks.preferences.v1"
+  },
+  "themes": {
+    "light": {
+      "background": "#F3F1EC",
+      "surface": "rgba(255, 255, 255, 0.72)",
+      "surfaceStrong": "#FFFFFF",
+      "text": "#171A18",
+      "muted": "#68706B",
+      "border": "rgba(23, 26, 24, 0.12)"
+    },
+    "dark": {
+      "background": "#0D100E",
+      "surface": "rgba(24, 28, 25, 0.78)",
+      "surfaceStrong": "#181C19",
+      "text": "#F4F2EC",
+      "muted": "#9DA59F",
+      "border": "rgba(244, 242, 236, 0.13)"
+    }
+  }
+}
