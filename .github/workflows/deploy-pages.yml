@@ -43,9 +43,12 @@ jobs:
       - name: Build static site
         run: npm run build
 
-      - name: Verify export
+      - name: Prepare Pages artifact
         run: |
           test -f dist/client/index.html
+          test -d dist/client/scrollable-info-blocks/_next
+          mv dist/client/scrollable-info-blocks/_next dist/client/_next
+          rmdir dist/client/scrollable-info-blocks
           touch dist/client/.nojekyll
 
       - name: Configure Pages
