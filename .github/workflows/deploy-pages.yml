@@ -44,7 +44,9 @@ jobs:
         run: npm run build
 
       - name: Verify export
-        run: test -f dist/client/index.html
+        run: |
+          test -f dist/client/index.html
+          touch dist/client/.nojekyll
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
