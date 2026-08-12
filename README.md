@@ -1,11 +1,19 @@
 # InfoBlocks
 
+The public site includes two entry points:
+
+- `/` — the original Agent Orchestration and Graph Fundamentals demo library.
+- `/dsa-roadmap/` — a separate active-recall journey covering all 62 nodes from Umar Farooque's DSA roadmap.
+
+Regenerate the curated DSA topic JSON with `npm run content:generate-dsa` after editing its source definitions in `scripts/generate-dsa-recall-topic.mjs`.
+
 InfoBlocks is a finite, topic-driven alternative to short-form reel feeds. Every swipe advances one deliberately sequenced knowledge block, with visible milestones and a clear ending.
 
-The bundled demo contains two complete journeys:
+The bundled content contains three complete journeys across two entry points:
 
 - **AI Agent Orchestration** — 26 blocks covering agent loops, workflow boundaries, orchestration patterns, contracts, context, reliability, evaluation, and an end-to-end production design.
 - **Graph Fundamentals for Interviews** — 28 blocks covering graph representations, traversal, connectivity, DSU, Kruskal, Prim, MST correctness, complexity, and edge cases.
+- **DSA Interview Recall** — 72 blocks covering all 62 source-roadmap problems, nine retrieval checkpoints, and a spaced-practice handoff.
 
 Every block is available in Clear, Story, and Challenge modes without changing its conceptual position.
 
@@ -38,7 +46,7 @@ npm test
 - `app/components/InfoBlocksApp.tsx` — feed navigation, modes, themes, deep links, progress, persistence, panels, and keyboard controls
 - `app/components/InfoBlockSlide.tsx` — content presentation and Challenge interactions
 - `app/components/VisualRenderer.tsx` — Mermaid and data-driven visual renderers
-- `content/topics/` — the two demo journeys
+- `content/topics/` — the three learning journeys
 - `content/config/ui-config.json` — brand, theme, defaults, features, and windowing configuration
 - `content/schemas/` — JSON Schemas for topics and UI configuration
 - `docs/AUTHORING.md` — how to add or edit a journey

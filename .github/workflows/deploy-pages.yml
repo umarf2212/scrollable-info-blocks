@@ -46,6 +46,7 @@ jobs:
       - name: Prepare Pages artifact
         run: |
           test -f dist/client/index.html
+          test -f dist/client/dsa-roadmap/index.html
           test -d dist/client/scrollable-info-blocks/_next
           mv dist/client/scrollable-info-blocks/_next dist/client/_next
           rmdir dist/client/scrollable-info-blocks

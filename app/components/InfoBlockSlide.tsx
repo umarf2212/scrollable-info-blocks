@@ -49,6 +49,7 @@ export function InfoBlockSlide({
   onReveal,
   onResetChallenge,
   onExploreNext,
+  hasAlternativeTopic,
 }: {
   block: InfoBlock;
   milestone: Milestone;
@@ -63,6 +64,7 @@ export function InfoBlockSlide({
   onReveal: () => void;
   onResetChallenge: () => void;
   onExploreNext: () => void;
+  hasAlternativeTopic: boolean;
 }) {
   const standardPresentation = mode === "challenge" ? null : block.presentations[mode];
   const challengePresentation = block.presentations.challenge;
@@ -154,7 +156,7 @@ export function InfoBlockSlide({
 
           {block.kind === "completion" ? (
             <button type="button" className="button button--primary completion-action" onClick={onExploreNext}>
-              Open the other journey <ArrowRight size={17} />
+              {hasAlternativeTopic ? "Open the other journey" : "Restart this journey"} <ArrowRight size={17} />
             </button>
           ) : null}
         </div>

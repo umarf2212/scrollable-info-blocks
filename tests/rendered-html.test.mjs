@@ -28,20 +28,34 @@ test("server-renders the InfoBlocks learning feed", async () => {
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Your site is taking shape/i);
 });
 
+test("server-renders the separate DSA active-recall route", async () => {
+  const response = await render("/dsa-roadmap/");
+  assert.equal(response.status, 200);
+
+  const html = await response.text();
+  assert.match(html, /<title>DSA Interview Recall · InfoBlocks<\/title>/i);
+  assert.match(html, /Matrix Search/);
+  assert.match(html, /DSA Interview Recall: 62 Problems, Nine Pattern Shelves learning feed/);
+  assert.match(html, /Pause &amp; predict/);
+});
+
 test("uses the finished product shell with no starter preview", async () => {
-  const [page, layout, packageJson] = await Promise.all([
+  const [page, layout, dsaPage, packageJson] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/dsa-roadmap/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
   assert.match(page, /InfoBlocksApp/);
   assert.match(page, /agent-orchestration\.json/);
   assert.match(page, /graph-fundamentals\.json/);
+  assert.match(dsaPage, /dsa-interview-recall\.json/);
   assert.match(layout, /Scroll with somewhere to arrive/);
-  assert.doesNotMatch(page + layout + packageJson, /SkeletonPreview|codex-preview|react-loading-skeleton/);
+  assert.doesNotMatch(page + layout + dsaPage + packageJson, /SkeletonPreview|codex-preview|react-loading-skeleton/);
   await assert.rejects(access(new URL("../app/_sites-preview", import.meta.url)));
   await access(new URL("../content/schemas/topic.schema.json", import.meta.url));
   await access(new URL("../content/config/ui-config.json", import.meta.url));
   await access(new URL("../public/favicon.svg", import.meta.url));
+  await access(new URL("../public/dsa-roadmap-og.png", import.meta.url));
 });

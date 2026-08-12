@@ -6,11 +6,12 @@ import Ajv2020 from "ajv/dist/2020.js";
 const topicFiles = [
   new URL("../content/topics/agent-orchestration.json", import.meta.url),
   new URL("../content/topics/graph-fundamentals.json", import.meta.url),
+  new URL("../content/topics/dsa-interview-recall.json", import.meta.url),
 ];
 
 const readJson = async (url) => JSON.parse(await readFile(url, "utf8"));
 
-test("both demo journeys validate and stay pedagogically coherent", async () => {
+test("every learning journey validates and stays pedagogically coherent", async () => {
   const [schema, ...topics] = await Promise.all([
     readJson(new URL("../content/schemas/topic.schema.json", import.meta.url)),
     ...topicFiles.map(readJson),
@@ -47,6 +48,19 @@ test("both demo journeys validate and stay pedagogically coherent", async () => 
       assert.ok(block.presentations.challenge.answer);
     }
   }
+});
+
+test("the DSA recall journey preserves all source nodes and its retrieval structure", async () => {
+  const topic = await readJson(new URL("../content/topics/dsa-interview-recall.json", import.meta.url));
+  const sourceBlocks = topic.blocks.filter((block) => block.eyebrow.startsWith("Original roadmap node"));
+
+  assert.equal(sourceBlocks.length, 62);
+  assert.equal(topic.milestones.length, 9);
+  assert.equal(topic.blocks.filter((block) => block.kind === "recap").length, 9);
+  assert.equal(topic.blocks.length, 72);
+  assert.equal(sourceBlocks[56].title, "Infix to Postfix");
+  assert.equal(sourceBlocks[60].title, "Infix to Postfix: Associativity Check");
+  assert.match(topic.description, /active-recall/i);
 });
 
 test("the UI configuration validates independently from content", async () => {

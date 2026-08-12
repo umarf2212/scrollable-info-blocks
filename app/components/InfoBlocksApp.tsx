@@ -405,6 +405,7 @@ export function InfoBlocksApp({ topics, config }: { topics: Topic[]; config: UiC
                       setRevealed((current) => ({ ...current, [stateKey]: false }));
                     }}
                     onExploreNext={selectOtherTopic}
+                    hasAlternativeTopic={topics.length > 1}
                   />
                 </div>
               ) : (
