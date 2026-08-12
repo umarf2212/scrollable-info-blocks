@@ -6,6 +6,10 @@ import dsaInterviewRecallData from "@/content/topics/dsa-interview-recall.json";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
 
+// vinext's static analyzer cannot always infer a nested App Router page from
+// component composition alone. This route has no request-time dependencies.
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "DSA Interview Recall",
   description:
