@@ -845,7 +845,12 @@ const topic = {
       url: "https://roadmap.sh/r/dsa-roadmap-tdko4",
     },
   ],
-  milestones: sections.map(({ story: _story, recap: _recap, ...section }) => section),
+  milestones: sections.map(({ id, title, shortTitle, description }) => ({
+    id,
+    title,
+    shortTitle,
+    description,
+  })),
   blocks,
 };
 
