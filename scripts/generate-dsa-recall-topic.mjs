@@ -91,7 +91,7 @@ const problems = [
     edge: "Empty input, one cell, and values repeated across a row boundary.",
   },
   {
-    n: 2, s: 0, title: "Median of Two Sorted Arrays",
+    n: 2, s: 0, title: "Median of Array",
     prompt: "Find the median of two sorted arrays without merging them, in logarithmic time.",
     pattern: "Binary search for a valid partition in the smaller array",
     approach: "Choose cuts i and j so the left side holds half the values. Move i until Aleft ≤ Bright and Bleft ≤ Aright, then read the middle value or pair.",
@@ -136,7 +136,7 @@ const problems = [
     edge: "K=0, B below every element, and the non-negative-input assumption required for monotonicity.",
   },
   {
-    n: 7, s: 1, title: "A-th Magical Number",
+    n: 7, s: 1, title: "Ath Magical Number",
     prompt: "Find the A-th positive integer divisible by B or C and return it modulo 1,000,000,007.",
     pattern: "First-true binary search with inclusion–exclusion",
     approach: "count(x)=⌊x/B⌋+⌊x/C⌋−⌊x/lcm(B,C)⌋. Find the smallest x with count(x)≥A, then apply the modulus.",
@@ -172,7 +172,7 @@ const problems = [
     edge: "Ties for the minimum, arrays of different lengths, and negative values.",
   },
   {
-    n: 11, s: 3, title: "Minimize the Absolute Difference",
+    n: 11, s: 3, title: "Minimize the absolute difference",
     prompt: "From three sorted arrays, choose a, b, c minimizing |max(a,b,c)−min(a,b,c)|.",
     pattern: "Three-way merge window",
     approach: "Measure current max−min, then advance one pointer at the minimum. Stop when any array is exhausted.",
@@ -190,7 +190,7 @@ const problems = [
     edge: "All one color, empty input, and rechecking after a high-side swap.",
   },
   {
-    n: 13, s: 3, title: "Closest Pair from Sorted Arrays",
+    n: 13, s: 3, title: "Closest pair from sorted arrays",
     prompt: "Choose one value from each sorted array whose sum is closest to C, respecting the stated smallest-index tie break.",
     pattern: "Opposite-end two pointers",
     approach: "Start i at A’s beginning and j at B’s end. Record a better or tie-breaking pair; move i right if the sum is low, otherwise j left.",
@@ -199,7 +199,7 @@ const problems = [
     edge: "Exact match, equal absolute differences, negative numbers, and index tie rules.",
   },
   {
-    n: 14, s: 3, title: "3 Sum Closest",
+    n: 14, s: 3, title: "3 Sum",
     prompt: "Find three array values whose sum is closest to target B.",
     pattern: "Sort, fix one value, then use two pointers",
     approach: "After sorting, fix i and sweep left/right across the suffix. Update the closest sum, moving by whether the current sum is below or above B.",
@@ -217,7 +217,7 @@ const problems = [
     edge: "Strictly less than B, square configurations, ordered pairs, and product overflow.",
   },
   {
-    n: 16, s: 4, title: "Shaggy and Distances",
+    n: 16, s: 4, title: "Shaggy and distances",
     prompt: "Find the minimum distance between equal values in an array, or −1 if no pair exists.",
     pattern: "Last-seen index map",
     approach: "Scan left to right. For value x, compare i with its latest index, update the best distance, then store i as the new latest index.",
@@ -244,7 +244,7 @@ const problems = [
     edge: "B>N returns empty, B=1, and removing the last copy of a value.",
   },
   {
-    n: 19, s: 4, title: "Sub-array with Zero Sum",
+    n: 19, s: 4, title: "Sub-array with 0 sum",
     prompt: "Decide whether a non-empty contiguous subarray sums to zero.",
     pattern: "Prefix-sum membership set",
     approach: "Seed seen with 0. While accumulating the prefix sum, return true if it has appeared before; otherwise add it.",
@@ -262,7 +262,7 @@ const problems = [
     edge: "Duplicates, negative values, and an empty array.",
   },
   {
-    n: 21, s: 4, title: "Check Palindrome II",
+    n: 21, s: 4, title: "Check Palindrome - II",
     prompt: "Decide whether a lowercase string’s characters can be rearranged into a palindrome.",
     pattern: "Frequency parity",
     approach: "Count characters with odd frequency. A palindrome permutation exists iff at most one count is odd.",
@@ -280,7 +280,7 @@ const problems = [
     edge: "Repeated digits, zeros creating repeated zero products, and a single digit.",
   },
   {
-    n: 23, s: 4, title: "Sort Array in Given Order",
+    n: 23, s: 4, title: "Sort Array in given Order",
     prompt: "Sort A so values named in unique array B follow B’s order; append all remaining values in ascending order.",
     pattern: "Frequency map plus ordered emission",
     approach: "Count A, emit each B value by its count and delete it, then sort and emit the remaining keys with their counts.",
@@ -316,7 +316,7 @@ const problems = [
     edge: "A=1, a frequency not divisible by A, and A larger than the string length.",
   },
   {
-    n: 27, s: 5, title: "Points on Same Line",
+    n: 27, s: 5, title: "Points on same line",
     prompt: "Return the maximum number of 2D points lying on one straight line.",
     pattern: "Normalized slope counts per anchor",
     approach: "For each anchor, reduce (dy,dx) by gcd, normalize its sign, and count equal slope pairs; handle duplicate points separately if allowed.",
@@ -388,7 +388,7 @@ const problems = [
     edge: "No 'a', one 'a', and using a wide integer for a large k.",
   },
   {
-    n: 35, s: 7, title: "Delete Middle Node",
+    n: 35, s: 7, title: "Delete middle node of a Linked List",
     prompt: "Delete the middle node of a singly linked list; for even length, delete the second middle.",
     pattern: "Fast/slow runners with a previous pointer",
     approach: "Advance slow one step and fast two while tracking prev. When fast ends, bypass slow with prev.next=slow.next.",
@@ -397,7 +397,7 @@ const problems = [
     edge: "A one-node list becomes empty, two nodes delete the second, and head handling.",
   },
   {
-    n: 36, s: 7, title: "K Reverse Linked List",
+    n: 36, s: 7, title: "K reverse linked list",
     prompt: "Reverse a singly linked list in consecutive groups of B nodes.",
     pattern: "Segment reversal plus reconnection",
     approach: "For each group, reverse B links, connect the previous group tail to the new head, and connect the new tail to the next group.",
@@ -415,7 +415,7 @@ const problems = [
     edge: "Empty list, one node, and saving next before overwriting curr.next.",
   },
   {
-    n: 38, s: 7, title: "Middle Element of Linked List",
+    n: 38, s: 7, title: "Middle element of linked list",
     prompt: "Return the middle list value; for even length, return the second middle.",
     pattern: "Fast/slow runners",
     approach: "Move slow once and fast twice until fast or fast.next is null; slow lands on the required middle.",
@@ -424,7 +424,7 @@ const problems = [
     edge: "One node, two nodes, and the loop condition that selects the second middle.",
   },
   {
-    n: 39, s: 7, title: "Reverse Linked List II",
+    n: 39, s: 7, title: "Reverse Link List II",
     prompt: "Reverse positions B through C of a linked list in place and in one pass.",
     pattern: "Dummy node plus local head insertion",
     approach: "Reach the node before B. Repeatedly detach the node after the sublist head and insert it immediately after the predecessor, C−B times.",
@@ -433,7 +433,7 @@ const problems = [
     edge: "B=1, B=C, and C at the tail.",
   },
   {
-    n: 40, s: 7, title: "Design a Linked List",
+    n: 40, s: 7, title: "Linked-List",
     prompt: "Implement indexed insertion, deletion, and printing for a singly linked-list data structure.",
     pattern: "Sentinel node and explicit size invariant",
     approach: "Keep a dummy head and size. Walk to the predecessor for valid positions, rewire one link, and update size exactly once per mutation.",
@@ -442,7 +442,7 @@ const problems = [
     edge: "Insert/delete at head, invalid positions do nothing, and deleting the last node.",
   },
   {
-    n: 41, s: 7, title: "Remove Nth Node from End",
+    n: 41, s: 7, title: "Remove Nth Node from List End",
     prompt: "Remove the B-th node from the end; if B exceeds list length, remove the first node.",
     pattern: "Fixed-gap two pointers with a dummy head",
     approach: "Advance lead B steps. If it cannot complete the gap, remove the head; otherwise move lead and follow together, then bypass follow.next.",
@@ -496,7 +496,7 @@ const problems = [
     edge: "One list empty, equal values, and attaching the final remainder.",
   },
   {
-    n: 47, s: 8, title: "Next Greater Element",
+    n: 47, s: 8, title: "Next Greater",
     prompt: "For each array value, return the first greater value to its right, or −1.",
     pattern: "Monotonic decreasing stack",
     approach: "Scan right to left, popping values ≤ current. The remaining top is the next greater value; then push current.",
@@ -505,7 +505,7 @@ const problems = [
     edge: "Duplicates require popping equals, decreasing input, and no greater value.",
   },
   {
-    n: 48, s: 8, title: "Evaluate Postfix Expression",
+    n: 48, s: 8, title: "Evaluate Expression",
     prompt: "Evaluate an arithmetic expression given in Reverse Polish (postfix) notation.",
     pattern: "Operand stack",
     approach: "Push numbers. On an operator, pop right operand b then left operand a, compute a op b, and push the result.",
@@ -550,7 +550,7 @@ const problems = [
     edge: "Equal values, increasing input, and no smaller value.",
   },
   {
-    n: 53, s: 8, title: "Passing Game",
+    n: 53, s: 8, title: "Passing game",
     prompt: "Track the ball holder through passes where an ID passes forward and 0 undoes the most recent pass.",
     pattern: "History stack",
     approach: "Seed the stack with the initial player. Push each passed-to ID; on 0, pop to restore the previous holder. Return the top.",
@@ -559,7 +559,7 @@ const problems = [
     edge: "Consecutive undo operations and preserving the initial holder under valid input constraints.",
   },
   {
-    n: 54, s: 8, title: "Maximum Frequency Stack",
+    n: 54, s: 8, title: "Maximum Frequency stack",
     prompt: "Support push and pop-most-frequent, breaking frequency ties by most recent push.",
     pattern: "Frequency map plus one stack per frequency",
     approach: "On push, increment freq[x], append x to group[freq[x]], and update maxFreq. On pop, remove from group[maxFreq], decrement its frequency, and lower maxFreq when that group empties.",
@@ -568,7 +568,7 @@ const problems = [
     edge: "Several values tied at max frequency, a frequency group becoming empty, and repeated pushes of one value.",
   },
   {
-    n: 55, s: 8, title: "Sort Stack Using Another Stack",
+    n: 55, s: 8, title: "Sort stack using another stack",
     prompt: "Sort a stack using only one additional stack.",
     pattern: "Insertion sort through stack transfers",
     approach: "Pop x from the input; move larger auxiliary-top values back until x fits, then push x. Repeat until all values are ordered.",
@@ -604,7 +604,7 @@ const problems = [
     edge: "Nested braces, a single operand in braces, and fully valid input without spaces.",
   },
   {
-    n: 59, s: 8, title: "Check Two Bracket Expressions",
+    n: 59, s: 8, title: "Check two bracket expressions",
     prompt: "Decide whether two +/− expressions with parentheses assign the same net sign to every variable.",
     pattern: "Propagate sign context through a stack",
     approach: "Normalize each expression to a 26-entry sign vector. Entering parentheses pushes the effective sign after combining the preceding sign with the outer context; compare the two vectors.",
@@ -622,7 +622,7 @@ const problems = [
     edge: "Cascading removals such as abba, odd runs such as aaa, and an empty final result.",
   },
   {
-    n: 61, s: 8, title: "Infix to Postfix: Associativity Check",
+    n: 61, s: 8, title: "Infix to Postfix",
     prompt: "Re-solve the roadmap’s repeated infix-to-postfix node, this time focusing on equal-precedence associativity.",
     pattern: "Retrieval checkpoint for the operator-stack pop rule",
     approach: "For incoming op, pop while top has greater precedence, or equal precedence when op is left-associative. Do not pop an equal '^' because exponentiation associates right.",

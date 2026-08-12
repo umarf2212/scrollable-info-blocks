@@ -59,7 +59,8 @@ test("the DSA recall journey preserves all source nodes and its retrieval struct
   assert.equal(topic.blocks.filter((block) => block.kind === "recap").length, 9);
   assert.equal(topic.blocks.length, 72);
   assert.equal(sourceBlocks[56].title, "Infix to Postfix");
-  assert.equal(sourceBlocks[60].title, "Infix to Postfix: Associativity Check");
+  assert.equal(sourceBlocks[60].title, "Infix to Postfix");
+  assert.match(sourceBlocks[60].presentations.challenge.prompt, /repeated/i);
   assert.match(topic.description, /active-recall/i);
 });
 

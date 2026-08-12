@@ -136,19 +136,19 @@
         }
       },
       "takeaway": "Matrix Search → Binary search over a virtually flattened matrix.",
-      "bridge": "Next: Median of Two Sorted Arrays.",
+      "bridge": "Next: Median of Array.",
       "sourceIds": [
         "umar-roadmap"
       ]
     },
     {
-      "id": "node-02-median-of-two-sorted-arrays",
+      "id": "node-02-median-of-array",
       "milestoneId": "binary-search-foundations",
       "order": 2,
       "kind": "concept",
       "eyebrow": "Original roadmap node 02 · Active recall",
-      "title": "Median of Two Sorted Arrays",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Median of Two Sorted Arrays.",
+      "title": "Median of Array",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Median of Array.",
       "coreFacts": [
         "Binary search for a valid partition in the smaller array",
         "The two cuts always leave the required number of values on the combined left side.",
@@ -191,7 +191,7 @@
           ]
         }
       },
-      "takeaway": "Median of Two Sorted Arrays → Binary search for a valid partition in the smaller array.",
+      "takeaway": "Median of Array → Binary search for a valid partition in the smaller array.",
       "bridge": "Next: Matrix Median.",
       "sourceIds": [
         "umar-roadmap"
@@ -482,19 +482,19 @@
         }
       },
       "takeaway": "Special Integer → Binary search on window length with a sliding-window predicate.",
-      "bridge": "Next: A-th Magical Number.",
+      "bridge": "Next: Ath Magical Number.",
       "sourceIds": [
         "umar-roadmap"
       ]
     },
     {
-      "id": "node-07-a-th-magical-number",
+      "id": "node-07-ath-magical-number",
       "milestoneId": "binary-search-on-answer",
       "order": 8,
       "kind": "concept",
       "eyebrow": "Original roadmap node 07 · Active recall",
-      "title": "A-th Magical Number",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for A-th Magical Number.",
+      "title": "Ath Magical Number",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Ath Magical Number.",
       "coreFacts": [
         "First-true binary search with inclusion–exclusion",
         "count(x) never decreases, so all values from the answer onward are feasible.",
@@ -537,7 +537,7 @@
           ]
         }
       },
-      "takeaway": "A-th Magical Number → First-true binary search with inclusion–exclusion.",
+      "takeaway": "Ath Magical Number → First-true binary search with inclusion–exclusion.",
       "bridge": "Next: Answer Search: close the notes.",
       "sourceIds": [
         "umar-roadmap"
@@ -824,7 +824,7 @@
         }
       },
       "takeaway": "Array 3 Pointers → Three pointers that advance the current minimum.",
-      "bridge": "Next: Minimize the Absolute Difference.",
+      "bridge": "Next: Minimize the absolute difference.",
       "sourceIds": [
         "umar-roadmap"
       ]
@@ -835,8 +835,8 @@
       "order": 14,
       "kind": "concept",
       "eyebrow": "Original roadmap node 11 · Active recall",
-      "title": "Minimize the Absolute Difference",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Minimize the Absolute Difference.",
+      "title": "Minimize the absolute difference",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Minimize the absolute difference.",
       "coreFacts": [
         "Three-way merge window",
         "Only replacing the minimum can possibly reduce the current range.",
@@ -879,7 +879,7 @@
           ]
         }
       },
-      "takeaway": "Minimize the Absolute Difference → Three-way merge window.",
+      "takeaway": "Minimize the absolute difference → Three-way merge window.",
       "bridge": "Next: Sort by Color.",
       "sourceIds": [
         "umar-roadmap"
@@ -936,7 +936,7 @@
         }
       },
       "takeaway": "Sort by Color → Dutch National Flag partition.",
-      "bridge": "Next: Closest Pair from Sorted Arrays.",
+      "bridge": "Next: Closest pair from sorted arrays.",
       "sourceIds": [
         "umar-roadmap"
       ]
@@ -947,8 +947,8 @@
       "order": 16,
       "kind": "concept",
       "eyebrow": "Original roadmap node 13 · Active recall",
-      "title": "Closest Pair from Sorted Arrays",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Closest Pair from Sorted Arrays.",
+      "title": "Closest pair from sorted arrays",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Closest pair from sorted arrays.",
       "coreFacts": [
         "Opposite-end two pointers",
         "The direction of the sum proves which entire row or column of pair candidates cannot improve next.",
@@ -991,20 +991,20 @@
           ]
         }
       },
-      "takeaway": "Closest Pair from Sorted Arrays → Opposite-end two pointers.",
-      "bridge": "Next: 3 Sum Closest.",
+      "takeaway": "Closest pair from sorted arrays → Opposite-end two pointers.",
+      "bridge": "Next: 3 Sum.",
       "sourceIds": [
         "umar-roadmap"
       ]
     },
     {
-      "id": "node-14-3-sum-closest",
+      "id": "node-14-3-sum",
       "milestoneId": "two-pointers",
       "order": 17,
       "kind": "concept",
       "eyebrow": "Original roadmap node 14 · Active recall",
-      "title": "3 Sum Closest",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for 3 Sum Closest.",
+      "title": "3 Sum",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for 3 Sum.",
       "coreFacts": [
         "Sort, fix one value, then use two pointers",
         "For fixed i, moving left increases the sum and moving right decreases it.",
@@ -1047,7 +1047,7 @@
           ]
         }
       },
-      "takeaway": "3 Sum Closest → Sort, fix one value, then use two pointers.",
+      "takeaway": "3 Sum → Sort, fix one value, then use two pointers.",
       "bridge": "Next: Another Count Rectangles.",
       "sourceIds": [
         "umar-roadmap"
@@ -1163,7 +1163,7 @@
         }
       },
       "takeaway": "Retrieve → explain → code → review the miss.",
-      "bridge": "Next: Shaggy and Distances.",
+      "bridge": "Next: Shaggy and distances.",
       "sourceIds": [
         "umar-roadmap"
       ]
@@ -1174,8 +1174,8 @@
       "order": 20,
       "kind": "concept",
       "eyebrow": "Original roadmap node 16 · Active recall",
-      "title": "Shaggy and Distances",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Shaggy and Distances.",
+      "title": "Shaggy and distances",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Shaggy and distances.",
       "coreFacts": [
         "Last-seen index map",
         "For the current index, the closest equal index on the left is always the most recent one.",
@@ -1218,7 +1218,7 @@
           ]
         }
       },
-      "takeaway": "Shaggy and Distances → Last-seen index map.",
+      "takeaway": "Shaggy and distances → Last-seen index map.",
       "bridge": "Next: Largest Continuous Sequence Zero Sum.",
       "sourceIds": [
         "umar-roadmap"
@@ -1331,19 +1331,19 @@
         }
       },
       "takeaway": "Distinct Numbers in Window → Sliding window frequency map.",
-      "bridge": "Next: Sub-array with Zero Sum.",
+      "bridge": "Next: Sub-array with 0 sum.",
       "sourceIds": [
         "umar-roadmap"
       ]
     },
     {
-      "id": "node-19-sub-array-with-zero-sum",
+      "id": "node-19-sub-array-with-0-sum",
       "milestoneId": "hashing-sequences",
       "order": 23,
       "kind": "concept",
       "eyebrow": "Original roadmap node 19 · Active recall",
-      "title": "Sub-array with Zero Sum",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Sub-array with Zero Sum.",
+      "title": "Sub-array with 0 sum",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Sub-array with 0 sum.",
       "coreFacts": [
         "Prefix-sum membership set",
         "A repeated prefix sum means the intervening non-empty segment sums to zero.",
@@ -1386,7 +1386,7 @@
           ]
         }
       },
-      "takeaway": "Sub-array with Zero Sum → Prefix-sum membership set.",
+      "takeaway": "Sub-array with 0 sum → Prefix-sum membership set.",
       "bridge": "Next: Longest Consecutive Sequence.",
       "sourceIds": [
         "umar-roadmap"
@@ -1443,7 +1443,7 @@
         }
       },
       "takeaway": "Longest Consecutive Sequence → Hash-set sequence starts.",
-      "bridge": "Next: Check Palindrome II.",
+      "bridge": "Next: Check Palindrome - II.",
       "sourceIds": [
         "umar-roadmap"
       ]
@@ -1454,8 +1454,8 @@
       "order": 25,
       "kind": "concept",
       "eyebrow": "Original roadmap node 21 · Active recall",
-      "title": "Check Palindrome II",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Check Palindrome II.",
+      "title": "Check Palindrome - II",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Check Palindrome - II.",
       "coreFacts": [
         "Frequency parity",
         "Mirrored positions consume character counts in pairs; only a center position may consume one unpaired character.",
@@ -1498,7 +1498,7 @@
           ]
         }
       },
-      "takeaway": "Check Palindrome II → Frequency parity.",
+      "takeaway": "Check Palindrome - II → Frequency parity.",
       "bridge": "Next: Colorful Number.",
       "sourceIds": [
         "umar-roadmap"
@@ -1555,7 +1555,7 @@
         }
       },
       "takeaway": "Colorful Number → Enumerate products and detect duplicates with a set.",
-      "bridge": "Next: Sort Array in Given Order.",
+      "bridge": "Next: Sort Array in given Order.",
       "sourceIds": [
         "umar-roadmap"
       ]
@@ -1566,8 +1566,8 @@
       "order": 27,
       "kind": "concept",
       "eyebrow": "Original roadmap node 23 · Active recall",
-      "title": "Sort Array in Given Order",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Sort Array in Given Order.",
+      "title": "Sort Array in given Order",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Sort Array in given Order.",
       "coreFacts": [
         "Frequency map plus ordered emission",
         "The frequency map always represents exactly the multiset not yet emitted.",
@@ -1610,7 +1610,7 @@
           ]
         }
       },
-      "takeaway": "Sort Array in Given Order → Frequency map plus ordered emission.",
+      "takeaway": "Sort Array in given Order → Frequency map plus ordered emission.",
       "bridge": "Next: Hashing I: close the notes.",
       "sourceIds": [
         "umar-roadmap"
@@ -1838,7 +1838,7 @@
         }
       },
       "takeaway": "Replicating Substring → Frequency divisibility.",
-      "bridge": "Next: Points on Same Line.",
+      "bridge": "Next: Points on same line.",
       "sourceIds": [
         "umar-roadmap"
       ]
@@ -1849,8 +1849,8 @@
       "order": 32,
       "kind": "concept",
       "eyebrow": "Original roadmap node 27 · Active recall",
-      "title": "Points on Same Line",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Points on Same Line.",
+      "title": "Points on same line",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Points on same line.",
       "coreFacts": [
         "Normalized slope counts per anchor",
         "Relative to one anchor, points share a line iff their canonical direction pair is identical.",
@@ -1893,7 +1893,7 @@
           ]
         }
       },
-      "takeaway": "Points on Same Line → Normalized slope counts per anchor.",
+      "takeaway": "Points on same line → Normalized slope counts per anchor.",
       "bridge": "Next: Compare Sorted Subarrays.",
       "sourceIds": [
         "umar-roadmap"
@@ -2404,19 +2404,19 @@
         }
       },
       "takeaway": "Retrieve → explain → code → review the miss.",
-      "bridge": "Next: Delete Middle Node.",
+      "bridge": "Next: Delete middle node of a Linked List.",
       "sourceIds": [
         "umar-roadmap"
       ]
     },
     {
-      "id": "node-35-delete-middle-node",
+      "id": "node-35-delete-middle-node-of-a-linked-list",
       "milestoneId": "linked-lists",
       "order": 42,
       "kind": "concept",
       "eyebrow": "Original roadmap node 35 · Active recall",
-      "title": "Delete Middle Node",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Delete Middle Node.",
+      "title": "Delete middle node of a Linked List",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Delete middle node of a Linked List.",
       "coreFacts": [
         "Fast/slow runners with a previous pointer",
         "When fast has covered the list, slow is at the required second middle and prev is its predecessor.",
@@ -2459,8 +2459,8 @@
           ]
         }
       },
-      "takeaway": "Delete Middle Node → Fast/slow runners with a previous pointer.",
-      "bridge": "Next: K Reverse Linked List.",
+      "takeaway": "Delete middle node of a Linked List → Fast/slow runners with a previous pointer.",
+      "bridge": "Next: K reverse linked list.",
       "sourceIds": [
         "umar-roadmap"
       ]
@@ -2471,8 +2471,8 @@
       "order": 43,
       "kind": "concept",
       "eyebrow": "Original roadmap node 36 · Active recall",
-      "title": "K Reverse Linked List",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for K Reverse Linked List.",
+      "title": "K reverse linked list",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for K reverse linked list.",
       "coreFacts": [
         "Segment reversal plus reconnection",
         "Before starting a group, the processed prefix is correctly reversed and connected; the current pointer begins the untouched suffix.",
@@ -2515,7 +2515,7 @@
           ]
         }
       },
-      "takeaway": "K Reverse Linked List → Segment reversal plus reconnection.",
+      "takeaway": "K reverse linked list → Segment reversal plus reconnection.",
       "bridge": "Next: Reverse Linked List.",
       "sourceIds": [
         "umar-roadmap"
@@ -2572,7 +2572,7 @@
         }
       },
       "takeaway": "Reverse Linked List → Three-pointer iterative reversal.",
-      "bridge": "Next: Middle Element of Linked List.",
+      "bridge": "Next: Middle element of linked list.",
       "sourceIds": [
         "umar-roadmap"
       ]
@@ -2583,8 +2583,8 @@
       "order": 45,
       "kind": "concept",
       "eyebrow": "Original roadmap node 38 · Active recall",
-      "title": "Middle Element of Linked List",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Middle Element of Linked List.",
+      "title": "Middle element of linked list",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Middle element of linked list.",
       "coreFacts": [
         "Fast/slow runners",
         "Fast has traveled twice as many links as slow.",
@@ -2627,20 +2627,20 @@
           ]
         }
       },
-      "takeaway": "Middle Element of Linked List → Fast/slow runners.",
-      "bridge": "Next: Reverse Linked List II.",
+      "takeaway": "Middle element of linked list → Fast/slow runners.",
+      "bridge": "Next: Reverse Link List II.",
       "sourceIds": [
         "umar-roadmap"
       ]
     },
     {
-      "id": "node-39-reverse-linked-list-ii",
+      "id": "node-39-reverse-link-list-ii",
       "milestoneId": "linked-lists",
       "order": 46,
       "kind": "concept",
       "eyebrow": "Original roadmap node 39 · Active recall",
-      "title": "Reverse Linked List II",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Reverse Linked List II.",
+      "title": "Reverse Link List II",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Reverse Link List II.",
       "coreFacts": [
         "Dummy node plus local head insertion",
         "The prefix before B and suffix after C stay connected while the target segment grows in reversed order.",
@@ -2683,20 +2683,20 @@
           ]
         }
       },
-      "takeaway": "Reverse Linked List II → Dummy node plus local head insertion.",
-      "bridge": "Next: Design a Linked List.",
+      "takeaway": "Reverse Link List II → Dummy node plus local head insertion.",
+      "bridge": "Next: Linked-List.",
       "sourceIds": [
         "umar-roadmap"
       ]
     },
     {
-      "id": "node-40-design-a-linked-list",
+      "id": "node-40-linked-list",
       "milestoneId": "linked-lists",
       "order": 47,
       "kind": "concept",
       "eyebrow": "Original roadmap node 40 · Active recall",
-      "title": "Design a Linked List",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Design a Linked List.",
+      "title": "Linked-List",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Linked-List.",
       "coreFacts": [
         "Sentinel node and explicit size invariant",
         "size equals the reachable data-node count, and dummy.next always points to the logical head.",
@@ -2739,20 +2739,20 @@
           ]
         }
       },
-      "takeaway": "Design a Linked List → Sentinel node and explicit size invariant.",
-      "bridge": "Next: Remove Nth Node from End.",
+      "takeaway": "Linked-List → Sentinel node and explicit size invariant.",
+      "bridge": "Next: Remove Nth Node from List End.",
       "sourceIds": [
         "umar-roadmap"
       ]
     },
     {
-      "id": "node-41-remove-nth-node-from-end",
+      "id": "node-41-remove-nth-node-from-list-end",
       "milestoneId": "linked-lists",
       "order": 48,
       "kind": "concept",
       "eyebrow": "Original roadmap node 41 · Active recall",
-      "title": "Remove Nth Node from End",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Remove Nth Node from End.",
+      "title": "Remove Nth Node from List End",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Remove Nth Node from List End.",
       "coreFacts": [
         "Fixed-gap two pointers with a dummy head",
         "After the gap is built, lead stays B nodes ahead of the deletion predecessor.",
@@ -2795,7 +2795,7 @@
           ]
         }
       },
-      "takeaway": "Remove Nth Node from End → Fixed-gap two pointers with a dummy head.",
+      "takeaway": "Remove Nth Node from List End → Fixed-gap two pointers with a dummy head.",
       "bridge": "Next: Remove Duplicates from Sorted List.",
       "sourceIds": [
         "umar-roadmap"
@@ -3135,19 +3135,19 @@
         }
       },
       "takeaway": "Retrieve → explain → code → review the miss.",
-      "bridge": "Next: Next Greater Element.",
+      "bridge": "Next: Next Greater.",
       "sourceIds": [
         "umar-roadmap"
       ]
     },
     {
-      "id": "node-47-next-greater-element",
+      "id": "node-47-next-greater",
       "milestoneId": "stacks",
       "order": 55,
       "kind": "concept",
       "eyebrow": "Original roadmap node 47 · Active recall",
-      "title": "Next Greater Element",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Next Greater Element.",
+      "title": "Next Greater",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Next Greater.",
       "coreFacts": [
         "Monotonic decreasing stack",
         "The stack contains useful candidates to the right in strictly decreasing order from bottom to top.",
@@ -3190,20 +3190,20 @@
           ]
         }
       },
-      "takeaway": "Next Greater Element → Monotonic decreasing stack.",
-      "bridge": "Next: Evaluate Postfix Expression.",
+      "takeaway": "Next Greater → Monotonic decreasing stack.",
+      "bridge": "Next: Evaluate Expression.",
       "sourceIds": [
         "umar-roadmap"
       ]
     },
     {
-      "id": "node-48-evaluate-postfix-expression",
+      "id": "node-48-evaluate-expression",
       "milestoneId": "stacks",
       "order": 56,
       "kind": "concept",
       "eyebrow": "Original roadmap node 48 · Active recall",
-      "title": "Evaluate Postfix Expression",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Evaluate Postfix Expression.",
+      "title": "Evaluate Expression",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Evaluate Expression.",
       "coreFacts": [
         "Operand stack",
         "The stack stores evaluated values for exactly the unfinished subexpressions.",
@@ -3246,7 +3246,7 @@
           ]
         }
       },
-      "takeaway": "Evaluate Postfix Expression → Operand stack.",
+      "takeaway": "Evaluate Expression → Operand stack.",
       "bridge": "Next: All Subarrays.",
       "sourceIds": [
         "umar-roadmap"
@@ -3471,7 +3471,7 @@
         }
       },
       "takeaway": "Nearest Smaller Element → Monotonic increasing stack.",
-      "bridge": "Next: Passing Game.",
+      "bridge": "Next: Passing game.",
       "sourceIds": [
         "umar-roadmap"
       ]
@@ -3482,8 +3482,8 @@
       "order": 61,
       "kind": "concept",
       "eyebrow": "Original roadmap node 53 · Active recall",
-      "title": "Passing Game",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Passing Game.",
+      "title": "Passing game",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Passing game.",
       "coreFacts": [
         "History stack",
         "The stack is exactly the active pass history, with the current holder on top.",
@@ -3526,8 +3526,8 @@
           ]
         }
       },
-      "takeaway": "Passing Game → History stack.",
-      "bridge": "Next: Maximum Frequency Stack.",
+      "takeaway": "Passing game → History stack.",
+      "bridge": "Next: Maximum Frequency stack.",
       "sourceIds": [
         "umar-roadmap"
       ]
@@ -3538,8 +3538,8 @@
       "order": 62,
       "kind": "concept",
       "eyebrow": "Original roadmap node 54 · Active recall",
-      "title": "Maximum Frequency Stack",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Maximum Frequency Stack.",
+      "title": "Maximum Frequency stack",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Maximum Frequency stack.",
       "coreFacts": [
         "Frequency map plus one stack per frequency",
         "group[f] records values in the order they reached frequency f, so its top supplies the recency tie-break.",
@@ -3582,8 +3582,8 @@
           ]
         }
       },
-      "takeaway": "Maximum Frequency Stack → Frequency map plus one stack per frequency.",
-      "bridge": "Next: Sort Stack Using Another Stack.",
+      "takeaway": "Maximum Frequency stack → Frequency map plus one stack per frequency.",
+      "bridge": "Next: Sort stack using another stack.",
       "sourceIds": [
         "umar-roadmap"
       ]
@@ -3594,8 +3594,8 @@
       "order": 63,
       "kind": "concept",
       "eyebrow": "Original roadmap node 55 · Active recall",
-      "title": "Sort Stack Using Another Stack",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Sort Stack Using Another Stack.",
+      "title": "Sort stack using another stack",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Sort stack using another stack.",
       "coreFacts": [
         "Insertion sort through stack transfers",
         "The auxiliary stack remains sorted after every insertion.",
@@ -3638,7 +3638,7 @@
           ]
         }
       },
-      "takeaway": "Sort Stack Using Another Stack → Insertion sort through stack transfers.",
+      "takeaway": "Sort stack using another stack → Insertion sort through stack transfers.",
       "bridge": "Next: Min Stack.",
       "sourceIds": [
         "umar-roadmap"
@@ -3807,7 +3807,7 @@
         }
       },
       "takeaway": "Redundant Braces → Inspect operators inside each parenthesis pair.",
-      "bridge": "Next: Check Two Bracket Expressions.",
+      "bridge": "Next: Check two bracket expressions.",
       "sourceIds": [
         "umar-roadmap"
       ]
@@ -3818,8 +3818,8 @@
       "order": 67,
       "kind": "concept",
       "eyebrow": "Original roadmap node 59 · Active recall",
-      "title": "Check Two Bracket Expressions",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Check Two Bracket Expressions.",
+      "title": "Check two bracket expressions",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Check two bracket expressions.",
       "coreFacts": [
         "Propagate sign context through a stack",
         "The context-stack top is the multiplier applied to every term at the current nesting depth.",
@@ -3862,7 +3862,7 @@
           ]
         }
       },
-      "takeaway": "Check Two Bracket Expressions → Propagate sign context through a stack.",
+      "takeaway": "Check two bracket expressions → Propagate sign context through a stack.",
       "bridge": "Next: Double Character Trouble.",
       "sourceIds": [
         "umar-roadmap"
@@ -3919,19 +3919,19 @@
         }
       },
       "takeaway": "Double Character Trouble → Cancellation stack.",
-      "bridge": "Next: Infix to Postfix: Associativity Check.",
+      "bridge": "Next: Infix to Postfix.",
       "sourceIds": [
         "umar-roadmap"
       ]
     },
     {
-      "id": "node-61-infix-to-postfix-associativity-check",
+      "id": "node-61-infix-to-postfix",
       "milestoneId": "stacks",
       "order": 69,
       "kind": "concept",
       "eyebrow": "Original roadmap node 61 · Active recall",
-      "title": "Infix to Postfix: Associativity Check",
-      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Infix to Postfix: Associativity Check.",
+      "title": "Infix to Postfix",
+      "learningObjective": "Recall the interview trigger, invariant, and implementation plan for Infix to Postfix.",
       "coreFacts": [
         "Retrieval checkpoint for the operator-stack pop rule",
         "Operators are emitted only when no future operand can change their required order.",
@@ -3974,7 +3974,7 @@
           ]
         }
       },
-      "takeaway": "Infix to Postfix: Associativity Check → Retrieval checkpoint for the operator-stack pop rule.",
+      "takeaway": "Infix to Postfix → Retrieval checkpoint for the operator-stack pop rule.",
       "bridge": "Next: Maximum Rectangle.",
       "sourceIds": [
         "umar-roadmap"
