@@ -3,9 +3,9 @@
 The public site includes two entry points:
 
 - `/` — the original Agent Orchestration and Graph Fundamentals demo library.
-- `/dsa-roadmap/` — a separate active-recall journey covering all 62 nodes from Umar Farooque's DSA roadmap.
+- `/dsa-roadmap/` — a separate code-recall journey covering all 62 nodes from Umar Farooque's DSA roadmap.
 
-Regenerate the curated DSA topic JSON with `npm run content:generate-dsa` after editing its source definitions in `scripts/generate-dsa-recall-topic.mjs`.
+Regenerate the curated DSA topic JSON with `npm run content:generate-dsa` after editing the normalized extraction or code notes in `content/source/`.
 
 InfoBlocks is a finite, topic-driven alternative to short-form reel feeds. Every swipe advances one deliberately sequenced knowledge block, with visible milestones and a clear ending.
 
@@ -13,9 +13,9 @@ The bundled content contains three complete journeys across two entry points:
 
 - **AI Agent Orchestration** — 26 blocks covering agent loops, workflow boundaries, orchestration patterns, contracts, context, reliability, evaluation, and an end-to-end production design.
 - **Graph Fundamentals for Interviews** — 28 blocks covering graph representations, traversal, connectivity, DSU, Kruskal, Prim, MST correctness, complexity, and edge cases.
-- **DSA Interview Recall** — 72 blocks covering all 62 source-roadmap problems, nine retrieval checkpoints, and a spaced-practice handoff.
+- **DSA Code Recall** — 62 question-and-answer blocks: the source problem statement first, then the captured reference code with concise implementation notes.
 
-Every block is available in Clear, Story, and Challenge modes without changing its conceptual position.
+The two demo journeys support Clear, Story, and Challenge modes. The DSA route is intentionally locked to its problem → code recall flow.
 
 ## Run locally
 
@@ -40,6 +40,8 @@ npm test
 ```
 
 `npm test` validates both JSON schemas, curriculum invariants, mobile content budgets, progress calculations, the 1,000-block windowing fixture, the production build, and server-rendered output.
+
+Create the dependency-free distributable with `npm run build:dist`, then run `node dist/server.js`. It listens on `0.0.0.0:3000` by default for LAN access.
 
 ## Project map
 

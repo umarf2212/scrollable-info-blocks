@@ -11,34 +11,34 @@ const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").re
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "DSA Interview Recall",
+  title: "DSA Code Recall",
   description:
-    "Actively recall 62 DSA roadmap problems through their interview triggers, invariants, complexity, and edge cases.",
+    "Recall 62 DSA problems by reading each exact statement, then revealing its reference Python code and concise implementation notes.",
   alternates: { canonical: `${siteUrl}/dsa-roadmap/` },
   openGraph: {
-    title: "DSA Interview Recall · InfoBlocks",
-    description: "62 problems. Nine pattern shelves. One finite active-recall journey.",
+    title: "DSA Code Recall · InfoBlocks",
+    description: "62 problem statements with reference Python code and concise implementation notes.",
     url: `${siteUrl}/dsa-roadmap/`,
     images: [
       {
         url: `${siteUrl}/dsa-roadmap-og.png`,
         width: 1659,
         height: 948,
-        alt: "DSA Interview Recall in InfoBlocks",
+        alt: "DSA Code Recall in InfoBlocks",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "DSA Interview Recall · InfoBlocks",
-    description: "62 problems. Nine pattern shelves. One finite active-recall journey.",
+    title: "DSA Code Recall · InfoBlocks",
+    description: "62 problem statements with reference Python code and concise implementation notes.",
     images: [`${siteUrl}/dsa-roadmap-og.png`],
   },
 };
 
 function loadDsaContent() {
   try {
-    const topic = parseTopic(dsaInterviewRecallData, "DSA Interview Recall");
+    const topic = parseTopic(dsaInterviewRecallData, "DSA Code Recall");
     const config = parseUiConfig({
       ...uiConfigData,
       defaults: {
@@ -77,5 +77,5 @@ export default function DsaRoadmapPage() {
     );
   }
 
-  return <InfoBlocksApp topics={[result.topic]} config={result.config} />;
+  return <InfoBlocksApp topics={[result.topic]} config={result.config} codeRecall />;
 }

@@ -1,0 +1,4935 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceDocument": "dsa-roadmap-node-content.docx",
+  "sourceParagraphCount": 2692,
+  "sectionCount": 9,
+  "nodeCount": 62,
+  "sections": [
+    {
+      "sectionNumber": 1,
+      "sectionTitle": "Binary Search 1",
+      "originalHeading": "1. Binary Search 1  ·  3 nodes",
+      "declaredNodeCount": 3
+    },
+    {
+      "sectionNumber": 2,
+      "sectionTitle": "Binary Search 2",
+      "originalHeading": "2. Binary Search 2  ·  4 nodes",
+      "declaredNodeCount": 4
+    },
+    {
+      "sectionNumber": 3,
+      "sectionTitle": "Binary Search 3",
+      "originalHeading": "3. Binary Search 3  ·  2 nodes",
+      "declaredNodeCount": 2
+    },
+    {
+      "sectionNumber": 4,
+      "sectionTitle": "Two Pointers",
+      "originalHeading": "4. Two Pointers  ·  6 nodes",
+      "declaredNodeCount": 6
+    },
+    {
+      "sectionNumber": 5,
+      "sectionTitle": "Hashing 1 — sequences, windows, and last-seen state",
+      "originalHeading": "5. Hashing 1 — sequences, windows, and last-seen state  ·  8 nodes",
+      "declaredNodeCount": 8
+    },
+    {
+      "sectionNumber": 6,
+      "sectionTitle": "Hashing 2 — geometry and relationships",
+      "originalHeading": "6. Hashing 2 — geometry and relationships  ·  6 nodes",
+      "declaredNodeCount": 6
+    },
+    {
+      "sectionNumber": 7,
+      "sectionTitle": "String Pattern Matching",
+      "originalHeading": "7. String Pattern Matching  ·  5 nodes",
+      "declaredNodeCount": 5
+    },
+    {
+      "sectionNumber": 8,
+      "sectionTitle": "Linked Lists — derived grouping",
+      "originalHeading": "8. Linked Lists — derived grouping  ·  12 nodes",
+      "declaredNodeCount": 12
+    },
+    {
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "originalHeading": "9. Stacks — source label: Stacks 2  ·  16 nodes",
+      "declaredNodeCount": 16
+    }
+  ],
+  "nodes": [
+    {
+      "nodeNumber": 1,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Matrix Search",
+      "originalHeading": "  1. Q1. Matrix Search",
+      "sectionNumber": 1,
+      "sectionTitle": "Binary Search 1",
+      "problemStatementParagraphs": [
+        "Given a matrix of integers A of size N x M and an integer B. Write an efficient algorithm that searches for integer B in matrix A.",
+        "This matrix A has the following properties:",
+        "1. Integers in each row are sorted from left to right.",
+        "2. The first integer of each row is greater than or equal to the last integer of the previous row.",
+        "Return 1 if B is present in A, else return 0.",
+        "NOTE: Rows are numbered from top to bottom, and columns are from left to right."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of list of integers",
+            "    # @param B : integer",
+            "    # @return an integer",
+            "    def searchMatrix(self, A, B):",
+            " ",
+            "        i = 0",
+            "        j = len(A[0])-1",
+            "        while i < len(A) and j >= 0:",
+            "            if A[i][j] == B:",
+            "                return 1",
+            "            ",
+            "            elif A[i][j] > B:",
+            "                j -= 1",
+            "            else:",
+            "                i += 1",
+            "        ",
+            "        return 0",
+            " ",
+            " ",
+            "        # [",
+            "        #     [1, 2, 3],",
+            "        #     [3, 4, 5],",
+            "        #     [6, 7, 8]",
+            "        # ]"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a matrix of integers A of size N x M and an integer B. Write an efficient algorithm that searches for integer B in matrix A."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "This matrix A has the following properties:"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "1. Integers in each row are sorted from left to right."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "2. The first integer of each row is greater than or equal to the last integer of the previous row."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Return 1 if B is present in A, else return 0."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: Rows are numbered from top to bottom, and columns are from left to right."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 2,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Median of Array",
+      "originalHeading": "  2. Q2. Median of Array",
+      "sectionNumber": 1,
+      "sectionTitle": "Binary Search 1",
+      "problemStatementParagraphs": [
+        "There are two sorted arrays A and B of sizes N and M respectively.",
+        "Find the median of the two sorted arrays ( The median of the array formed by merging both the arrays ).",
+        "NOTE:",
+        "• The overall run time complexity should be O(log(m+n)).",
+        "• IF the number of elements in the merged array is even, then the median is the average of (n/2)th and (n/2+1)th element. For example, if the array is [1 2 3 4], the median is (2 + 3) / 2.0 = 2.5."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : tuple of integers",
+            "    # @param B : tuple of integers",
+            "    # @return a double",
+            "    def findMedianSortedArrays(self, A, B):",
+            "        if not A and not B: return 0",
+            " ",
+            "        def singleAr(A):",
+            "            n = len(A)",
+            "            if n % 2:",
+            "                return A[n//2]",
+            "            else:",
+            "                return (A[(n//2)-1] + A[n//2]) / 2",
+            "            ",
+            "        if not A:",
+            "            return singleAr(B)",
+            "        ",
+            "        if not B:",
+            "            return singleAr(A)",
+            " ",
+            "        if len(A) > len(B):",
+            "            A, B = B, A",
+            "        ",
+            "        total = len(A)+len(B)",
+            "        half = total // 2",
+            " ",
+            "        l = 0",
+            "        r = len(A)",
+            "        while True:",
+            "            # mid of A",
+            "            i = (l+r) // 2",
+            " ",
+            "            # mid of B, -1 bcos j itself is an index, ",
+            "            # and another -1 bcos of i being i is also an index",
+            "            j = half - i - 2",
+            " ",
+            "            Aleft = A[i] if i >= 0 else float('-inf')",
+            "            Aright = A[i+1] if (i+1) < len(A) else float('inf')",
+            " ",
+            "            Bleft = B[j] if j >= 0 else float('-inf')",
+            "            Bright = B[j+1] if (j+1) < len(B) else float('inf')",
+            " ",
+            "            # check if the partition is correct",
+            "            if Aleft <= Bright and Bleft <= Aright:",
+            "                if total % 2:",
+            "                    return min(Aright, Bright)",
+            "                else:",
+            "                    return (max(Aleft, Bleft) + min(Aright, Bright)) / 2",
+            "            ",
+            "            elif Aleft > Bright:",
+            "                r = i-1",
+            "            else:",
+            "                l = i+1"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "There are two sorted arrays A and B of sizes N and M respectively."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Find the median of the two sorted arrays ( The median of the array formed by merging both the arrays )."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE:"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "• The overall run time complexity should be O(log(m+n))."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "• IF the number of elements in the merged array is even, then the median is the average of (n/2)th and (n/2+1)th element. For example, if the array is [1 2 3 4], the median is (2 + 3) / 2.0 = 2.5."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 3,
+      "sourceQuestionNumber": 3,
+      "originalTitle": "Matrix Median",
+      "originalHeading": "  3. Q3. Matrix Median",
+      "sectionNumber": 1,
+      "sectionTitle": "Binary Search 1",
+      "problemStatementParagraphs": [
+        "Given a matrix of integers A of size N x M in which each row is sorted.",
+        "Find and return the overall median of matrix A.",
+        "NOTE: No extra memory is allowed.",
+        "NOTE: Rows are numbered from top to bottom and columns are numbered from left to right."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "\t# @param A : list of list of integers",
+            "\t# @return an integer",
+            "\tdef findMedian(self, A):",
+            " ",
+            "        # Also check:",
+            "        # https://www.scaler.com/academy/mentee-dashboard/class/25095/homework/problems/357?navref=cl_tt_lst_nm",
+            " ",
+            "        def findCount(ar, num):",
+            "            # return upper bound of the number num in ar",
+            "            # UB: smallest no. greater than num",
+            "            if num < ar[0]: return 0",
+            "            if num > ar[-1]: return len(ar)",
+            " ",
+            "            i = 0",
+            "            j = len(ar)-1",
+            "            ans  = 0",
+            "            while i <= j:",
+            "                mid = (i+j) // 2",
+            "                if ar[mid] <= num:",
+            "                    ans = mid",
+            "                    i = mid + 1",
+            "                else:",
+            "                    j = mid - 1",
+            "            return ans + 1",
+            " ",
+            "        i = float('inf')",
+            "        j = float('-inf')",
+            "        for row in A:",
+            "            i = min(i, row[0])",
+            "            j = max(j, row[-1])",
+            " ",
+            "        minNumsGreaterCount = (len(A)*len(A[0])) // 2 + 1",
+            " ",
+            "        ans = -1",
+            "        while i <= j:",
+            "            mid = (i+j) // 2",
+            " ",
+            "            c = 0",
+            "            for row in A:",
+            "                c += findCount(row, mid)",
+            "            ",
+            "            if c >= minNumsGreaterCount:",
+            "                ans = mid",
+            "                j = mid - 1",
+            "            else:",
+            "                i = mid + 1",
+            " ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a matrix of integers A of size N x M in which each row is sorted."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Find and return the overall median of matrix A."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: No extra memory is allowed."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: Rows are numbered from top to bottom and columns are numbered from left to right."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 4,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Square Root of Integer",
+      "originalHeading": "  4. Q1. Square Root of Integer",
+      "sectionNumber": 2,
+      "sectionTitle": "Binary Search 2",
+      "problemStatementParagraphs": [
+        "Given an integer A. Compute and return the square root of A. If A is not a perfect square, return floor(sqrt(A)).",
+        "NOTE: The value of A*A can cross the range of Integer. Do not use the sqrt function from the standard library. Users are expected to solve this in O(log(A)) time."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : integer",
+            "    # @return an integer",
+            "    def sqrt(self, A):",
+            "        if A < 2: return A",
+            "        if A == 2: return 1",
+            " ",
+            "        ans = -1",
+            "        i = 0",
+            "        j = (A+1) // 2",
+            "        while i <= j:",
+            "            mid = (i+j)//2",
+            " ",
+            "            if mid <= A/mid:",
+            "                ans = max(ans, mid)",
+            "                i = mid + 1",
+            "            else:",
+            "                j = mid - 1",
+            "        ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given an integer A. Compute and return the square root of A. If A is not a perfect square, return floor(sqrt(A))."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: The value of A*A can cross the range of Integer. Do not use the sqrt function from the standard library. Users are expected to solve this in O(log(A)) time."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 5,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Rotated Sorted Array Search",
+      "originalHeading": "  5. Q2. Rotated Sorted Array Search",
+      "sectionNumber": 2,
+      "sectionTitle": "Binary Search 2",
+      "problemStatementParagraphs": [
+        "Given a sorted array of integers A of size N and an integer B, where array A is rotated at some pivot unknown beforehand.",
+        "For example, the array [0, 1, 2, 4, 5, 6, 7] might become [4, 5, 6, 7, 0, 1, 2].",
+        "Your task is to search for the target value B in the array. If found, return its index; otherwise, return -1.",
+        "You can assume that no duplicates exist in the array.",
+        "NOTE: You are expected to solve this problem with a time complexity of O(log(N))."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : tuple of integers",
+            "    # @param B : integer",
+            "    # @return an integer",
+            "    def search(self, A, B):",
+            " ",
+            "        # There's a point in the array from where ",
+            "        # the array re-starts as a sorted series",
+            "        # That point is the pivot which divides the array ",
+            "        # into two different sorted series.",
+            "        # Find the pivot using BS, then divide the array into ",
+            "        # two sub-arrays A[:pivot] and A[pivot:] and do BS again ",
+            "        # to find the target element",
+            " ",
+            "        def findPivot(A):",
+            "            lo = 0",
+            "            hi = len(A) - 1  ",
+            "            while lo <= hi:",
+            "                mid = (lo+hi) // 2",
+            " ",
+            "                if mid == 0 or mid == len(A)-1:",
+            "                    return mid",
+            " ",
+            "                if A[mid] > A[mid-1] and A[mid] > A[mid+1]:",
+            "                    return mid",
+            "                ",
+            "                if A[mid] < A[lo]:",
+            "                    hi = mid - 1",
+            "                else:",
+            "                    lo = mid+1",
+            "        ",
+            " ",
+            "        def binarySearch(ar, target, start, end):",
+            "            lo = start",
+            "            hi = end",
+            "            while lo <= hi:",
+            "                mid = (lo+hi) // 2",
+            " ",
+            "                if ar[mid] == target:",
+            "                    return mid",
+            "                ",
+            "                if ar[mid] < target:",
+            "                    lo = mid + 1",
+            "                else:",
+            "                    hi = mid - 1",
+            "            ",
+            "            return -1",
+            "        ",
+            " ",
+            "        pivot = findPivot(A)",
+            "        res1 = binarySearch(A, B, 0, pivot)",
+            "        res2 = binarySearch(A, B, pivot+1, len(A)-1)",
+            " ",
+            "        if res1 != -1:",
+            "            return res1",
+            "        else:",
+            "            return res2"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a sorted array of integers A of size N and an integer B, where array A is rotated at some pivot unknown beforehand."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "For example, the array [0, 1, 2, 4, 5, 6, 7] might become [4, 5, 6, 7, 0, 1, 2]."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Your task is to search for the target value B in the array. If found, return its index; otherwise, return -1."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "You can assume that no duplicates exist in the array."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: You are expected to solve this problem with a time complexity of O(log(N))."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 6,
+      "sourceQuestionNumber": 3,
+      "originalTitle": "Special Integer",
+      "originalHeading": "  6. Q3. Special Integer",
+      "sectionNumber": 2,
+      "sectionTitle": "Binary Search 2",
+      "problemStatementParagraphs": [
+        "Given an array of integers A and an integer B, find and return the maximum value K such that there is no subarray in A of size K with the sum of elements greater than B."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @param B : integer",
+            "    # @return an integer",
+            "    def solve(self, A, B):",
+            " ",
+            " ",
+            "        # Search space is 1 - len(A)",
+            "        # We perform BS on sizes of subarrays and find all SA sums to check",
+            "        # if there is any SS with sum > B.",
+            "        # 1 2 3 4 5 6 7 8",
+            "        # mid = 4 => find all SA sums of len 4 to check if any SA sum is > B",
+            "        # and discard it, go left, or go right otherwise.",
+            " ",
+            "        # helper function that finds all SA sums and compares with B",
+            "        def findSums(A, B, k):",
+            "            i = 0",
+            "            j = 0",
+            "            curSum = 0",
+            "            while j < k:",
+            "                curSum += A[j]",
+            "                j+=1",
+            "            ",
+            "            if curSum > B: ",
+            "                return False",
+            " ",
+            "            while j < len(A):",
+            "                curSum -= A[i]",
+            "                curSum += A[j]",
+            " ",
+            "                if curSum > B: ",
+            "                    return False",
+            "                i+=1",
+            "                j+=1",
+            "            ",
+            "            return True",
+            " ",
+            "        lo = 1",
+            "        hi = len(A)",
+            "        ans = 0",
+            "        while lo <= hi:",
+            "            mid = (lo+hi) // 2",
+            " ",
+            "            if findSums(A, B, mid):",
+            "                lo = mid + 1",
+            "                ans = mid",
+            "            else:",
+            "                hi = mid - 1",
+            " ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given an array of integers A and an integer B, find and return the maximum value K such that there is no subarray in A of size K with the sum of elements greater than B."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 7,
+      "sourceQuestionNumber": 4,
+      "originalTitle": "Ath Magical Number",
+      "originalHeading": "  7. Q4. Ath Magical Number",
+      "sectionNumber": 2,
+      "sectionTitle": "Binary Search 2",
+      "problemStatementParagraphs": [
+        "You are given three positive integers, A, B, and C.",
+        "Any positive integer is magical if divisible by either B or C.",
+        "Return the Ath smallest magical number. Since the answer may be very large, return modulo 109 + 7. Note: Ensure to prevent integer overflow while calculating."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : integer",
+            "    # @param B : integer",
+            "    # @param C : integer",
+            "    # @return an integer",
+            "    def solve(self, A, B, C):",
+            " ",
+            "        def gcd(a, b):",
+            "            if b == 0:",
+            "                return a",
+            "            return gcd(b, a%b)",
+            "        ",
+            "        def lcm(a, b):",
+            "            return (a // gcd(a,b)) * b",
+            "        ",
+            "        def findMagicalNo(x, b, c):",
+            "            return x // b + x // c - x // lcm(b,c)",
+            " ",
+            " ",
+            "        i = 1",
+            "        j = min(B, C) * A",
+            "        ans = -1",
+            "        while i <= j:",
+            " ",
+            "            mid = (i+j)//2",
+            " ",
+            "            res = findMagicalNo(mid, B, C)",
+            " ",
+            "            if res > A:",
+            "                j = mid-1",
+            "            elif res < A:",
+            "                i = mid+1",
+            "            else:",
+            "                ans = mid",
+            "                j = mid-1",
+            "        ",
+            "        return ans % 1000000007"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "You are given three positive integers, A, B, and C."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Any positive integer is magical if divisible by either B or C."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Return the Ath smallest magical number. Since the answer may be very large, return modulo 109 + 7. Note: Ensure to prevent integer overflow while calculating."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 8,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Allocate Books",
+      "originalHeading": "  8. Q1. Allocate Books",
+      "sectionNumber": 3,
+      "sectionTitle": "Binary Search 3",
+      "problemStatementParagraphs": [
+        "Given an array of integers A of size N and an integer B.",
+        "The College library has N books. The ith book has A[i] number of pages.",
+        "You have to allocate books to B number of students so that the maximum number of pages allocated to a student is minimum.",
+        "Calculate and return that minimum possible number.",
+        "NOTE: Return -1 if a valid assignment is not possible."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · text",
+          "language": "text",
+          "lines": [
+            "A book will be allocated to exactly one student.",
+            "Each student has to be allocated at least one book.",
+            "Allotment should be in contiguous order, for example: A student cannot be allocated book 1 and book 3, skipping book 2."
+          ]
+        },
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "\t# @param A : list of integers",
+            "\t# @param B : integer",
+            "\t# @return an integer",
+            "\tdef books(self, A, B):",
+            "        if len(A) < B:",
+            "            return -1",
+            " ",
+            "        def canAllotMaxPages(A, B, pages):",
+            "            c = 1",
+            "            curPages = 0",
+            "            for i in range(len(A)):",
+            "                if curPages + A[i] <= pages:",
+            "                    curPages += A[i]",
+            "                else:",
+            "                    c += 1",
+            "                    curPages = A[i]",
+            "            ",
+            "            if c > B:",
+            "                return False",
+            "            return True",
+            " ",
+            "        ",
+            "        lo = max(A)",
+            "        hi = sum(A)",
+            "        ans = -1",
+            "        while lo <= hi:",
+            "            mid = (lo+hi)//2",
+            " ",
+            "            if canAllotMaxPages(A, B, mid):",
+            "                ans = mid",
+            "                hi = mid - 1",
+            "            else:",
+            "                lo = mid + 1",
+            "        ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given an array of integers A of size N and an integer B."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "The College library has N books. The ith book has A[i] number of pages."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "You have to allocate books to B number of students so that the maximum number of pages allocated to a student is minimum."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · text",
+          "language": "text"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Calculate and return that minimum possible number."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: Return -1 if a valid assignment is not possible."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 1,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 9,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Food Packets Distribution",
+      "originalHeading": "  9. Q2. Food Packets Distribution",
+      "sectionNumber": 3,
+      "sectionTitle": "Binary Search 3",
+      "problemStatementParagraphs": [
+        "The government wants to set up B distribution offices across N cities for the distribution of food packets.",
+        "The population of the ith city is A[i]. Each city must have at least 1 office and every person is assigned to exactly one office in their own city.",
+        "Let M denote the minimum number of people that are assigned to any of the offices. Find the maximum value of M possible."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @param B : integer",
+            "    # @return an integer",
+            "    def solve(self, A, B):",
+            "        # if total number of people are less than the number of",
+            "        # offices to be setup, then some offices will not serve",
+            "        # any person i.e. they'll be left out.",
+            "        if sum(A) < B: return 0",
+            " ",
+            "        # counting the distribution of offices per k people",
+            "        # if the total distribution is greater than the ",
+            "        # number of offices, then it is possible.",
+            "        def canFeedPeople(k):",
+            "            Sum = 0",
+            "            for people in A:",
+            "                Sum += people // k",
+            "            return Sum >= B",
+            " ",
+            "        # lo = 1 → we have to feed at least one person",
+            "        # hi = min(A) → 1 office will at least feed min(A)",
+            "        lo = 1",
+            "        hi = min(A)",
+            "        ans = -1",
+            "        while lo <= hi:",
+            "            mid = (lo+hi) // 2",
+            " ",
+            "            # if we can feed these many people per city",
+            "            # and the distribution is such that no office is left ",
+            "            # out, then we can increase the number of people to be",
+            "            # fed per city i.e. go right of the Search Space.",
+            "            if canFeedPeople(mid):",
+            "                ans = mid",
+            "                lo = mid + 1",
+            "            else:",
+            "                hi = mid - 1",
+            "        ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "The government wants to set up B distribution offices across N cities for the distribution of food packets."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "The population of the ith city is A[i]. Each city must have at least 1 office and every person is assigned to exactly one office in their own city."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Let M denote the minimum number of people that are assigned to any of the offices. Find the maximum value of M possible."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 10,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Array 3 Pointers",
+      "originalHeading": "  10. Q1. Array 3 Pointers",
+      "sectionNumber": 4,
+      "sectionTitle": "Two Pointers",
+      "problemStatementParagraphs": [
+        "You are given 3 sorted arrays A, B and C.",
+        "Find i, j, k such that : max(abs(A[i] - B[j]), abs(B[j] - C[k]), abs(C[k] - A[i])) is minimized.",
+        "Return the minimum max(abs(A[i] - B[j]), abs(B[j] - C[k]), abs(C[k] - A[i]))."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "\t# @param A : tuple of integers",
+            "\t# @param B : tuple of integers",
+            "\t# @param C : tuple of integers",
+            "\t# @return an integer",
+            "\tdef minimize(self, A, B, C):",
+            "        ",
+            "        i = 0",
+            "        j = 0",
+            "        k = 0",
+            "        ans = float('inf')",
+            "        while i < len(A) and j < len(B) and k < len(C):",
+            " ",
+            "            Max = max( A[i], B[j], C[k] )",
+            "            Min = min( A[i], B[j], C[k] )",
+            " ",
+            "            ans = min(ans, Max-Min)",
+            " ",
+            "            if Min == A[i]: i+=1",
+            "            elif Min == B[j]: j+=1",
+            "            elif Min == C[k]: k+=1",
+            "        ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "You are given 3 sorted arrays A, B and C."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Find i, j, k such that : max(abs(A[i] - B[j]), abs(B[j] - C[k]), abs(C[k] - A[i])) is minimized."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Return the minimum max(abs(A[i] - B[j]), abs(B[j] - C[k]), abs(C[k] - A[i]))."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 11,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Minimize the absolute difference",
+      "originalHeading": "  11. Q2. Minimize the absolute difference",
+      "sectionNumber": 4,
+      "sectionTitle": "Two Pointers",
+      "problemStatementParagraphs": [
+        "Given three sorted arrays A, B and Cof not necessarily same sizes.",
+        "Calculate the minimum absolute difference between the maximum and minimum number from the triplet a, b, c such that a, b, c belongs arrays A, B, C respectively. i.e. minimize | max(a,b,c) - min(a,b,c) |."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "\t# @param A : list of integers",
+            "\t# @param B : list of integers",
+            "\t# @param C : list of integers",
+            "\t# @return an integer",
+            "\tdef solve(self, A, B, C):",
+            " ",
+            "        i = 0",
+            "        j = 0",
+            "        k = 0",
+            "        ans = float('inf')",
+            "        while i < len(A) and j < len(B) and k < len(C):",
+            " ",
+            "            Max = max( A[i], B[j], C[k] )",
+            "            Min = min( A[i], B[j], C[k] )",
+            " ",
+            "            ans = min(ans, Max-Min)",
+            " ",
+            "            if Min == A[i]: i+=1",
+            "            elif Min == B[j]: j+=1",
+            "            elif Min == C[k]: k+=1",
+            "        ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given three sorted arrays A, B and Cof not necessarily same sizes."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Calculate the minimum absolute difference between the maximum and minimum number from the triplet a, b, c such that a, b, c belongs arrays A, B, C respectively. i.e. minimize | max(a,b,c) - min(a,b,c) |."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 12,
+      "sourceQuestionNumber": 3,
+      "originalTitle": "Sort by Color",
+      "originalHeading": "  12. Q3. Sort by Color",
+      "sectionNumber": 4,
+      "sectionTitle": "Two Pointers",
+      "problemStatementParagraphs": [
+        "Given an array with N objects colored red, white, or blue, sort them so that objects of the same color are adjacent, with the colors in the *order red, white, and blue.* We will represent the colors as,",
+        "red -> 0 white -> 1 blue -> 2",
+        "Note: Using the library sort function is not allowed."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @return a list of integers",
+            "    def sortColors(self, A):",
+            " ",
+            "        red = 0",
+            "        white = 0",
+            "        blue = 0",
+            " ",
+            "        for color in A:",
+            "            if color == 0:",
+            "                red += 1",
+            "            ",
+            "            elif color == 1:",
+            "                white += 1",
+            " ",
+            "            else:",
+            "                blue += 1 ",
+            "        ",
+            " ",
+            "        for i in range(len(A)):",
+            "            if red > 0:",
+            "                A[i] = 0",
+            "                red -= 1",
+            "            ",
+            "            elif white > 0:",
+            "                A[i] = 1",
+            "                white -= 1",
+            "            ",
+            "            else:",
+            "                A[i] = 2",
+            "                blue -= 1",
+            "        ",
+            "        return A"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given an array with N objects colored red, white, or blue, sort them so that objects of the same color are adjacent, with the colors in the *order red, white, and blue.* We will represent the colors as,"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "red -> 0 white -> 1 blue -> 2"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Note: Using the library sort function is not allowed."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 13,
+      "sourceQuestionNumber": 4,
+      "originalTitle": "Closest pair from sorted arrays",
+      "originalHeading": "  13. Q4. Closest pair from sorted arrays",
+      "sectionNumber": 4,
+      "sectionTitle": "Two Pointers",
+      "problemStatementParagraphs": [
+        "Given two sorted arrays of distinct integers, A and B, and an integer C, find and return the pair whose sum is closest to C and the pair has one element from each array.",
+        "More formally, find A[i] and B[j] such that abs((A[i] + B[j]) - C) has minimum value.",
+        "If there are multiple solutions find the one with minimum i and even if there are multiple values of j for the same i then return the one with minimum j.",
+        "Return an array with two elements {A[i], B[j]}."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @param B : list of integers",
+            "    # @param C : integer",
+            "    # @return a list of integers",
+            "    def solve(self, A, B, C):",
+            " ",
+            " ",
+            "        # A = 1, 2, 3, 4, 5",
+            "        # B = 2, 4, 5, 8",
+            "        # C = 8",
+            " ",
+            "        i = 0",
+            "        j = len(B)-1",
+            "        diff = float('inf')",
+            "        ans = [-1,-1]",
+            "        I = -1",
+            "        while i < len(A) and j >= 0:",
+            " ",
+            "            currDiff = abs(A[i] + B[j] - C)",
+            " ",
+            "            if currDiff < diff:",
+            "                diff = currDiff",
+            "                ans = [i,j]",
+            "                I = i",
+            "            ",
+            "            if currDiff == diff and I == i:",
+            "                ans = [i,j]",
+            "            ",
+            "            if A[i] + B[j] >= C:",
+            "                j -= 1",
+            "            else:",
+            "                i += 1",
+            "        ",
+            "        i, j = ans",
+            "        return [A[i], B[j]]"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given two sorted arrays of distinct integers, A and B, and an integer C, find and return the pair whose sum is closest to C and the pair has one element from each array."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "More formally, find A[i] and B[j] such that abs((A[i] + B[j]) - C) has minimum value."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "If there are multiple solutions find the one with minimum i and even if there are multiple values of j for the same i then return the one with minimum j."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Return an array with two elements {A[i], B[j]}."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 14,
+      "sourceQuestionNumber": 5,
+      "originalTitle": "3 Sum",
+      "originalHeading": "  14. Q5. 3 Sum",
+      "sectionNumber": 4,
+      "sectionTitle": "Two Pointers",
+      "problemStatementParagraphs": [
+        "Given an array A of N integers, find three integers in A such that the sum is closest to a given number B. Return the sum of those three integers.",
+        "Assume that there will only be one solution."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "\t# @param A : list of integers",
+            "\t# @param B : integer",
+            "\t# @return an integer",
+            "\tdef threeSumClosest(self, A, B):",
+            " ",
+            "        A.sort()",
+            "        diffSoFar = float('inf')",
+            "        ans = 0",
+            "        for i in range(len(A)-2):",
+            "            j = i+1",
+            "            k = len(A)-1",
+            " ",
+            "            while j < k:",
+            "                Sum = A[i] + A[j] + A[k]",
+            "                diff = abs(B - Sum)",
+            " ",
+            "                if diff < diffSoFar:",
+            "                    diffSoFar = diff",
+            "                    ans = Sum",
+            " ",
+            "                if Sum == B:",
+            "                    return Sum",
+            "                ",
+            "                if Sum > B:",
+            "                    k -= 1            ",
+            "                else:",
+            "                    j += 1",
+            "        ",
+            "        return ans",
+            " ",
+            " ",
+            "        # -10 -2 -1 5 10"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given an array A of N integers, find three integers in A such that the sum is closest to a given number B. Return the sum of those three integers."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Assume that there will only be one solution."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 15,
+      "sourceQuestionNumber": 6,
+      "originalTitle": "Another Count Rectangles",
+      "originalHeading": "  15. Q6. Another Count Rectangles",
+      "sectionNumber": 4,
+      "sectionTitle": "Two Pointers",
+      "problemStatementParagraphs": [
+        "Given a sorted array of distinct integers A and an integer B, find and return how many rectangles with distinct configurations can be created using elements of this array as length and breadth whose area is lesser than B.",
+        "(Note that a rectangle of 2 x 3 is different from 3 x 2 if we take configuration into view)"
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @param B : integer",
+            "    # @return an integer",
+            "    def solve(self, A, B):",
+            " ",
+            "        # 1 2 4 5 6 7 | B = 35",
+            "        # 0 1 2 3 4 5",
+            " ",
+            "        A.sort() #nlogn",
+            "        i = 0",
+            "        j = len(A) - 1",
+            "        count = 0",
+            "        while i <= j:",
+            "            area = A[i] * A[j]",
+            " ",
+            "            if area < B:",
+            "                count += (j-i)*2 + 1",
+            "                i += 1",
+            "            else:",
+            "                j -= 1",
+            "        ",
+            "        return count % 1000000007"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a sorted array of distinct integers A and an integer B, find and return how many rectangles with distinct configurations can be created using elements of this array as length and breadth whose area is lesser than B."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "(Note that a rectangle of 2 x 3 is different from 3 x 2 if we take configuration into view)"
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 16,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Shaggy and distances",
+      "originalHeading": "  16. Q2. Shaggy and distances",
+      "sectionNumber": 5,
+      "sectionTitle": "Hashing 1 — sequences, windows, and last-seen state",
+      "problemStatementParagraphs": [
+        "Shaggy has an array A consisting of N elements. We call a pair of distinct indices in that array a special if elements at those indices in the array are equal.",
+        "Shaggy wants you to find a special pair such that the distance between that pair is minimum. Distance between two indices is defined as |i-j|. If there is no special pair in the array, then return -1."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @return an integer",
+            "    def solve(self, A):",
+            " ",
+            "        d = {}",
+            "        ans = float('inf')",
+            "        for i in range(len(A)):",
+            "            if A[i] not in d:",
+            "                d[A[i]] = i",
+            "            else:",
+            "                ans = min(ans, abs(d[A[i]] - i))",
+            "        ",
+            "        if ans == float('inf'):",
+            "            return -1",
+            "            ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Shaggy has an array A consisting of N elements. We call a pair of distinct indices in that array a special if elements at those indices in the array are equal."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Shaggy wants you to find a special pair such that the distance between that pair is minimum. Distance between two indices is defined as |i-j|. If there is no special pair in the array, then return -1."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 17,
+      "sourceQuestionNumber": 4,
+      "originalTitle": "Largest Continuous Sequence Zero Sum",
+      "originalHeading": "  17. Q4. Largest Continuous Sequence Zero Sum",
+      "sectionNumber": 5,
+      "sectionTitle": "Hashing 1 — sequences, windows, and last-seen state",
+      "problemStatementParagraphs": [
+        "Given an array A of N integers.",
+        "Find the largest continuous sequence in a array which sums to zero."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "\t# @param A : list of integers",
+            "\t# @return a list of integers",
+            "\tdef lszero(self, A):",
+            "        ",
+            "        # 1 2 -2 4 - 4",
+            "        # 1 3 1  4   1",
+            " ",
+            "        prefix = [A[0]]",
+            "        for i in range(1, len(A)):",
+            "            prefix.append(prefix[i-1]+A[i])",
+            " ",
+            "        d = {}",
+            "        for i in range(len(prefix)):",
+            "            if prefix[i] not in d:",
+            "                d[prefix[i]] = [i,0]",
+            "            else:",
+            "                d[prefix[i]][1] = i",
+            "            ",
+            "        maxDiff = float('-inf')",
+            "        ans = -1",
+            "        for ind in d.values():",
+            "            if ind[1] != 0:",
+            "                diff = ind[1]-ind[0]",
+            "                if diff > maxDiff:",
+            "                    maxDiff = diff",
+            "                    ans = ind",
+            "                elif diff == maxDiff and ind[0] < ans[0]:",
+            "                    ans = ind",
+            "        ",
+            "        for i in range(len(prefix)):",
+            "            if prefix[i] == 0 and i+1 > maxDiff:",
+            "                ans = [-1, i]",
+            "            ",
+            "            elif prefix[i] == 0 and i+1 == maxDiff and ans[0] != -1:",
+            "                ans  = [-1, i]",
+            " ",
+            "        if ans == -1:",
+            "            return []",
+            " ",
+            "        return A[ans[0]+1:ans[1]+1]",
+            " ",
+            "        # 1 2 -3 3",
+            "        # 1 3  0 3"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given an array A of N integers."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Find the largest continuous sequence in a array which sums to zero."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 18,
+      "sourceQuestionNumber": 5,
+      "originalTitle": "Distinct Numbers in Window",
+      "originalHeading": "  18. Q5. Distinct Numbers in Window",
+      "sectionNumber": 5,
+      "sectionTitle": "Hashing 1 — sequences, windows, and last-seen state",
+      "problemStatementParagraphs": [
+        "You are given an array of N integers, A1, A2 ,..., AN and an integer B. Return the of count of distinct numbers in all windows of size B.",
+        "Formally, return an array of size N-B+1 where i'th element in this array contains number of distinct elements in sequence Ai, Ai+1 ,..., Ai+B-1.",
+        "NOTE: if B > N, return an empty array."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "\t# @param A : list of integers",
+            "\t# @param B : integer",
+            "\t# @return a list of integers",
+            "\tdef dNums(self, A, B):",
+            "        if B > len(A): return []",
+            " ",
+            "        count = 0",
+            "        d = {}",
+            "        for i in range(B):",
+            "            if A[i] not in d:",
+            "                d[A[i]] = 0",
+            "                count+=1",
+            "            d[A[i]] += 1",
+            "        ",
+            "        res = [count]",
+            "        ",
+            "        for i in range(B, len(A)):",
+            " ",
+            "            # first remove from window",
+            "            d[A[i-B]] -= 1",
+            "            if d[A[i-B]] == 0:",
+            "                del d[A[i-B]]",
+            " ",
+            "                count -= 1",
+            " ",
+            "            if A[i] not in d:",
+            "                d[A[i]] = 0",
+            "                count += 1",
+            "            d[A[i]] += 1",
+            " ",
+            "            res.append(count)",
+            "        ",
+            "        return res"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "You are given an array of N integers, A1, A2 ,..., AN and an integer B. Return the of count of distinct numbers in all windows of size B."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Formally, return an array of size N-B+1 where i'th element in this array contains number of distinct elements in sequence Ai, Ai+1 ,..., Ai+B-1."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: if B > N, return an empty array."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 19,
+      "sourceQuestionNumber": 3,
+      "originalTitle": "Sub-array with 0 sum",
+      "originalHeading": "  19. Q3. Sub-array with 0 sum",
+      "sectionNumber": 5,
+      "sectionTitle": "Hashing 1 — sequences, windows, and last-seen state",
+      "problemStatementParagraphs": [
+        "Given an array of integers A, find and return whether the given array contains a non-empty subarray with a sum equal to 0.",
+        "If the given array contains a sub-array with sum zero return 1, else return 0."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @return an integer",
+            "    def solve(self, A):",
+            " ",
+            "        s = set()",
+            "        prefix = 0",
+            "        for num in A:",
+            "            prefix += num",
+            " ",
+            "            if prefix == 0 or prefix in s:",
+            "                return 1",
+            "            ",
+            "            s.add(prefix)",
+            "        ",
+            "        return 0",
+            " ",
+            "        # 4 2 -3 1"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given an array of integers A, find and return whether the given array contains a non-empty subarray with a sum equal to 0."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "If the given array contains a sub-array with sum zero return 1, else return 0."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 20,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Longest Consecutive Sequence",
+      "originalHeading": "  20. Q1. Longest Consecutive Sequence",
+      "sectionNumber": 5,
+      "sectionTitle": "Hashing 1 — sequences, windows, and last-seen state",
+      "problemStatementParagraphs": [
+        "Given an unsorted integer array A of size N.",
+        "Find the length of the longest set of consecutive elements from array A."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "\t# @param A : tuple of integers",
+            "\t# @return an integer",
+            "\tdef longestConsecutive(self, A):",
+            " ",
+            "        ans = float('-inf')",
+            "        d = {}",
+            "        for num in A:",
+            "            d[num] = 0",
+            "        ",
+            "        for num in A:",
+            "            if d[num] == 1:",
+            "                continue",
+            " ",
+            "            d[num] = 1",
+            " ",
+            "            count = 1",
+            "            nextNum = num + 1",
+            "            while nextNum in d:",
+            "                d[nextNum] = 1",
+            "                count += 1",
+            "                nextNum += 1",
+            "            ",
+            "            prevNum = num - 1",
+            "            while prevNum in d:",
+            "                d[prevNum] = 1",
+            "                count += 1",
+            "                prevNum -= 1",
+            " ",
+            "            ans = max(ans, count)",
+            "        ",
+            "        return ans",
+            " ",
+            " ",
+            "        # 100 4 200 1 3 2",
+            " ",
+            "        # 100:1, 4:1, 200:1, 1:1, 3:1, 2:1",
+            "         ",
+            "        # 4 3 2 1 0",
+            " ",
+            " ",
+            "        # 100:1, 4:1, 200:1, 1:1, 3:2, 2:2+2",
+            " ",
+            "        # 100 103 4 10 5 11 2 12 3 6 7"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given an unsorted integer array A of size N."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Find the length of the longest set of consecutive elements from array A."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 21,
+      "sourceQuestionNumber": 3,
+      "originalTitle": "Check Palindrome - II",
+      "originalHeading": "  21. Q3. Check Palindrome - II",
+      "sectionNumber": 5,
+      "sectionTitle": "Hashing 1 — sequences, windows, and last-seen state",
+      "problemStatementParagraphs": [
+        "Given a string A consisting of lowercase characters.",
+        "Check if characters of the given string can be rearranged to form a palindrome.",
+        "Return 1 if it is possible to rearrange the characters of the string A such that it becomes a palindrome else return 0."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : string",
+            "    # @return an integer",
+            "    def solve(self, A):",
+            " ",
+            "        d = {}",
+            "        for char in A:",
+            "            if char not in d:",
+            "                d[char] = 0",
+            "            d[char] += 1",
+            "        ",
+            "        odd = False",
+            "        for num in d.values():",
+            "            if num%2 != 0:",
+            "                if odd:",
+            "                    return 0",
+            "                odd = True",
+            "        ",
+            "        return 1"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a string A consisting of lowercase characters."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Check if characters of the given string can be rearranged to form a palindrome."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Return 1 if it is possible to rearrange the characters of the string A such that it becomes a palindrome else return 0."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 22,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Colorful Number",
+      "originalHeading": "  22. Q2. Colorful Number",
+      "sectionNumber": 5,
+      "sectionTitle": "Hashing 1 — sequences, windows, and last-seen state",
+      "problemStatementParagraphs": [
+        "Given a number A, find if it is COLORFUL number or not.",
+        "If number A is a COLORFUL number return 1 else, return 0.",
+        "What is a COLORFUL Number:"
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · text",
+          "language": "text",
+          "lines": [
+            "A number can be broken into different consecutive sequence of digits. ",
+            "The number 3245 can be broken into sequences like 3, 2, 4, 5, 32, 24, 45, 324, 245 and 3245. ",
+            "This number is a COLORFUL number, since the product of every consecutive sequence of digits is different"
+          ]
+        },
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "\t# @param A : integer",
+            "\t# @return an integer",
+            "\tdef colorful(self, A):",
+            " ",
+            "        digits = 0",
+            "        num = A",
+            "        while num > 0:",
+            "            digits += 1",
+            "            num //= 10",
+            "        ",
+            "        def product(num):",
+            "            ar = []",
+            "            while num > 0:",
+            "                ar.append(num%10)",
+            "                num //= 10",
+            "            prod = 1",
+            "            for num in ar:",
+            "                prod *= num",
+            "            return prod",
+            "        ",
+            "        s = set()",
+            "        for i in range(1, digits+1):",
+            "            temp = A",
+            "            j = digits-i+1",
+            "            while j > 0:",
+            "                num = temp % 10**i",
+            "                prod = product(num)",
+            "                if prod in s:",
+            "                    return 0",
+            "                ",
+            "                s.add(prod)",
+            "                temp //= 10",
+            "                j -= 1",
+            "        ",
+            "        return 1"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a number A, find if it is COLORFUL number or not."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "If number A is a COLORFUL number return 1 else, return 0."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "What is a COLORFUL Number:"
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · text",
+          "language": "text"
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 1,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 23,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Sort Array in given Order",
+      "originalHeading": "  23. Q1. Sort Array in given Order",
+      "sectionNumber": 5,
+      "sectionTitle": "Hashing 1 — sequences, windows, and last-seen state",
+      "problemStatementParagraphs": [
+        "Given two arrays of integers A and B, Sort A in such a way that the relative order among the elements will be the same as those are in B. For the elements not present in B, append them at last in sorted order.",
+        "Return the array A after sorting from the above method.",
+        "NOTE: Elements of B are unique."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @param B : list of integers",
+            "    # @return a list of integers",
+            "    def solve(self, A, B):",
+            " ",
+            "        setA = {}",
+            "        for num in A:",
+            "            if num not in setA:",
+            "                setA[num] = 0",
+            "            setA[num] += 1",
+            " ",
+            "        res = []",
+            "        setB = set()",
+            "        for num in B:",
+            "            if num in setA:",
+            "                res += [num] * setA[num]",
+            "                setB.add(num)",
+            "        ",
+            "        temp = []",
+            "        for num in A:",
+            "            if num not in setB:",
+            "                temp.append(num)",
+            "        ",
+            "        return res + sorted(temp)"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given two arrays of integers A and B, Sort A in such a way that the relative order among the elements will be the same as those are in B. For the elements not present in B, append them at last in sorted order."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Return the array A after sorting from the above method."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: Elements of B are unique."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 24,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Count Rectangles",
+      "originalHeading": "  24. Q1. Count Rectangles",
+      "sectionNumber": 6,
+      "sectionTitle": "Hashing 2 — geometry and relationships",
+      "problemStatementParagraphs": [
+        "Given two arrays of integers A and B of size N each, where each pair (A[i], B[i]) for 0 <= i < N represents a unique point (x, y) in a 2-D Cartesian plane.",
+        "Find and return the number of unordered quadruplet (i, j, k, l) such that (A[i], B[i]), (A[j], B[j]), (A[k], B[k]) and (A[l], B[l]) form a rectangle with the rectangle having all the sides parallel to either x-axis or y-axis."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @param B : list of integers",
+            "    # @return an integer",
+            "    def solve(self, A, B):",
+            " ",
+            "        # Point 1: (A[i], B[i])",
+            "        # Point 2: (A[j], B[j])",
+            "        # Points required for rectangle: (A[i], B[j]) and (A[j], B[i])",
+            " ",
+            "        s = set()",
+            "        for i in range(len(A)):",
+            "            s.add((A[i], B[i]))",
+            " ",
+            "        count = 0",
+            "        for i in range(len(A)):",
+            "            for j in range(i+1, len(A)):",
+            "                if A[i]!=A[j] and B[i]!=B[j] and (A[i],B[j]) in s and (A[j],B[i]) in s:",
+            "                    count += 1",
+            " ",
+            "        return count//2"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given two arrays of integers A and B of size N each, where each pair (A[i], B[i]) for 0 <= i < N represents a unique point (x, y) in a 2-D Cartesian plane."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Find and return the number of unordered quadruplet (i, j, k, l) such that (A[i], B[i]), (A[j], B[j]), (A[k], B[k]) and (A[l], B[l]) form a rectangle with the rectangle having all the sides parallel to either x-axis or y-axis."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 25,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Count Right Triangles",
+      "originalHeading": "  25. Q2. Count Right Triangles",
+      "sectionNumber": 6,
+      "sectionTitle": "Hashing 2 — geometry and relationships",
+      "problemStatementParagraphs": [
+        "Given two arrays of integers A and B of size N each, where each pair (A[i], B[i]) for 0 <= i < N represents a unique point (x, y) in 2D Cartesian plane.",
+        "Find and return the number of unordered triplets (i, j, k) such that (A[i], B[i]), (A[j], B[j]) and (A[k], B[k]) form a right-angled triangle with the triangle having one side parallel to the x-axis and one side parallel to the y-axis.",
+        "NOTE: The answer may be large so return the answer modulo (109 + 7)."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @param B : list of integers",
+            "    # @return an integer",
+            "    def solve(self, A, B):",
+            " ",
+            "        x = {}",
+            "        y = {}",
+            " ",
+            "        for i in range(len(A)):",
+            "            if A[i] not in x:",
+            "                x[A[i]] = 0",
+            "            x[A[i]] += 1",
+            " ",
+            "            if B[i] not in y:",
+            "                y[B[i]] = 0",
+            "            y[B[i]] += 1",
+            "        ",
+            "        ans = 0",
+            "        for i in range(len(A)):",
+            "            if A[i] in x and B[i] in y:",
+            "                ans += (x[A[i]] - 1) * (y[B[i]] - 1)",
+            "        ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given two arrays of integers A and B of size N each, where each pair (A[i], B[i]) for 0 <= i < N represents a unique point (x, y) in 2D Cartesian plane."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Find and return the number of unordered triplets (i, j, k) such that (A[i], B[i]), (A[j], B[j]) and (A[k], B[k]) form a right-angled triangle with the triangle having one side parallel to the x-axis and one side parallel to the y-axis."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: The answer may be large so return the answer modulo (109 + 7)."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 26,
+      "sourceQuestionNumber": 3,
+      "originalTitle": "Replicating Substring",
+      "originalHeading": "  26. Q3. Replicating Substring",
+      "sectionNumber": 6,
+      "sectionTitle": "Hashing 2 — geometry and relationships",
+      "problemStatementParagraphs": [
+        "Given a string B, find if it is possible to re-order the characters of the string B so that it can be represented as a concatenation of A similar strings.",
+        "Eg: B = aabb and A = 2, then it is possible to re-arrange the string as \"abab\" which is a concatenation of 2 similar strings \"ab\".",
+        "If it is possible, return 1, else return -1."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : integer",
+            "    # @param B : string",
+            "    # @return an integer",
+            "    def solve(self, A, B):",
+            " ",
+            "        d = {}",
+            "        for char in B:",
+            "            if char not in d:",
+            "                d[char] = 0",
+            "            d[char] += 1",
+            "        ",
+            "        for val in d.values():",
+            "            if val % A != 0:",
+            "                return -1",
+            "        ",
+            "        return 1"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a string B, find if it is possible to re-order the characters of the string B so that it can be represented as a concatenation of A similar strings."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Eg: B = aabb and A = 2, then it is possible to re-arrange the string as \"abab\" which is a concatenation of 2 similar strings \"ab\"."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "If it is possible, return 1, else return -1."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 27,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Points on same line",
+      "originalHeading": "  27. Q1. Points on same line",
+      "sectionNumber": 6,
+      "sectionTitle": "Hashing 2 — geometry and relationships",
+      "problemStatementParagraphs": [
+        "Given two arrays of integers A and B describing a pair of (A[i], B[i]) coordinates in a 2D plane. A[i] describe x coordinates of the ith point in the 2D plane, whereas B[i] describes the y-coordinate of the ith point in the 2D plane.",
+        "Find and return the maximum number of points that lie on the same line."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @param B : list of integers",
+            "    # @return an integer",
+            "    def solve(self, A, B):",
+            " ",
+            "        def GCD(a, b):",
+            "            if b == 0: ",
+            "                return a",
+            "            return GCD(b, a%b)",
+            " ",
+            "        d = {}",
+            "        ans = 0",
+            "        for i in range(len(A)):",
+            "            curmax = 0",
+            "            overlap = 0",
+            "            for j in range(i+1, len(A)):",
+            "                ",
+            "                if A[i] == A[j] and B[i] == B[j]:",
+            "                    overlap += 1",
+            "                    continue",
+            " ",
+            "                y = B[j]-B[i]",
+            "                x = A[j]-A[i]",
+            " ",
+            "                gcd = GCD(x, y)",
+            "                y = y // gcd",
+            "                x = x // gcd",
+            " ",
+            "                slope = (x,y)",
+            "                if slope not in d:",
+            "                    d[slope] = 0",
+            "                d[slope] += 1",
+            " ",
+            "                curmax = max(curmax, d[slope])",
+            "                ",
+            "            d = {}",
+            "            ans = max(ans, curmax+overlap+1)",
+            "        # print(d)",
+            "        ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given two arrays of integers A and B describing a pair of (A[i], B[i]) coordinates in a 2D plane. A[i] describe x coordinates of the ith point in the 2D plane, whereas B[i] describes the y-coordinate of the ith point in the 2D plane."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Find and return the maximum number of points that lie on the same line."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 28,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Compare Sorted Subarrays",
+      "originalHeading": "  28. Q2. Compare Sorted Subarrays",
+      "sectionNumber": 6,
+      "sectionTitle": "Hashing 2 — geometry and relationships",
+      "problemStatementParagraphs": [
+        "Given an array A of length N. You have to answer Q queries.",
+        "Each query will contain four integers l1, r1, l2, and r2. If sorted segment from [l1, r1] is the same as the sorted segment from [l2 r2], then the answer is 1 else 0.",
+        "NOTE The queries are 0-indexed."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "\t# @param A : list of integers",
+            "\t# @param B : list of list of integers",
+            "\t# @return a list of integers",
+            "\tdef solve(self, A, B):",
+            "        # 1 7 11 8 ..",
+            "        # 1 8 19 ..",
+            " ",
+            "        prefix = [hash(str(A[0]))]",
+            "        for i in range(1, len(A)):",
+            "            prefix.append( hash(str(A[i])) + prefix[i-1] )",
+            "        ",
+            "        # print(prefix)",
+            " ",
+            "        ans = []",
+            "        for q in B:",
+            "            l1 = q[0]",
+            "            r1 = q[1]",
+            "            l2 = q[2]",
+            "            r2 = q[3]",
+            " ",
+            "            sum1 = prefix[r1] - prefix[l1] + hash(str(A[l1]))",
+            "            sum2 = prefix[r2] - prefix[l2] + hash(str(A[l2]))",
+            "            if sum1 == sum2:",
+            "                ans.append(1)",
+            "            else:",
+            "                ans.append(0)",
+            " ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given an array A of length N. You have to answer Q queries."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Each query will contain four integers l1, r1, l2, and r2. If sorted segment from [l1, r1] is the same as the sorted segment from [l2 r2], then the answer is 1 else 0."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE The queries are 0-indexed."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 29,
+      "sourceQuestionNumber": 3,
+      "originalTitle": "Common Elements",
+      "originalHeading": "  29. Q3. Common Elements",
+      "sectionNumber": 6,
+      "sectionTitle": "Hashing 2 — geometry and relationships",
+      "problemStatementParagraphs": [
+        "Given two integer arrays, A and B of size N and M, respectively. Your task is to find all the common elements in both the array.",
+        "NOTE:",
+        "• Each element in the result should appear as many times as it appears in both arrays.",
+        "• The result can be in any order."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @param B : list of integers",
+            "    # @return a list of integers",
+            "    def solve(self, A, B):",
+            " ",
+            "        countA = {}",
+            "        for num in A:",
+            "            if num not in countA:",
+            "                countA[num] = 0",
+            "            countA[num] += 1",
+            " ",
+            "        countB = {}",
+            "        for num in B:",
+            "            if num in countA:",
+            "                if num not in countB:",
+            "                    countB[num] = 0",
+            "                countB[num] += 1",
+            "        ",
+            "        res = []",
+            "        for char, count in countB.items():",
+            "            res += [char] * min(count, countA[char])",
+            "        ",
+            "        return res"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given two integer arrays, A and B of size N and M, respectively. Your task is to find all the common elements in both the array."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE:"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "• Each element in the result should appear as many times as it appears in both arrays."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "• The result can be in any order."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 30,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Cyclic Permutations",
+      "originalHeading": "  30. Q1. Cyclic Permutations",
+      "sectionNumber": 7,
+      "sectionTitle": "String Pattern Matching",
+      "problemStatementParagraphs": [
+        "Given two binary strings A and B, count how many cyclic shift of B when taken XOR with A give 0.",
+        "NOTE: If there is a string, S0, S1, ... Sn-1 , then it is a cyclic shift is of the form Sk, Sk+1, ... Sn-1, S0, S1, ... Sk-1 where k can be any integer from 0 to N-1."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · text",
+          "language": "text",
+          "lines": [
+            "No code yet"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given two binary strings A and B, count how many cyclic shift of B when taken XOR with A give 0."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: If there is a string, S0, S1, ... Sn-1 , then it is a cyclic shift is of the form Sk, Sk+1, ... Sn-1, S0, S1, ... Sk-1 where k can be any integer from 0 to N-1."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · text",
+          "language": "text"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 31,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Smallest Prefix String",
+      "originalHeading": "  31. Q1. Smallest Prefix String",
+      "sectionNumber": 7,
+      "sectionTitle": "String Pattern Matching",
+      "problemStatementParagraphs": [
+        "Given 2 strings A and B of size N and M respectively consisting of lowercase alphabets, find the lexicographically smallest string that can be formed by concatenating non-empty prefixes of A and B (in that order).",
+        "Note: The answer string has to start with a non-empty prefix of string A followed by a non-empty prefix of string B."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : string",
+            "    # @param B : string",
+            "    # @return a strings",
+            "    def smallestPrefix(self, A, B):",
+            " ",
+            "        # abba",
+            "        # cdd",
+            " ",
+            "        res = A[0]",
+            "        i = 1",
+            "        while i < len(A) and A[i] < B[0]:",
+            "            res += A[i]",
+            "            i+=1",
+            "        ",
+            "        res += B[0]",
+            "        return res"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given 2 strings A and B of size N and M respectively consisting of lowercase alphabets, find the lexicographically smallest string that can be formed by concatenating non-empty prefixes of A and B (in that order)."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Note: The answer string has to start with a non-empty prefix of string A followed by a non-empty prefix of string B."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 32,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Closest Palindrome",
+      "originalHeading": "  32. Q2. Closest Palindrome",
+      "sectionNumber": 7,
+      "sectionTitle": "String Pattern Matching",
+      "problemStatementParagraphs": [
+        "Groot has a profound love for palindrome which is why he keeps fooling around with strings. A palindrome string is one that reads the same backward as well as forward.",
+        "Given a string A of size N consisting of lowercase alphabets, he wants to know if it is possible to make the given string a palindrome by changing exactly one of its character."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : string",
+            "    # @return a strings",
+            "    def solve(self, A):",
+            " ",
+            "        # abcdecba",
+            " ",
+            "        # cadec",
+            " ",
+            "        n = len(A)",
+            "        flag = False",
+            "        i = 0",
+            "        j = n-1",
+            "        while i <= j:",
+            " ",
+            "            if A[i] != A[j]:",
+            "                if not flag:",
+            "                    flag = True",
+            "                else:",
+            "                    return \"NO\"",
+            "                ",
+            "            i += 1",
+            "            j -= 1",
+            "        ",
+            "        # already a palindrome",
+            "        if not flag:",
+            "            if n % 2 == 0:",
+            "                return \"NO\"",
+            "        ",
+            "        return \"YES\""
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Groot has a profound love for palindrome which is why he keeps fooling around with strings. A palindrome string is one that reads the same backward as well as forward."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a string A of size N consisting of lowercase alphabets, he wants to know if it is possible to make the given string a palindrome by changing exactly one of its character."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 33,
+      "sourceQuestionNumber": 3,
+      "originalTitle": "Make String Palindrome",
+      "originalHeading": "  33. Q3. Make String Palindrome",
+      "sectionNumber": 7,
+      "sectionTitle": "String Pattern Matching",
+      "problemStatementParagraphs": [
+        "Given a string A of size N consisting only of lowercase alphabets. The only operation allowed is to insert characters in the beginning of the string.",
+        "Find and return how many minimum characters are needed to be inserted to make the string a palindrome string."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "\t# @param A : string",
+            "\t# @return an integer",
+            "\tdef solve(self, A):",
+            " ",
+            "        N = len(A)",
+            " ",
+            "        # abcdefghabc",
+            " ",
+            "        def findLPS(pattern):",
+            "            length = len(pattern)",
+            "            lps = [0] * length",
+            "            i = 1",
+            "            prev = 0",
+            " ",
+            "            while i < length:",
+            "                if pattern[i] == pattern[prev]:",
+            "                    prev += 1",
+            "                    lps[i] = prev",
+            "                    i += 1",
+            "                elif prev != 0:",
+            "                    prev = lps[prev - 1]",
+            "                else:",
+            "                    lps[i] = 0",
+            "                    i += 1",
+            " ",
+            "            return lps",
+            " ",
+            "        S = A + '@' + A[::-1]",
+            "        LPS = findLPS(S)",
+            "        lps = LPS[-1]",
+            " ",
+            "        return len(A) - lps"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a string A of size N consisting only of lowercase alphabets. The only operation allowed is to insert characters in the beginning of the string."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Find and return how many minimum characters are needed to be inserted to make the string a palindrome string."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 34,
+      "sourceQuestionNumber": 4,
+      "originalTitle": "Count A",
+      "originalHeading": "  34. Q4. Count A",
+      "sectionNumber": 7,
+      "sectionTitle": "String Pattern Matching",
+      "problemStatementParagraphs": [
+        "You are given a string A. Find the number of substrings that start and end with 'a'."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : string",
+            "    # @return an integer",
+            "    def solve(self, A):",
+            " ",
+            "        c = 0",
+            "        for i in A:",
+            "            if i == 'a':",
+            "                c += 1",
+            "        ",
+            "        return c*(c+1)//2"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "You are given a string A. Find the number of substrings that start and end with 'a'."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 35,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Delete middle node of a Linked List",
+      "originalHeading": "  35. Q1. Delete middle node of a Linked List",
+      "sectionNumber": 8,
+      "sectionTitle": "Linked Lists — derived grouping",
+      "problemStatementParagraphs": [
+        "Given a singly linked list, delete middle of the linked list.",
+        "For example, if given linked list is 1->2->3->4->5 then linked list should be modified to 1->2->4->5",
+        "If there are even nodes, then there would be two middle nodes, we need to delete the second middle element.",
+        "For example, if given linked list is 1->2->3->4->5->6 then it should be modified to 1->2->3->5->6.",
+        "Return the head of the linked list after removing the middle node.",
+        "If the input linked list has 1 node, then this node should be deleted and a null node should be returned."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "# Definition for singly-linked list.",
+            "# class ListNode:",
+            "#    def __init__(self, x):",
+            "#        self.val = x",
+            "#        self.next = None",
+            " ",
+            "class Solution:",
+            "    # @param A : head node of linked list",
+            "    # @return the head node in the linked list",
+            "    def solve(self, A):",
+            " ",
+            "        if not A.next: return None",
+            " ",
+            "        slow = A",
+            "        fast = A",
+            "        prev = A",
+            "        while fast and fast.next:",
+            "            prev = slow",
+            "            slow = slow.next",
+            "            fast = fast.next.next",
+            "        ",
+            "        prev.next = prev.next.next",
+            "    ",
+            "        return A"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a singly linked list, delete middle of the linked list."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "For example, if given linked list is 1->2->3->4->5 then linked list should be modified to 1->2->4->5"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "If there are even nodes, then there would be two middle nodes, we need to delete the second middle element."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "For example, if given linked list is 1->2->3->4->5->6 then it should be modified to 1->2->3->5->6."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Return the head of the linked list after removing the middle node."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "If the input linked list has 1 node, then this node should be deleted and a null node should be returned."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 36,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "K reverse linked list",
+      "originalHeading": "  36. Q2. K reverse linked list",
+      "sectionNumber": 8,
+      "sectionTitle": "Linked Lists — derived grouping",
+      "problemStatementParagraphs": [
+        "Given a singly linked list A and an integer B, reverse the nodes of the list B at a time and return the modified linked list."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "# Definition for singly-linked list.",
+            "# class ListNode:",
+            "#\tdef __init__(self, x):",
+            "#\t\tself.val = x",
+            "#\t\tself.next = None",
+            " ",
+            "class Solution:",
+            "\t# @param A : head node of linked list",
+            "\t# @param B : integer",
+            "\t# @return the head node in the linked list",
+            "\tdef reverseList(self, A, B):",
+            "        if not A.next: return A",
+            " ",
+            "        def reverse(head, n):",
+            "            curr = head.next",
+            "            prev = head",
+            "            while n > 1:",
+            "                temp = curr.next",
+            "                curr.next = prev",
+            "                prev = curr",
+            "                curr = temp",
+            "                n -= 1",
+            "            ",
+            "            return prev",
+            "        ",
+            "        # 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9",
+            "        # 3 -> 2 -> 1 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9",
+            " ",
+            "        def reverseFragment(head, B):",
+            "            if not head: return",
+            " ",
+            "            temp = head",
+            "            n = B",
+            "            while n > 0:",
+            "                n -= 1",
+            "                temp = temp.next",
+            "            ",
+            "            newHead = reverse(head, B)",
+            "            ",
+            "            head.next = reverseFragment(temp, B)",
+            " ",
+            "            return newHead",
+            " ",
+            "        return reverseFragment(A, B)"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a singly linked list A and an integer B, reverse the nodes of the list B at a time and return the modified linked list."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 37,
+      "sourceQuestionNumber": 5,
+      "originalTitle": "Reverse Linked List",
+      "originalHeading": "  37. Q5. Reverse Linked List",
+      "sectionNumber": 8,
+      "sectionTitle": "Linked Lists — derived grouping",
+      "problemStatementParagraphs": [
+        "You are given a singly linked list having head node A. You have to reverse the linked list and return the head node of that reversed list.",
+        "NOTE: You have to do it in-place and in one-pass."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "# Definition for singly-linked list.",
+            "# class ListNode:",
+            "#\tdef __init__(self, x):",
+            "#\t\tself.val = x",
+            "#\t\tself.next = None",
+            " ",
+            "class Solution:",
+            "\t# @param A : head node of linked list",
+            "\t# @return the head node in the linked list",
+            "\tdef reverseList(self, A):",
+            "        if not A.next: return A",
+            " ",
+            "        # 1 -> 2 -> 3 -> 4 <- 5 -> N",
+            " ",
+            "        curr = A.next",
+            "        prev = A",
+            "        prev.next = None",
+            "        while curr:",
+            "            temp = curr.next",
+            "            curr.next = prev",
+            "            prev = curr",
+            "            curr = temp",
+            "        ",
+            "        return prev"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "You are given a singly linked list having head node A. You have to reverse the linked list and return the head node of that reversed list."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: You have to do it in-place and in one-pass."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 38,
+      "sourceQuestionNumber": 3,
+      "originalTitle": "Middle element of linked list",
+      "originalHeading": "  38. Q3. Middle element of linked list",
+      "sectionNumber": 8,
+      "sectionTitle": "Linked Lists — derived grouping",
+      "problemStatementParagraphs": [
+        "Given a linked list of integers, find and return the middle element of the linked list.",
+        "NOTE: If there are N nodes in the linked list and N is even then return the (N/2 + 1)th element."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "# Definition for singly-linked list.",
+            "# class ListNode:",
+            "#    def __init__(self, x):",
+            "#        self.val = x",
+            "#        self.next = None",
+            " ",
+            "class Solution:",
+            "    # @param A : head node of linked list",
+            "    # @return an integer",
+            "    def solve(self, A):",
+            " ",
+            "        slow = A",
+            "        fast = A",
+            "        while fast and fast.next:",
+            "            slow = slow.next",
+            "            fast = fast.next.next",
+            "        ",
+            "        return slow.val"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a linked list of integers, find and return the middle element of the linked list."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: If there are N nodes in the linked list and N is even then return the (N/2 + 1)th element."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 39,
+      "sourceQuestionNumber": 4,
+      "originalTitle": "Reverse Link List II",
+      "originalHeading": "  39. Q4. Reverse Link List II",
+      "sectionNumber": 8,
+      "sectionTitle": "Linked Lists — derived grouping",
+      "problemStatementParagraphs": [
+        "Reverse a linked list A from position B to C.",
+        "NOTE: Do it in-place and in one-pass."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "# Definition for singly-linked list.",
+            "# class ListNode:",
+            "#\tdef __init__(self, x):",
+            "#\t\tself.val = x",
+            "#\t\tself.next = None",
+            " ",
+            "class Solution:",
+            "\t# @param A : head node of linked list",
+            "\t# @param B : integer",
+            "\t# @param C : integer",
+            "\t# @return the head node in the linked list",
+            "\tdef reverseBetween(self, A, B, C):",
+            "        if B==C: return A",
+            " ",
+            "        # 1 -> 4 -> 3 -> 2 -> 5",
+            " ",
+            "        #  1 -> 2 -> 3 -> 4 -> 5",
+            "        #  -- 5 <- 2 <- 3 <- 4 <- 1 --",
+            "        ",
+            "        # head",
+            "        # A, B, C, D",
+            "        # A -> C",
+            "        # B -> D",
+            " ",
+            "        # prev -> previous node",
+            "        # curr -> current node",
+            "        # n -> no. of nodes",
+            " ",
+            "        # reversal starts from start",
+            "        # 1 -> 2 -> 3 -> 4 -> 5",
+            "        # B         C",
+            "        # 3 -> 2 -> 1 -> 4 -> 5",
+            "        # C         B     ",
+            " ",
+            "        # reversal ends at the end",
+            "        # 1 -> 2 -> 3 -> 4 -> 5",
+            "        # 1 -> 2 -> 5 -> 4 -> 3",
+            " ",
+            "        # 1 -> 2 -> 3 -> null",
+            "        # A    B    C    D",
+            " ",
+            "        # 1 -> 2 -> null",
+            "        # AB   C    D",
+            " ",
+            "        head = A",
+            "        b = B",
+            "        c = C",
+            " ",
+            "        curr = head",
+            "        prev = head",
+            "        n = 1",
+            "        while curr:",
+            "            if n > c: break",
+            "            ",
+            "            # assign variables",
+            "            if n == b:",
+            "                A = prev",
+            "                B = curr",
+            "            ",
+            "            if n == c:",
+            "                C = curr",
+            "                D = curr.next",
+            "            ",
+            "            if n >= b and n <= c:",
+            "                temp = curr.next",
+            "                curr.next = prev",
+            "                prev = curr",
+            "                curr = temp",
+            "                n+=1",
+            "                continue",
+            " ",
+            "                # 1 <- 2 <- 3 <- 4 _ 5",
+            " ",
+            "            # traverse forward",
+            "            prev = curr",
+            "            curr = curr.next",
+            "            n += 1",
+            "        ",
+            "        B.next = D",
+            " ",
+            "        if b == 1:",
+            "            return C",
+            " ",
+            "        A.next = C",
+            " ",
+            "        return head"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Reverse a linked list A from position B to C."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: Do it in-place and in one-pass."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 40,
+      "sourceQuestionNumber": 6,
+      "originalTitle": "Linked-List",
+      "originalHeading": "  40. Q6. Linked-List",
+      "sectionNumber": 8,
+      "sectionTitle": "Linked Lists — derived grouping",
+      "problemStatementParagraphs": [
+        "Design and implement a Linked List data structure. A node in a linked list should have the following attributes - an integer value and a pointer to the next node. It should support the following operations:",
+        "Note:",
+        "• If an input position does not satisfy the constraint, no action is required.",
+        "• Each print query has to be executed in a new line."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · text",
+          "language": "text",
+          "lines": [
+            "insert_node(position, value) - To insert the input value at the given position in the linked list.",
+            "delete_node(position) - Delete the value at the given position from the linked list.",
+            "print_ll() - Print the entire linked list, such that each element is followed by a single space (no trailing spaces)."
+          ]
+        },
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Node:",
+            "    def __init__(self, val):",
+            "        self.val = val",
+            "        self.next = None",
+            " ",
+            "# Insert, Delete ==> Head, Tail, Middle",
+            " ",
+            "class LinkedList:",
+            "    def __init__(self):",
+            "        self.head = None",
+            " ",
+            "    def insert_node(self, position, value):",
+            "        #insert @ head",
+            "        if position == 1:",
+            "            if not self.head:",
+            "                self.head = Node(value)",
+            "            else:",
+            "                temp = self.head",
+            "                self.head = Node(value)",
+            "                self.head.next = temp",
+            "            ",
+            "        i = 1",
+            "        temp = self.head",
+            "        while i != position-1:",
+            "            i+=1",
+            "            temp = temp.next",
+            "            if not temp: ",
+            "                break",
+            "        ",
+            "        if not temp:",
+            "            return",
+            "        else:",
+            "            tempNext = temp.next",
+            "            newNode = Node(value)",
+            "            temp.next = newNode",
+            "            newNode.next = tempNext",
+            " ",
+            " ",
+            "    def delete_node(self, position):",
+            "        if position == 1:",
+            "            if self.head:",
+            "                temp = self.head",
+            "                self.head = self.head.next",
+            "                return temp.val",
+            "            ",
+            "        i = 1",
+            "        temp = self.head",
+            "        while i != position-1:",
+            "            i+=1",
+            "            temp = temp.next",
+            "            if not temp: ",
+            "                break",
+            "        ",
+            "        if not temp:",
+            "            return",
+            "        elif temp.next:",
+            "            deleted = temp.next",
+            "            temp.next = temp.next.next",
+            "            return deleted.val",
+            " ",
+            "    def print_ll(self):",
+            "        temp = self.head",
+            "        while temp:",
+            "            if not temp.next:",
+            "                print(temp.val)",
+            "            else:",
+            "                print(temp.val, end=' ')",
+            "            temp = temp.next",
+            " ",
+            "ll = LinkedList()",
+            " ",
+            "def insert_node(position, value):",
+            "    # @param position, an integer",
+            "    # @param value, an integer",
+            "    ll.insert_node(position, value)",
+            " ",
+            " ",
+            "def delete_node(position):",
+            "    # @param position, integer",
+            "    # @return an integer",
+            "    return ll.delete_node(position)",
+            " ",
+            "def print_ll():",
+            "    # Output each element followed by a space",
+            "    ll.print_ll()"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Design and implement a Linked List data structure. A node in a linked list should have the following attributes - an integer value and a pointer to the next node. It should support the following operations:"
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · text",
+          "language": "text"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Note:"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "• If an input position does not satisfy the constraint, no action is required."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "• Each print query has to be executed in a new line."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 1,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 41,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Remove Nth Node from List End",
+      "originalHeading": "  41. Q1. Remove Nth Node from List End",
+      "sectionNumber": 8,
+      "sectionTitle": "Linked Lists — derived grouping",
+      "problemStatementParagraphs": [
+        "Given a linked list A, remove the B-th node from the end of the list and return its head. For example, given linked list: 1->2->3->4->5, and B = 2. After removing the second node from the end, the linked list becomes 1->2->3->5. NOTE: If B is greater than the size of the list, remove the first node of the list.",
+        "Try doing it using constant additional space."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "# Definition for singly-linked list.",
+            "# class ListNode:",
+            "#\tdef __init__(self, x):",
+            "#\t\tself.val = x",
+            "#\t\tself.next = None",
+            " ",
+            "class Solution:",
+            "\t# @param A : head node of linked list",
+            "\t# @param B : integer",
+            "\t# @return the head node in the linked list",
+            "\tdef removeNthFromEnd(self, A, B):",
+            "        # 1 2 3 4 5 6 7 8 9",
+            " ",
+            "        if not A.next:",
+            "            if B == 1:",
+            "                return None",
+            "            return A",
+            " ",
+            "        first = A",
+            "        second = A",
+            "        while B > 0:",
+            "            B -= 1",
+            "            second = second.next",
+            " ",
+            "            if not second:",
+            "                return A.next",
+            "        ",
+            "        while second.next:",
+            "            first = first.next",
+            "            second = second.next",
+            "        ",
+            "        first.next = first.next.next",
+            " ",
+            "        return A"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a linked list A, remove the B-th node from the end of the list and return its head. For example, given linked list: 1->2->3->4->5, and B = 2. After removing the second node from the end, the linked list becomes 1->2->3->5. NOTE: If B is greater than the size of the list, remove the first node of the list."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Try doing it using constant additional space."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 42,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Remove Duplicates from Sorted List",
+      "originalHeading": "  42. Q2. Remove Duplicates from Sorted List",
+      "sectionNumber": 8,
+      "sectionTitle": "Linked Lists — derived grouping",
+      "problemStatementParagraphs": [
+        "Given a sorted linked list, delete all duplicates such that each element appears only once."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "# Definition for singly-linked list.",
+            "# class ListNode:",
+            "#\tdef __init__(self, x):",
+            "#\t\tself.val = x",
+            "#\t\tself.next = None",
+            " ",
+            "class Solution:",
+            "\t# @param A : head node of linked list",
+            "\t# @return the head node in the linked list",
+            "\tdef deleteDuplicates(self, A):",
+            " ",
+            "        # 1 -> 2 -> 2 -> 2 -> 3 -> 3 -> 4",
+            " ",
+            "        temp = A",
+            "        while temp:",
+            "            curr = temp",
+            " ",
+            "            while temp and curr.val == temp.val:",
+            "                temp = temp.next",
+            " ",
+            "            if curr != temp:                ",
+            "                curr.next = temp",
+            "                continue",
+            " ",
+            "            temp = temp.next",
+            " ",
+            "        return A"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a sorted linked list, delete all duplicates such that each element appears only once."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 43,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Remove Loop from Linked List",
+      "originalHeading": "  43. Q2. Remove Loop from Linked List",
+      "sectionNumber": 8,
+      "sectionTitle": "Linked Lists — derived grouping",
+      "problemStatementParagraphs": [
+        "You are using Google Maps to help you find your way around a new place. But, you get lost and end up walking in a circle. Google Maps has a way to keep track of where you've been with the help of special sensors.These sensors notice that you're walking in a loop, and now, Google wants to create a new feature to help you figure out exactly where you started going in circles. Here's how we can describe the challenge in simpler terms: You have a Linked List A that shows each step of your journey, like a chain of events. Some of these steps have accidentally led you back to a place you've already been, making you walk in a loop. The goal is to find out the exact point where you first started walking in this loop, and then you want to break the loop by not going in the circle just before this point."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "# Definition for singly-linked list.",
+            "# class ListNode:",
+            "#    def __init__(self, x):",
+            "#        self.val = x",
+            "#        self.next = None",
+            " ",
+            "class Solution:",
+            "    # @param A : head node of linked list",
+            "    # @return the head node in the linked list",
+            "    def solve(self, A):",
+            " ",
+            "        # single node points to itself",
+            "        if A.next == A:",
+            "            A.next = None",
+            "            return A",
+            "        ",
+            "        # 1 <-> 2",
+            "        if A.next.next == A or A.next.next == A.next:",
+            "            A.next.next = None",
+            "            return A",
+            " ",
+            "        slow = A",
+            "        fast = A",
+            "        while True:",
+            "            slow = slow.next",
+            "            fast = fast.next.next",
+            " ",
+            "            if slow == fast:",
+            "                break",
+            "        ",
+            "        prev = fast",
+            "        slow = A",
+            "        while slow != fast:",
+            "            slow = slow.next",
+            "            prev = fast",
+            "            fast = fast.next",
+            "        ",
+            "        prev.next = None",
+            " ",
+            "        return A"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "You are using Google Maps to help you find your way around a new place. But, you get lost and end up walking in a circle. Google Maps has a way to keep track of where you've been with the help of special sensors.These sensors notice that you're walking in a loop, and now, Google wants to create a new feature to help you figure out exactly where you started going in circles. Here's how we can describe the challenge in simpler terms: You have a Linked List A that shows each step of your journey, like a chain of events. Some of these steps have accidentally led you back to a place you've already been, making you walk in a loop. The goal is to find out the exact point where you first started walking in this loop, and then you want to break the loop by not going in the circle just before this point."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 44,
+      "sourceQuestionNumber": 3,
+      "originalTitle": "Reorder List",
+      "originalHeading": "  44. Q3. Reorder List",
+      "sectionNumber": 8,
+      "sectionTitle": "Linked Lists — derived grouping",
+      "problemStatementParagraphs": [
+        "Given a singly linked list A",
+        "reorder it to:",
+        "You must do this in-place without altering the nodes' values."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · text",
+          "language": "text",
+          "lines": [
+            " A: A0 → A1 → … → An-1 → An"
+          ]
+        },
+        {
+          "label": "Source snippet · text",
+          "language": "text",
+          "lines": [
+            " A0 → An → A1 → An-1 → A2 → An-2 → …"
+          ]
+        },
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "# Definition for singly-linked list.",
+            "# class ListNode:",
+            "#\tdef __init__(self, x):",
+            "#\t\tself.val = x",
+            "#\t\tself.next = None",
+            " ",
+            "class Solution:",
+            "\t# @param A : head node of linked list",
+            "\t# @return the head node in the linked list",
+            "\tdef reorderList(self, A):",
+            " ",
+            "        if not A.next: return A",
+            "        ",
+            "        # 1 2 3 4 5",
+            "        # s = 1",
+            "        # 1 5 2 4 3",
+            " ",
+            "        # 1 2 3 4",
+            " ",
+            "        stack = []",
+            "        temp = A",
+            "        n = 0",
+            "        while temp:",
+            "            n += 1",
+            "            stack.append(temp)",
+            "            temp = temp.next",
+            "        ",
+            "        temp = A",
+            "        n //= 2",
+            "        while n > 0:",
+            " ",
+            "            tempNext = temp.next",
+            "            nextNode = stack.pop()",
+            "            temp.next = nextNode",
+            "            nextNode.next = tempNext",
+            " ",
+            "            n -= 1",
+            "            temp = temp.next.next",
+            "        ",
+            "        temp.next = None",
+            " ",
+            "        return A"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a singly linked list A"
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · text",
+          "language": "text"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "reorder it to:"
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 1,
+          "label": "Source snippet · text",
+          "language": "text"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "You must do this in-place without altering the nodes' values."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 2,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 45,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Sort List",
+      "originalHeading": "  45. Q1. Sort List",
+      "sectionNumber": 8,
+      "sectionTitle": "Linked Lists — derived grouping",
+      "problemStatementParagraphs": [
+        "Sort a linked list, A in O(n log n) time."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "# Definition for singly-linked list.",
+            "# class ListNode:",
+            "#\tdef __init__(self, x):",
+            "#\t\tself.val = x",
+            "#\t\tself.next = None",
+            " ",
+            "class Solution:",
+            "\t# @param A : head node of linked list",
+            "\t# @return the head node in the linked list",
+            "\tdef sortList(self, A):",
+            " ",
+            "        if not A or not A.next: return A",
+            " ",
+            "        # 1 4 6",
+            "        # 2 3 9",
+            " ",
+            "        def merge(one, two):",
+            "            if not one: return two",
+            "            if not two: return one",
+            " ",
+            "            if one.val < two.val:",
+            "                head = one",
+            "                one = one.next",
+            "            else:",
+            "                head = two",
+            "                two = two.next",
+            "            ",
+            "            temp = head",
+            "            while one and two:",
+            "                if one.val < two.val:",
+            "                    temp.next = one",
+            "                    temp = one",
+            "                    one = one.next",
+            "                else:",
+            "                    temp.next = two",
+            "                    temp = two",
+            "                    two = two.next",
+            "            ",
+            "            if one: temp.next = one",
+            "            if two: temp.next = two",
+            " ",
+            "            return head",
+            "        ",
+            "        def getMid(A):",
+            "            # 1 2 3 4",
+            "            # 1 2 3 4 5",
+            "            slow = A",
+            "            fast = A.next",
+            "            while fast and fast.next:",
+            "                slow = slow.next",
+            "                fast = fast.next.next",
+            "            ",
+            "            return slow",
+            "        ",
+            "        def mergeSort(A):",
+            "            if not A or not A.next: return A",
+            " ",
+            "            mid = getMid(A)",
+            "            ",
+            "            h2 = mid.next",
+            "            mid.next = None",
+            " ",
+            "            # 1 2 3 4 5 _ 6 7 8 9",
+            " ",
+            "            h1 = mergeSort(A)",
+            "            h2 = mergeSort(h2)",
+            " ",
+            "            return merge(h1, h2)",
+            "        ",
+            "        return mergeSort(A)"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Sort a linked list, A in O(n log n) time."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 46,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Merge Two Sorted Lists",
+      "originalHeading": "  46. Q2. Merge Two Sorted Lists",
+      "sectionNumber": 8,
+      "sectionTitle": "Linked Lists — derived grouping",
+      "problemStatementParagraphs": [
+        "Merge two sorted linked lists, A and B, and return it as a new list.",
+        "The new list should be made by splicing together the nodes of the first two lists and should also be sorted."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "# Definition for singly-linked list.",
+            "# class ListNode:",
+            "#\tdef __init__(self, x):",
+            "#\t\tself.val = x",
+            "#\t\tself.next = None",
+            " ",
+            "class Solution:",
+            "\t# @param A : head node of linked list",
+            "\t# @param B : head node of linked list",
+            "\t# @return the head node in the linked list",
+            "\tdef mergeTwoLists(self, A, B):",
+            "        # 5 8 20",
+            "        # 4 11 15",
+            " ",
+            "        def merge(one, two):",
+            "            if not one: return two",
+            "            if not two: return one",
+            " ",
+            "            if one.val < two.val:",
+            "                head = one",
+            "                one = one.next",
+            "            else:",
+            "                head = two",
+            "                two = two.next",
+            "            ",
+            "            temp = head",
+            "            while one and two:",
+            "                if one.val < two.val:",
+            "                    temp.next = one",
+            "                    temp = one",
+            "                    one = one.next",
+            "                else:",
+            "                    temp.next = two",
+            "                    temp = two",
+            "                    two = two.next",
+            "            ",
+            "            if one: temp.next = one",
+            "            if two: temp.next = two",
+            " ",
+            "            return head",
+            "        ",
+            "        return merge(A, B)",
+            " ",
+            "        if not A: return B",
+            "        if not B: return A",
+            " ",
+            "        if A.val < B.val:",
+            "            head = A",
+            "            curr = A",
+            "            A = A.next",
+            "        else:",
+            "            head = B",
+            "            curr = B",
+            "            B = B.next",
+            "        ",
+            "        while A and B:",
+            "            if A.val < B.val:",
+            "                curr.next = A",
+            "                curr = curr.next",
+            "                A = A.next",
+            "            else:",
+            "                curr.next = B",
+            "                curr = curr.next",
+            "                B = B.next",
+            "        ",
+            "        if A:",
+            "            curr.next = A",
+            "        elif B:",
+            "            curr.next = B",
+            "        ",
+            "        return head"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Merge two sorted linked lists, A and B, and return it as a new list."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "The new list should be made by splicing together the nodes of the first two lists and should also be sorted."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 47,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Next Greater",
+      "originalHeading": "  47. Q1. Next Greater",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "Given an array A, find the next greater element G[i] for every element A[i] in the array. The next greater element for an element A[i] is the first greater element on the right side of A[i] in the array, A.",
+        "More formally:",
+        "Elements for which no greater element exists, consider the next greater element as -1."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · text",
+          "language": "text",
+          "lines": [
+            "G[i] for an element A[i] = an element A[j] such that ",
+            "    j is minimum possible AND ",
+            "    j > i AND",
+            "    A[j] > A[i]"
+          ]
+        },
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @return a list of integers",
+            "    def nextGreater(self, A):",
+            " ",
+            "        # 5 4 10 2 1 9",
+            "        # stack = 9 ",
+            "        # ans = -1 9 9 -1 10 10",
+            "        # rev = 10 10 -1 9 9 -1",
+            " ",
+            "        ans = []",
+            "        stack = []",
+            "        for i in range(len(A)-1, -1, -1):",
+            "            while stack and stack[-1] <= A[i]:",
+            "                stack.pop()",
+            " ",
+            "            if not stack:",
+            "                ans.append(-1)",
+            "            else:",
+            "                ans.append(stack[-1])",
+            "            ",
+            "            stack.append(A[i])",
+            " ",
+            " ",
+            "        return ans[::-1]"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given an array A, find the next greater element G[i] for every element A[i] in the array. The next greater element for an element A[i] is the first greater element on the right side of A[i] in the array, A."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "More formally:"
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · text",
+          "language": "text"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Elements for which no greater element exists, consider the next greater element as -1."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 1,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 48,
+      "sourceQuestionNumber": 4,
+      "originalTitle": "Evaluate Expression",
+      "originalHeading": "  48. Q4. Evaluate Expression",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "An arithmetic expression is given by a string array A of size N. Evaluate the value of an arithmetic expression in Reverse Polish Notation.",
+        "Valid operators are +, -, *, /. Each string may be an integer or an operator. Note: Reverse Polish Notation is equivalent to Postfix Expression, where operators are written after their operands."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "\t# @param A : list of strings",
+            "\t# @return an integer",
+            "\tdef evalRPN(self, A):",
+            " ",
+            "        ops = '+-*/'",
+            "        stack = []",
+            "        for ch in A:",
+            "            if ch not in ops:",
+            "                stack.append(ch)",
+            "            else:",
+            "                op1 = int(stack.pop())",
+            "                op2 = int(stack.pop())",
+            " ",
+            "                if ch == '+':",
+            "                    res = op1 + op2",
+            "                elif ch == '-':",
+            "                    res = op2 - op1",
+            "                elif ch == '*':",
+            "                    res = op1 * op2",
+            "                else:",
+            "                    res = op2 // op1",
+            "                ",
+            "                stack.append(res)",
+            "        ",
+            "        return stack[0]"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "An arithmetic expression is given by a string array A of size N. Evaluate the value of an arithmetic expression in Reverse Polish Notation."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Valid operators are +, -, *, /. Each string may be an integer or an operator. Note: Reverse Polish Notation is equivalent to Postfix Expression, where operators are written after their operands."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 49,
+      "sourceQuestionNumber": 3,
+      "originalTitle": "All Subarrays",
+      "originalHeading": "  49. Q3. All Subarrays",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "Given an integer array A of size N. You have to generate it's all subarrays having a size greater than 1.",
+        "Then for each subarray, find Bitwise XOR of its maximum and second maximum element.",
+        "Find and return the maximum value of XOR among all subarrays."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @return an integer",
+            "    def solve(self, A):",
+            " ",
+            "        ans = float('-inf')",
+            " ",
+            "        stack = [A[0]]",
+            "        for i in range(1, len(A)):",
+            " ",
+            "            while stack and stack[-1] <= A[i]:",
+            "                curr = stack.pop() ^ A[i]",
+            "                ans = max(ans, curr)",
+            "            ",
+            "            if stack and stack[-1] > A[i]:",
+            "                ans = max(ans, stack[-1] ^ A[i] )",
+            "            ",
+            "            stack.append(A[i])",
+            "        ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given an integer array A of size N. You have to generate it's all subarrays having a size greater than 1."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Then for each subarray, find Bitwise XOR of its maximum and second maximum element."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Find and return the maximum value of XOR among all subarrays."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 50,
+      "sourceQuestionNumber": 3,
+      "originalTitle": "MAX and MIN",
+      "originalHeading": "  50. Q3. MAX and MIN",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "Given an array of integers A.",
+        "The value of an array is computed as the difference between the maximum element in the array and the minimum element in the array A.",
+        "Calculate and return the sum of values of all possible subarrays of A modulo 109+7."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @return an integer",
+            "    def solve(self, A):",
+            " ",
+            "        mod = int(1e9)+7",
+            " ",
+            "        nsl = []",
+            "        stack = []",
+            "        for i in range(len(A)):",
+            "            while stack and A[stack[-1]] > A[i]:",
+            "                stack.pop()    ",
+            "            nsl.append(stack[-1] if stack else -1)",
+            "            stack.append(i)",
+            "    ",
+            " ",
+            "        ngl = []",
+            "        stack = []",
+            "        for i in range(len(A)):",
+            "            while stack and A[stack[-1]] < A[i]:",
+            "                stack.pop()    ",
+            "            ngl.append(stack[-1] if stack else -1)",
+            "            stack.append(i)",
+            "    ",
+            "        nsr = []",
+            "        stack = []",
+            "        for i in range(len(A)-1,-1,-1):",
+            "            while stack and A[stack[-1]] >= A[i]:",
+            "                stack.pop()",
+            "            nsr.append(stack[-1] if stack else -1)",
+            "            stack.append(i)",
+            " ",
+            "        nsr = nsr[::-1]",
+            "        ",
+            "        ngr = []",
+            "        stack = []",
+            "        for i in range(len(A)-1,-1,-1):",
+            "            while stack and A[stack[-1]] <= A[i]:",
+            "                stack.pop()",
+            "            ngr.append(stack[-1] if stack else -1)",
+            "            stack.append(i)",
+            " ",
+            "        ngr = ngr[::-1]",
+            " ",
+            "        totalMin = 0",
+            "        totalMax = 0",
+            "        ans = 0",
+            "        for i in range(len(A)):",
+            " ",
+            "            left = i+1 if nsl[i] == -1 else i - nsl[i]",
+            "            right = len(A)-i if nsr[i] == -1 else nsr[i] - i",
+            "            totalMin += (A[i] * left * right) % mod",
+            " ",
+            "            left = i+1 if ngl[i] == -1 else i - ngl[i]",
+            "            right = len(A)-i if ngr[i] == -1 else ngr[i] - i",
+            "            totalMax += (A[i] * left * right) % mod",
+            " ",
+            "        ans += (totalMax - totalMin + mod) % mod",
+            "        ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given an array of integers A."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "The value of an array is computed as the difference between the maximum element in the array and the minimum element in the array A."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Calculate and return the sum of values of all possible subarrays of A modulo 109+7."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 51,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Largest Rectangle in Histogram",
+      "originalHeading": "  51. Q2. Largest Rectangle in Histogram",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "Given an array of integers A.",
+        "A represents a histogram i.e A[i] denotes the height of the ith histogram's bar. Width of each bar is 1.",
+        "Find the area of the largest rectangle formed by the histogram."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @return an integer",
+            " ",
+            "    def largestRectangleArea(self, A):",
+            "        if len(A) == 1: return A[0]",
+            " ",
+            "        def nextSmaller(A, dir):",
+            "            NS = []",
+            "            stack = []",
+            "            i = 0 if dir == 'L' else len(A)-1",
+            "            while True:",
+            "                while stack and A[stack[-1]] >= A[i]:",
+            "                    stack.pop()",
+            "                if not stack:",
+            "                    NS.append(-1)",
+            "                else:",
+            "                    NS.append(stack[-1])",
+            "                stack.append(i)",
+            " ",
+            "                if dir == 'L':",
+            "                    i += 1",
+            "                    if i == len(A): break",
+            "                else:",
+            "                    i -= 1",
+            "                    if i == -1: break",
+            " ",
+            "            return NS if dir == 'L' else NS[::-1]",
+            "        ",
+            "        NSL = nextSmaller(A, 'L')",
+            "        NSR = nextSmaller(A, 'R')",
+            "        # Here NS array contains count of vertical bars that ",
+            "        # contribute to the area",
+            " ",
+            "        # print(NSL, NSR)",
+            "        # return",
+            " ",
+            "        ans = float('-inf')",
+            "        for i in range(len(A)):",
+            " ",
+            "            if NSR[i] == -1 and NSL[i] == -1:",
+            "                ans = max(ans, A[i] * len(A))",
+            "            elif NSR[i] != -1 and NSL[i] != -1:",
+            "                curr = (NSR[i] - NSL[i] - 1) * A[i]",
+            "                ans = max(ans, curr)",
+            "            else:",
+            " ",
+            "                if NSL[i] == -1:",
+            "                    curr = NSR[i] * A[i]",
+            "                    ans = max(ans, curr)   ",
+            " ",
+            "                if NSR[i] == -1:",
+            "                    curr = (len(A) - NSL[i] - 1) * A[i] # => (y-x+1) check notes",
+            "                    ans = max(ans, curr)",
+            "        ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given an array of integers A."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "A represents a histogram i.e A[i] denotes the height of the ith histogram's bar. Width of each bar is 1."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Find the area of the largest rectangle formed by the histogram."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 52,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Nearest Smaller Element",
+      "originalHeading": "  52. Q1. Nearest Smaller Element",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "Given an array A, find the nearest smaller element G[i] for every element A[i] in the array such that the element has an index smaller than i.",
+        "More formally,",
+        "G[i] for an element A[i] = an element A[j] such that",
+        "j is maximum possible AND",
+        "j < i AND",
+        "A[j] < A[i]",
+        "Elements for which no smaller element exist, consider the next smaller element as -1."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "\t# @param A : list of integers",
+            "\t# @return a list of integers",
+            "\tdef prevSmaller(self, A):",
+            " ",
+            "        stack =[]",
+            "        res = []",
+            "        for i in range(len(A)):",
+            "            while stack and stack[-1] >= A[i]:",
+            "                stack.pop()",
+            " ",
+            "            if not stack:",
+            "                res.append(-1)",
+            "            else:",
+            "                res.append(stack[-1])",
+            "            ",
+            "            stack.append(A[i])",
+            "        ",
+            "        return res"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given an array A, find the nearest smaller element G[i] for every element A[i] in the array such that the element has an index smaller than i."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "More formally,"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "G[i] for an element A[i] = an element A[j] such that"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "j is maximum possible AND"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "j < i AND"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "A[j] < A[i]"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Elements for which no smaller element exist, consider the next smaller element as -1."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 53,
+      "sourceQuestionNumber": 1,
+      "originalTitle": "Passing game",
+      "originalHeading": "  53. Q1. Passing game",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "There is a football event going on in your city. In this event, you are given A passes and players having ids between 1 and 106.",
+        "Initially, some player with a given id had the ball in his possession. You have to make a program to display the id of the player who possessed the ball after exactly A passes.",
+        "There are two kinds of passes:",
+        "1.  ID ",
+        "2.  0 ",
+        "For the first kind of pass, the player in possession of the ball passes the ball \"forward\" to the player with id = ID.",
+        "For the second kind of pass, the player in possession of the ball passes the ball back to the player who had forwarded the ball to him.",
+        "In the second kind of pass \"0\" just means Back Pass.",
+        "Return the ID of the player who currently possesses the ball."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : integer",
+            "    # @param B : integer",
+            "    # @param C : list of integers",
+            "    # @return an integer",
+            "    def solve(self, A, B, C):",
+            " ",
+            "        # 10 9 8 7 6 5 4 3 2 2 1",
+            "        # id = 23",
+            "        # 86 63 60 63 47 63 99 9 99 63",
+            " ",
+            "        stack = []",
+            "        for id in C:",
+            "            if id == 0:",
+            "                stack.pop()",
+            "            else:",
+            "                stack.append(id)",
+            " ",
+            "        return B if not stack else stack[-1]"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "There is a football event going on in your city. In this event, you are given A passes and players having ids between 1 and 106."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Initially, some player with a given id had the ball in his possession. You have to make a program to display the id of the player who possessed the ball after exactly A passes."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "There are two kinds of passes:"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "1.  ID "
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "2.  0 "
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "For the first kind of pass, the player in possession of the ball passes the ball \"forward\" to the player with id = ID."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "For the second kind of pass, the player in possession of the ball passes the ball back to the player who had forwarded the ball to him."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "In the second kind of pass \"0\" just means Back Pass."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Return the ID of the player who currently possesses the ball."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 54,
+      "sourceQuestionNumber": 7,
+      "originalTitle": "Maximum Frequency stack",
+      "originalHeading": "  54. Q7. Maximum Frequency stack",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "You are given a matrix A of size N x 2 which represents different operations. Assume initially you have a stack-like data structure you have to perform operations on it.",
+        "Operations are of two types:",
+        "1 x: push an integer x onto the stack and return -1.",
+        "2 0: remove and return the most frequent element in the stack. This basically means the element which has the highest count among all the elements currently in the stack.",
+        "If there is a tie for the most frequent element, the element closest to the top of the stack is removed and returned.",
+        "A[i][0] describes the type of operation to be performed. A[i][1] describe the element x or 0 corresponding to the operation performed."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of list of integers",
+            "    # @return a list of integers",
+            "    def solve(self, A):",
+            " ",
+            "        freq = {}",
+            "        freqStack = {}",
+            "        res = []",
+            "        maxFreq = -1",
+            "        for op in A:",
+            "            if op[0] == 1:",
+            "                x = op[1]",
+            " ",
+            "                if x not in freq:",
+            "                    freq[x] = 0",
+            "                freq[x] += 1",
+            " ",
+            "                if freq[x] > maxFreq:",
+            "                    maxFreq = freq[x]",
+            "                ",
+            "                if freq[x] not in freqStack:",
+            "                    freqStack[ freq[x] ] = []",
+            "                freqStack[ freq[x] ].append(x)",
+            " ",
+            "                res.append(-1)",
+            "            ",
+            "            else:",
+            "                x = freqStack[maxFreq].pop()",
+            " ",
+            "                if not freqStack[maxFreq]:",
+            "                    del freqStack[maxFreq]",
+            "                    maxFreq -= 1",
+            "                ",
+            "                freq[x] -= 1",
+            "                if freq[x] < 0:",
+            "                    del freq[x]",
+            "                ",
+            "                res.append(x)",
+            "        ",
+            "        return res"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "You are given a matrix A of size N x 2 which represents different operations. Assume initially you have a stack-like data structure you have to perform operations on it."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Operations are of two types:"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "1 x: push an integer x onto the stack and return -1."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "2 0: remove and return the most frequent element in the stack. This basically means the element which has the highest count among all the elements currently in the stack."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "If there is a tie for the most frequent element, the element closest to the top of the stack is removed and returned."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "A[i][0] describes the type of operation to be performed. A[i][1] describe the element x or 0 corresponding to the operation performed."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 55,
+      "sourceQuestionNumber": 6,
+      "originalTitle": "Sort stack using another stack",
+      "originalHeading": "  55. Q6. Sort stack using another stack",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "Given a stack of integers A, sort it using another stack.",
+        "Return the array of integers after sorting the stack using another stack."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of integers",
+            "    # @return a list of integers",
+            "    def solve(self, A):",
+            " ",
+            "        # 5 17 12 11 2 1",
+            " ",
+            "        # 17 12 11",
+            "        # 1 2 5",
+            "        # temp = 5",
+            " ",
+            "        stack = []",
+            "        while A:",
+            "            if not stack or stack and stack[-1] < A[-1]:",
+            "                stack.append(A.pop())",
+            "            ",
+            "            if not A: return stack",
+            " ",
+            "            temp = A.pop()",
+            " ",
+            "            while stack and temp < stack[-1]:",
+            "                A.append(stack.pop())",
+            " ",
+            "            stack.append(temp)",
+            " ",
+            "            while A and A[-1] > stack[-1]:",
+            "                stack.append(A.pop())",
+            "        ",
+            "        return stack"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a stack of integers A, sort it using another stack."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Return the array of integers after sorting the stack using another stack."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 56,
+      "sourceQuestionNumber": 5,
+      "originalTitle": "Min Stack",
+      "originalHeading": "  56. Q5. Min Stack",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "Design a stack that supports push, pop, top, and retrieve the minimum element in constant time.",
+        "•  push(x) -- Push element x onto stack. ",
+        "•  pop() -- Removes the element on top of the stack. ",
+        "•  top() -- Get the top element. ",
+        "•  getMin() -- Retrieve the minimum element in the stack. ",
+        "NOTE:",
+        "•  All the operations have to be constant time operations. ",
+        "•  getMin() should return -1 if the stack is empty. ",
+        "•  pop() should return nothing if the stack is empty. ",
+        "•  top() should return -1 if the stack is empty. "
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class MinStack:",
+            "    # @param x, an integer",
+            "    # @return an integer",
+            "    def __init__(self):",
+            "        self.stack = []",
+            "        self.min_stack = []",
+            " ",
+            "    # @param stack, a list ",
+            "    def isempty(self, stack):",
+            "        if len(stack) == 0:",
+            "            return True",
+            "        else:",
+            "            return False",
+            " ",
+            "    # @param x, an integer",
+            "    def push(self, x):",
+            "        #edge case : handle duplicates <= sign",
+            "        # if stack empty push x",
+            "        if len(self.min_stack) == 0 or x <= self.min_stack[-1]:",
+            "            self.min_stack.append(x)",
+            "                #can test full in case of static stack",
+            "        self.stack.append(x)",
+            " ",
+            "    # @return nothing",
+            "    def pop(self):",
+            "        if self.isempty(self.stack):",
+            "            return",
+            "        else:",
+            "            x = self.stack.pop()",
+            "            if x <= self.min_stack[-1]:",
+            "                self.min_stack.pop()",
+            "            return x",
+            " ",
+            "    # @return an integer",
+            "    def top(self):",
+            "        if len(self.stack) == 0:",
+            "            return -1",
+            "        return self.stack[-1]",
+            " ",
+            "    # @return an integer",
+            "    def getMin(self):",
+            "        if len(self.min_stack) == 0:",
+            "            return -1",
+            "        return self.min_stack[-1]"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Design a stack that supports push, pop, top, and retrieve the minimum element in constant time."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "•  push(x) -- Push element x onto stack. "
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "•  pop() -- Removes the element on top of the stack. "
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "•  top() -- Get the top element. "
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "•  getMin() -- Retrieve the minimum element in the stack. "
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE:"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "•  All the operations have to be constant time operations. "
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "•  getMin() should return -1 if the stack is empty. "
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "•  pop() should return nothing if the stack is empty. "
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "•  top() should return -1 if the stack is empty. "
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 57,
+      "sourceQuestionNumber": 4,
+      "originalTitle": "Infix to Postfix",
+      "originalHeading": "  57. Q4. Infix to Postfix",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "Given string A denoting an infix expression. Convert the infix expression into a postfix expression.",
+        "String A consists of ^, /, , +, -, (, ) and lowercase English alphabets where lowercase English alphabets are operands and ^, /, , +, - are operators.",
+        "Find and return the postfix expression of A.",
+        "NOTE:",
+        "• ^ has the highest precedence.",
+        "• / and * have equal precedence but greater than + and -.",
+        "• + and - have equal precedence and lowest precedence among given operators."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : string",
+            "    # @return a strings",
+            "    def solve(self, A):",
+            " ",
+            "        res = ''",
+            "        stack = []",
+            "        for ch in A:",
+            " ",
+            "            if ch == '(':",
+            "                stack.append(ch)",
+            "            ",
+            "            elif ch == ')':",
+            "                while stack[-1] != '(':",
+            "                    res += stack.pop()",
+            "                stack.pop()",
+            "            ",
+            "            elif ch == '^':",
+            "                while stack and stack[-1] == '^':",
+            "                    res += stack.pop()",
+            "                stack.append(ch)",
+            "            ",
+            "            elif ch in '/*':",
+            " ",
+            "                while stack and stack[-1] in '^/*':",
+            "                    res += stack.pop()",
+            "                ",
+            "                stack.append(ch)",
+            "            ",
+            "            elif ch in '+-':",
+            " ",
+            "                while stack and stack[-1] in '^/*+-':",
+            "                    res += stack.pop()",
+            "                ",
+            "                stack.append(ch)",
+            "            ",
+            "            else:",
+            "                res += ch",
+            "        ",
+            "        while stack:",
+            "            res += stack.pop()",
+            " ",
+            "        return res"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given string A denoting an infix expression. Convert the infix expression into a postfix expression."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "String A consists of ^, /, , +, -, (, ) and lowercase English alphabets where lowercase English alphabets are operands and ^, /, , +, - are operators."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Find and return the postfix expression of A."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE:"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "• ^ has the highest precedence."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "• / and * have equal precedence but greater than + and -."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "• + and - have equal precedence and lowest precedence among given operators."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 58,
+      "sourceQuestionNumber": 3,
+      "originalTitle": "Redundant Braces",
+      "originalHeading": "  58. Q3. Redundant Braces",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "Given a string A denoting an expression. It contains the following operators '+', '-', '*', '/'.",
+        "Check whether A has redundant braces or not.",
+        "NOTE: A will be always a valid expression and will not contain any white spaces."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "\t# @param A : string",
+            "\t# @return an integer",
+            "\tdef braces(self, A):",
+            " ",
+            "        # (a+(b+c))",
+            "        # ((a+b)+c)",
+            "        # (((a+b)+c))",
+            "        # ((a+b+c+d+e+f+g))",
+            " ",
+            "        stack = []",
+            "        for ch in A:",
+            "            if ch in '(+-*/':",
+            "                stack.append(ch)",
+            "            ",
+            "            elif ch == ')':",
+            "                if stack[-1] in '+-*/':",
+            "                    stack.pop()",
+            "                    stack.pop()",
+            "                else:",
+            "                    return 1",
+            " ",
+            "        return 0"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a string A denoting an expression. It contains the following operators '+', '-', '*', '/'."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Check whether A has redundant braces or not."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: A will be always a valid expression and will not contain any white spaces."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 59,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Check two bracket expressions",
+      "originalHeading": "  59. Q2. Check two bracket expressions",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "Given two strings A and B. Each string represents an expression consisting of lowercase English alphabets, '+', '-', '(' and ')'.",
+        "The task is to compare them and check if they are similar. If they are identical, return 1 else, return 0.",
+        "NOTE: It may be assumed that there are at most 26 operands from ‘a’ to ‘z’, and every operand appears only once."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : string",
+            "    # @param B : string",
+            "    # @return an integer",
+            "    def solve(self, A, B):",
+            " ",
+            "        # - - = +",
+            "        # + + = +",
+            "        # - + = -",
+            "        ",
+            "        evalSigns = lambda a, b: '-' if a != b else '+'",
+            "        ",
+            "        def evaluate(A):",
+            "            res = []",
+            "            i = 0",
+            "            currSign = ['+']",
+            "            posBracket = []",
+            " ",
+            "            if A[0] not in ['-', '+']:",
+            "                if A[0] != '(':",
+            "                    res.append('+' + A[0])",
+            "                i+=1",
+            " ",
+            "            while i < len(A):",
+            "                if A[i] == '+' or A[i] == '-':",
+            "                    if A[i+1] == '(':",
+            "                        currSign.append(evalSigns(A[i], currSign[-1]))",
+            "                    else:",
+            "                        sign = evalSigns(A[i], currSign[-1])",
+            "                        res.append(sign + A[i+1])",
+            "                    i+=1",
+            "                elif A[i] == '(':",
+            "                    posBracket.append('(')",
+            "                elif A[i] == ')':",
+            "                    if posBracket:",
+            "                        posBracket.pop()",
+            "                    else:",
+            "                        currSign.pop()",
+            "                        if not currSign:",
+            "                            currSign = ['+']",
+            "                else:",
+            "                    res.append(currSign[-1] + A[i])",
+            "                i+=1",
+            " ",
+            "            return res",
+            "        ",
+            "        def sortExpression(A):",
+            "            A.sort(key=lambda x:x[1])",
+            "            return ''.join(A)",
+            "                ",
+            "        A = sortExpression( evaluate(A) )",
+            "        B = sortExpression( evaluate(B) )",
+            " ",
+            "        # print(A, B)",
+            " ",
+            "        return 1 if A == B else 0"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given two strings A and B. Each string represents an expression consisting of lowercase English alphabets, '+', '-', '(' and ')'."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "The task is to compare them and check if they are similar. If they are identical, return 1 else, return 0."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE: It may be assumed that there are at most 26 operands from ‘a’ to ‘z’, and every operand appears only once."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 60,
+      "sourceQuestionNumber": 4,
+      "originalTitle": "Double Character Trouble",
+      "originalHeading": "  60. Q4. Double Character Trouble",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "You have a string, denoted as A. To transform the string, you should perform the following operation repeatedly:",
+        "1. Identify the first occurrence of consecutive identical pairs of characters within the string.",
+        "2. Remove this pair of identical characters from the string.",
+        "3. Repeat steps 1 and 2 until there are no more consecutive identical pairs of characters.",
+        "The final result will be the transformed string."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : string",
+            "    # @return a strings",
+            "    def solve(self, A):",
+            " ",
+            "        stack = []",
+            "        for ch in A:",
+            "            if stack and stack[-1] == ch:",
+            "                while stack and stack[-1] == ch:",
+            "                    stack.pop()",
+            "            else:",
+            "                stack.append(ch)",
+            "            ",
+            "        return ''.join(stack)"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "You have a string, denoted as A. To transform the string, you should perform the following operation repeatedly:"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "1. Identify the first occurrence of consecutive identical pairs of characters within the string."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "2. Remove this pair of identical characters from the string."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "3. Repeat steps 1 and 2 until there are no more consecutive identical pairs of characters."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "The final result will be the transformed string."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 61,
+      "sourceQuestionNumber": 5,
+      "originalTitle": "Infix to Postfix",
+      "originalHeading": "  61. Q5. Infix to Postfix",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "Given string A denoting an infix expression. Convert the infix expression into a postfix expression.",
+        "String A consists of ^, /, , +, -, (, ) and lowercase English alphabets where lowercase English alphabets are operands and ^, /, , +, - are operators.",
+        "Find and return the postfix expression of A.",
+        "NOTE:",
+        "• ^ has the highest precedence.",
+        "• / and * have equal precedence but greater than + and -.",
+        "• + and - have equal precedence and lowest precedence among given operators."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : string",
+            "    # @return a strings",
+            "    def solve(self, A):",
+            "        res = ''",
+            "        stack = []",
+            "        for ch in A:",
+            " ",
+            "            if ch == '(':",
+            "                stack.append(ch)",
+            "            ",
+            "            elif ch == ')':",
+            "                while stack[-1] != '(':",
+            "                    res += stack.pop()",
+            "                stack.pop()",
+            "            ",
+            "            elif ch == '^':",
+            "                while stack and stack[-1] == '^':",
+            "                    res += stack.pop()",
+            "                stack.append(ch)",
+            "            ",
+            "            elif ch in '/*':",
+            " ",
+            "                while stack and stack[-1] in '^/*':",
+            "                    res += stack.pop()",
+            "                ",
+            "                stack.append(ch)",
+            "            ",
+            "            elif ch in '+-':",
+            " ",
+            "                while stack and stack[-1] in '^/*+-':",
+            "                    res += stack.pop()",
+            "                ",
+            "                stack.append(ch)",
+            "            ",
+            "            else:",
+            "                res += ch",
+            "        ",
+            "        while stack:",
+            "            res += stack.pop()",
+            " ",
+            "        return res"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given string A denoting an infix expression. Convert the infix expression into a postfix expression."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "String A consists of ^, /, , +, -, (, ) and lowercase English alphabets where lowercase English alphabets are operands and ^, /, , +, - are operators."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Find and return the postfix expression of A."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "NOTE:"
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "• ^ has the highest precedence."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "• / and * have equal precedence but greater than + and -."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "• + and - have equal precedence and lowest precedence among given operators."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    },
+    {
+      "nodeNumber": 62,
+      "sourceQuestionNumber": 2,
+      "originalTitle": "Maximum Rectangle",
+      "originalHeading": "  62. Q2. Maximum Rectangle",
+      "sectionNumber": 9,
+      "sectionTitle": "Stacks — source label: Stacks 2",
+      "problemStatementParagraphs": [
+        "Given a 2D binary matrix of integers A containing 0's and 1's of size N x M.",
+        "Find the largest rectangle containing only 1's and return its area.",
+        "Note: Rows are numbered from top to bottom and columns are numbered from left to right."
+      ],
+      "snippets": [
+        {
+          "label": "Source snippet · python",
+          "language": "python",
+          "lines": [
+            "class Solution:",
+            "    # @param A : list of list of integers",
+            "    # @return an integer",
+            "    def solve(self, A):",
+            " ",
+            "        prefCol = [[0 for _ in range(len(A[0]))] for _ in range(len(A))]",
+            " ",
+            "        for c in range(len(A[0])):",
+            "            prefCol[0][c] = A[0][c]",
+            " ",
+            "        for c in range(len(A[0])):",
+            "            for r in range(1, len(A)):",
+            "                if A[r][c] == 0:",
+            "                    prefCol[r][c] = A[r][c]",
+            "                else:",
+            "                    prefCol[r][c] = prefCol[r-1][c] + 1",
+            "        ",
+            "        ans = float('-inf')",
+            "        for row in prefCol:",
+            "            ans = max(ans, self.largestRectangleArea(row))",
+            "        ",
+            "        return ans",
+            " ",
+            "    def largestRectangleArea(self, A):",
+            "        if len(A) == 1: return A[0]",
+            " ",
+            "        def nextSmaller(A, dir):",
+            "            NS = []",
+            "            stack = []",
+            "            i = 0 if dir == 'L' else len(A)-1",
+            "            while True:",
+            "                while stack and A[stack[-1]] >= A[i]:",
+            "                    stack.pop()",
+            "                if not stack:",
+            "                    NS.append(-1)",
+            "                else:",
+            "                    NS.append(stack[-1])",
+            "                stack.append(i)",
+            " ",
+            "                if dir == 'L':",
+            "                    i += 1",
+            "                    if i == len(A): break",
+            "                else:",
+            "                    i -= 1",
+            "                    if i == -1: break",
+            " ",
+            "            return NS if dir == 'L' else NS[::-1]",
+            "        ",
+            "        NSL = nextSmaller(A, 'L')",
+            "        NSR = nextSmaller(A, 'R')",
+            " ",
+            "        # print(NSL, NSR)",
+            "        # return",
+            " ",
+            "        ans = float('-inf')",
+            "        for i in range(len(A)):",
+            " ",
+            "            if NSR[i] == -1 and NSL[i] == -1:",
+            "                ans = max(ans, A[i] * len(A))",
+            "            elif NSR[i] != -1 and NSL[i] != -1:",
+            "                curr = (NSR[i] - NSL[i] - 1) * A[i]",
+            "                ans = max(ans, curr)",
+            "            else:",
+            " ",
+            "                if NSL[i] == -1:",
+            "                    curr = NSR[i] * A[i]",
+            "                    ans = max(ans, curr)   ",
+            " ",
+            "                if NSR[i] == -1:",
+            "                    curr = (len(A) - NSL[i] - 1) * A[i]",
+            "                    ans = max(ans, curr)",
+            "        ",
+            "        return ans"
+          ]
+        }
+      ],
+      "contentSequence": [
+        {
+          "type": "problemStatementParagraph",
+          "text": "Given a 2D binary matrix of integers A containing 0's and 1's of size N x M."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Find the largest rectangle containing only 1's and return its area."
+        },
+        {
+          "type": "problemStatementParagraph",
+          "text": "Note: Rows are numbered from top to bottom and columns are numbered from left to right."
+        },
+        {
+          "type": "snippet",
+          "snippetIndex": 0,
+          "label": "Source snippet · python",
+          "language": "python"
+        }
+      ]
+    }
+  ]
+}

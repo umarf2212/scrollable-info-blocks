@@ -636,16 +636,144 @@ a {
   text-transform: uppercase;
 }
 
+.code-sample__actions,
+.code-sample__actions button {
+  display: inline-flex;
+  align-items: center;
+}
+
+.code-sample__actions {
+  gap: 10px;
+}
+
+.code-sample__actions button {
+  gap: 4px;
+  padding: 3px 6px;
+  border: 1px solid color-mix(in srgb, var(--muted) 35%, transparent);
+  border-radius: 7px;
+  color: var(--muted);
+  font: inherit;
+  background: transparent;
+}
+
+.code-sample__actions button:hover {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--border));
+}
+
 .code-sample pre {
-  max-height: 160px;
+  max-height: min(54dvh, 620px);
   margin: 0;
-  padding: 11px 13px;
+  padding: 10px 0;
   overflow: auto;
-  color: color-mix(in srgb, var(--text) 86%, var(--accent));
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  color: #e5e7eb;
   font-family: var(--font-geist-mono, "SFMono-Regular"), Consolas, monospace;
-  font-size: 11px;
-  line-height: 1.55;
-  tab-size: 2;
+  font-size: 11.5px;
+  line-height: 1.58;
+  tab-size: 4;
+  background: #0b1020;
+}
+
+.syntax-code {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  counter-reset: code-line;
+}
+
+.code-line {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-height: 1.58em;
+  padding-right: 18px;
+  padding-left: 4.5ch;
+  counter-increment: code-line;
+}
+
+.code-line:hover {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.code-line::before {
+  position: absolute;
+  left: 0;
+  width: 3.4ch;
+  content: counter(code-line);
+  color: #526078;
+  text-align: right;
+  user-select: none;
+}
+
+.syntax-keyword { color: #c4b5fd; font-weight: 650; }
+.syntax-builtin { color: #7dd3fc; }
+.syntax-literal { color: #f9a8d4; }
+.syntax-number { color: #fbbf24; }
+.syntax-string { color: #6ee7b7; }
+.syntax-comment { color: #7f8ea3; font-style: italic; }
+.syntax-operator { color: #fda4af; }
+
+.block-card--code-recall .block-card__grid {
+  align-content: start;
+  padding-bottom: 12px;
+}
+
+.block-card--code-recall .block-card__copy {
+  width: 100%;
+  max-width: none;
+}
+
+.block-card--code-recall h1 {
+  max-width: none;
+  font-size: clamp(30px, 3.4vw, 50px);
+}
+
+.block-card--code-recall .challenge-card__prompt p {
+  max-width: 92ch;
+  font-weight: 530;
+  white-space: pre-line;
+}
+
+.block-card--code-recall .challenge-card__actions {
+  justify-content: flex-end;
+}
+
+.block-card--code-recall .challenge-card__answer > p:first-of-type {
+  max-width: 94ch;
+  color: var(--text);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.block-card--code-recall .presentation__bullets {
+  grid-template-columns: 1fr;
+  max-width: 96ch;
+}
+
+.block-card--code-recall .code-sample {
+  margin-top: 16px;
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+}
+
+.code-recall-dock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 128px;
+  height: 34px;
+  padding: 0 12px;
+  color: var(--text);
+  font-size: 10px;
+  font-weight: 760;
+  letter-spacing: 0.01em;
+}
+
+.infoblocks-app[data-experience="code-recall"] .block-shell__inner {
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .challenge-card {
@@ -2027,6 +2155,32 @@ summary:focus-visible,
     font-size: 14px;
   }
 
+  .block-card--code-recall {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .block-card--code-recall h1 {
+    font-size: clamp(27px, 8.6vw, 36px);
+  }
+
+  .block-card--code-recall .challenge-card__prompt {
+    padding: 12px;
+  }
+
+  .block-card--code-recall .challenge-card__prompt p {
+    font-size: 13px;
+    line-height: 1.48;
+  }
+
+  .block-card--code-recall .challenge-card__answer {
+    padding: 11px;
+  }
+
+  .block-card--code-recall .challenge-card__answer > p:first-of-type {
+    font-size: 12px;
+  }
+
   .challenge-card__actions {
     padding: 0 12px 12px;
   }
@@ -2043,7 +2197,16 @@ summary:focus-visible,
   }
 
   .code-sample pre {
-    max-height: 125px;
+    max-height: 56dvh;
+    font-size: 10px;
+  }
+
+  .code-line { padding-left: 4ch; }
+
+  .code-recall-dock {
+    min-width: 112px;
+    height: 30px;
+    padding: 0 8px;
     font-size: 9px;
   }
 

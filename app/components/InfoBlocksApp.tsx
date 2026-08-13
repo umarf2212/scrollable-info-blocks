@@ -57,7 +57,7 @@ function versionKey(topic: Topic): string {
 }
 
 function isInteractiveTarget(target: EventTarget | null): boolean {
-  return target instanceof HTMLElement && Boolean(target.closest("button, a, input, textarea, select, summary, [role='dialog']"));
+  return target instanceof HTMLElement && Boolean(target.closest("button, a, input, textarea, select, summary, [tabindex], [role='dialog']"));
 }
 
 function ThemeIcon({ preference, resolved }: { preference: ThemePreference; resolved: "light" | "dark" }) {
@@ -65,10 +65,19 @@ function ThemeIcon({ preference, resolved }: { preference: ThemePreference; reso
   return resolved === "dark" ? <Moon size={18} /> : <Sun size={18} />;
 }
 
-export function InfoBlocksApp({ topics, config }: { topics: Topic[]; config: UiConfig }) {
+export function InfoBlocksApp({
+  topics,
+  config,
+  codeRecall = false,
+}: {
+  topics: Topic[];
+  config: UiConfig;
+  codeRecall?: boolean;
+}) {
   const defaultTopic = topics.find((topic) => topic.id === config.defaults.topicId) ?? topics[0];
   const [topicId, setTopicId] = useState(defaultTopic.id);
-  const [mode, setMode] = useState<ExplanationMode>(config.defaults.mode);
+  const lockedMode: ExplanationMode | null = codeRecall ? "challenge" : null;
+  const [mode, setMode] = useState<ExplanationMode>(lockedMode ?? config.defaults.mode);
   const [theme, setTheme] = useState<ThemePreference>(config.defaults.theme);
   const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -122,11 +131,11 @@ export function InfoBlocksApp({ topics, config }: { topics: Topic[]; config: UiC
       : topics.some((item) => item.id === savedPreferences?.topicId)
         ? (savedPreferences?.topicId as string)
         : defaultTopic.id;
-    const preferredMode = urlMode && urlMode in modeLabels
+    const preferredMode = lockedMode ?? (urlMode && urlMode in modeLabels
       ? urlMode
       : savedPreferences?.mode && savedPreferences.mode in modeLabels
         ? savedPreferences.mode
-        : config.defaults.mode;
+        : config.defaults.mode);
     const preferredTheme = savedPreferences?.theme ?? config.defaults.theme;
     const preferredTopic = topics.find((item) => item.id === preferredTopicId) ?? defaultTopic;
     const savedTopicProgress = savedProgress[versionKey(preferredTopic)];
@@ -144,7 +153,7 @@ export function InfoBlocksApp({ topics, config }: { topics: Topic[]; config: UiC
       setHydrated(true);
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [config, defaultTopic, topics]);
+  }, [config, defaultTopic, lockedMode, topics]);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-color-scheme: dark)");
@@ -332,7 +341,7 @@ export function InfoBlocksApp({ topics, config }: { topics: Topic[]; config: UiC
   const currentMilestoneIndex = topic.milestones.findIndex((milestone) => milestone.id === activeMilestone.id);
 
   return (
-    <main className="infoblocks-app" style={appStyle} data-mode={mode}>
+    <main className="infoblocks-app" style={appStyle} data-mode={mode} data-experience={codeRecall ? "code-recall" : "default"}>
       <a href="#active-learning-block" className="skip-link">Skip to current learning block</a>
       <header className="app-header">
         <button type="button" className="topic-trigger" onClick={() => setOpenPanel("topics")} aria-label={`Choose topic. Current topic: ${topic.title}`}>
@@ -347,7 +356,7 @@ export function InfoBlocksApp({ topics, config }: { topics: Topic[]; config: UiC
         <div className="app-header__context" aria-hidden="true">
           <span>{activeMilestone.shortTitle}</span>
           <i />
-          <span>{modeLabels[mode].description}</span>
+          <span>{codeRecall ? "Problem → reference code" : modeLabels[mode].description}</span>
         </div>
 
         <div className="app-header__actions">
@@ -406,6 +415,7 @@ export function InfoBlocksApp({ topics, config }: { topics: Topic[]; config: UiC
                     }}
                     onExploreNext={selectOtherTopic}
                     hasAlternativeTopic={topics.length > 1}
+                    codeRecall={codeRecall}
                   />
                 </div>
               ) : (
@@ -441,18 +451,20 @@ export function InfoBlocksApp({ topics, config }: { topics: Topic[]; config: UiC
         </nav>
       ) : null}
 
-      <div className="mode-dock" aria-label="Explanation mode">
+      <div className="mode-dock" aria-label={codeRecall ? "Code recall navigation" : "Explanation mode"}>
         <button type="button" className="dock-arrow" onClick={() => scrollToIndex(activeIndex - 1)} disabled={activeIndex === 0} aria-label="Previous block">
           <ArrowUp size={17} />
         </button>
-        <div className="mode-switch">
+        {codeRecall ? (
+          <div className="code-recall-dock"><BookOpenText size={13} /> Problem → Code</div>
+        ) : <div className="mode-switch">
           {(Object.keys(modeLabels) as ExplanationMode[]).map((item) => (
             <button type="button" key={item} className={mode === item ? "is-active" : ""} aria-pressed={mode === item} onClick={() => setMode(item)}>
               {item === "story" ? <Sparkles size={13} /> : item === "challenge" ? <BookOpenText size={13} /> : null}
               {modeLabels[item].short}
             </button>
           ))}
-        </div>
+        </div>}
         <button type="button" className="dock-arrow" onClick={() => scrollToIndex(activeIndex + 1)} disabled={activeIndex === topic.blocks.length - 1} aria-label="Next block">
           <ArrowDown size={17} />
         </button>

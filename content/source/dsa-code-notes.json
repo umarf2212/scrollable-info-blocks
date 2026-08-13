@@ -1,0 +1,456 @@
+{
+  "1": {
+    "explanation": "Starts at the matrix's top-right cell and eliminates one column or one row after each comparison.",
+    "nuances": [
+      "Move left when the current value is too large; move down when it is too small.",
+      "Returns the platform's integer flags 1 and 0 instead of booleans."
+    ]
+  },
+  "2": {
+    "explanation": "Binary-searches a partition in the shorter array until both left halves are no greater than both right halves.",
+    "nuances": [
+      "The variables i and j are last-left indices, so -infinity and infinity cover empty partition sides.",
+      "Odd totals return the smaller right boundary; even totals average the inner two boundaries."
+    ]
+  },
+  "3": {
+    "explanation": "Binary-searches the value range and counts, row by row, how many entries are at most each candidate.",
+    "nuances": [
+      "findCount is an upper-bound search, not a search for the candidate itself.",
+      "The target rank is floor(N*M/2)+1, so the first value reaching that count is the median."
+    ]
+  },
+  "4": {
+    "explanation": "Binary-searches the largest integer mid whose square does not exceed A.",
+    "nuances": [
+      "The comparison mid <= A/mid avoids computing mid*mid and therefore avoids overflow.",
+      "The A < 2 and A == 2 guards keep the search away from division by zero."
+    ]
+  },
+  "5": {
+    "explanation": "Finds the rotation peak, then runs ordinary binary search on the two sorted ranges split around that peak.",
+    "nuances": [
+      "findPivot returns the index of the maximum element, not the minimum element where rotation restarts.",
+      "Both ranges retain original indices, so no offset correction is required."
+    ]
+  },
+  "6": {
+    "explanation": "Binary-searches the window length and validates each candidate with a fixed-size sliding-window sum.",
+    "nuances": [
+      "findSums exits as soon as any window exceeds B.",
+      "The monotone binary-search predicate relies on the problem's non-negative array values."
+    ]
+  },
+  "7": {
+    "explanation": "Binary-searches the smallest value x for which inclusion-exclusion counts exactly A numbers divisible by B or C.",
+    "nuances": [
+      "x//B + x//C - x//lcm(B,C) removes numbers counted twice.",
+      "On an exact count it continues left, selecting the first value that attains that rank before applying the modulus."
+    ]
+  },
+  "8": {
+    "explanation": "Binary-searches the per-student page cap and greedily starts a new contiguous allocation whenever the current one would exceed it.",
+    "nuances": [
+      "The search starts at max(A), so every individual book always fits the tested cap.",
+      "A cap is feasible when the greedy allocation uses at most B students; fewer groups can be split to reach exactly B."
+    ]
+  },
+  "9": {
+    "explanation": "Binary-searches the minimum people per office and counts how many such offices each city's population can support.",
+    "nuances": [
+      "For a candidate k, sum(people//k) >= B is the feasibility test.",
+      "The upper bound min(A) preserves the requirement that every city receives at least one office."
+    ]
+  },
+  "10": {
+    "explanation": "Walks three sorted arrays together, measuring the current maximum-minus-minimum range and advancing the pointer at the minimum.",
+    "nuances": [
+      "For three values, the stated maximum pairwise absolute difference equals Max-Min.",
+      "Only advancing a current minimum is capable of shrinking the range."
+    ]
+  },
+  "11": {
+    "explanation": "Walks three sorted arrays together, updating the smallest current Max-Min and advancing whichever pointer owns the minimum.",
+    "nuances": [
+      "The loop ends as soon as one array is exhausted because no complete triplet remains.",
+      "Tied minima are advanced one at a time by the if/elif chain."
+    ]
+  },
+  "12": {
+    "explanation": "Counts the three color values, then overwrites A with that many 0s, 1s, and 2s in order.",
+    "nuances": [
+      "This is a two-pass counting solution rather than the one-pass Dutch National Flag partition.",
+      "It mutates and returns the input list while using constant auxiliary space."
+    ]
+  },
+  "13": {
+    "explanation": "Starts at A's left end and B's right end, moving one pointer according to whether the current sum is above or below C.",
+    "nuances": [
+      "A strictly smaller difference records both indices and locks in the earliest i reached by the traversal.",
+      "For the same i and difference, decreasing j overwrites the answer so the smaller j wins."
+    ]
+  },
+  "14": {
+    "explanation": "Sorts A, fixes each first element, and uses inward-moving two pointers to find the closest three-number sum.",
+    "nuances": [
+      "An exact sum returns immediately because its absolute difference is zero.",
+      "A.sort() mutates the supplied list."
+    ]
+  },
+  "15": {
+    "explanation": "Uses two pointers on sorted side lengths and counts every ordered partner at once when A[i]*A[j] is below B.",
+    "nuances": [
+      "(j-i)*2+1 counts both orientations for unequal sides plus the square (i,i).",
+      "When the product is too large, decreasing j is the only move that can make it feasible."
+    ]
+  },
+  "16": {
+    "explanation": "Stores an index for each value and compares later occurrences against that stored index to update the smallest distance.",
+    "nuances": [
+      "The dictionary retains the first occurrence because it is never updated after a repeat.",
+      "Returns -1 when no value repeats."
+    ],
+    "warning": "This implementation can miss the true minimum: for [1, 0, 1, 1] it compares both repeats with index 0 and returns 2 instead of 1; update d[A[i]] = i after every comparison."
+  },
+  "17": {
+    "explanation": "Builds prefix sums, records the first and last index of each value, and slices between the farthest equal-prefix pair.",
+    "nuances": [
+      "Equal prefix sums delimit a zero-sum subarray; a prefix sum of zero is handled separately as a slice starting at index 0.",
+      "Equal-length candidates prefer the smaller starting index."
+    ]
+  },
+  "18": {
+    "explanation": "Maintains a frequency map for a sliding window and appends the map's distinct count after each shift.",
+    "nuances": [
+      "The outgoing key is deleted when its count reaches zero, keeping the distinct count accurate.",
+      "B larger than the array returns an empty result before indexing the first window."
+    ]
+  },
+  "19": {
+    "explanation": "Tracks prefix sums in a set and reports success when a prefix is zero or a previously seen prefix reappears.",
+    "nuances": [
+      "A repeated prefix means the elements between the two occurrences sum to zero.",
+      "Checking prefix == 0 covers zero-sum subarrays that start at index 0."
+    ]
+  },
+  "20": {
+    "explanation": "Uses a dictionary as a visited set, expanding upward and downward from each unvisited number to count its complete consecutive run.",
+    "nuances": [
+      "Expanded neighbors are marked visited so later outer-loop iterations skip the same run.",
+      "Duplicate input values collapse to one dictionary key."
+    ],
+    "warning": "For an empty input the initialized -infinity answer is returned; this relies on the source problem guaranteeing at least one element."
+  },
+  "21": {
+    "explanation": "Counts character frequencies and accepts the string only if at most one frequency is odd.",
+    "nuances": [
+      "The odd flag allows one center character in an odd-length palindrome.",
+      "A second odd count returns 0 immediately."
+    ]
+  },
+  "22": {
+    "explanation": "Enumerates every consecutive digit window by width, computes its digit product, and rejects the number when a product repeats.",
+    "nuances": [
+      "temp % 10**i selects a window and temp //= 10 shifts that window one digit left.",
+      "One shared set detects collisions across every window length."
+    ],
+    "warning": "product(0) returns 1 because its digit loop never runs; the helper does not faithfully compute zero-valued windows and is fragile for inputs containing 0."
+  },
+  "23": {
+    "explanation": "Counts A, emits values in B's order with full multiplicity, then sorts and appends all remaining values.",
+    "nuances": [
+      "setB records only B values actually emitted, so those occurrences are excluded from the tail.",
+      "Duplicates absent from B remain in temp and are preserved by sorted(temp)."
+    ]
+  },
+  "24": {
+    "explanation": "Stores all points in a set, treats every non-axis-aligned point pair as a possible diagonal, and tests for the other two corners.",
+    "nuances": [
+      "The coordinate inequality checks reject horizontal and vertical pairs that cannot be diagonals.",
+      "Each rectangle is found once per diagonal, so the final count is divided by two."
+    ]
+  },
+  "25": {
+    "explanation": "Counts points on every x- and y-coordinate, then uses each point as the right-angle vertex with (xCount-1)*(yCount-1) choices.",
+    "nuances": [
+      "Subtracting one excludes the vertex itself from both the horizontal and vertical choices.",
+      "Each axis-aligned right triangle has exactly one right-angle vertex, so no duplicate division is needed."
+    ],
+    "warning": "The source problem requires modulo 1,000,000,007, but this snippet returns ans without applying the modulus."
+  },
+  "26": {
+    "explanation": "Counts every character in B and verifies that each frequency can be split evenly across A identical substrings.",
+    "nuances": [
+      "Every count must be divisible by A; no explicit construction of the repeated substring is needed.",
+      "The platform expects 1 for possible and -1 otherwise."
+    ]
+  },
+  "27": {
+    "explanation": "Anchors each point, reduces every other point's delta by its GCD, and counts equal normalized slopes.",
+    "nuances": [
+      "overlap separately counts duplicate coordinates because their slope is undefined.",
+      "The slope dictionary is reset after each anchor; curmax + overlap + 1 includes duplicates and the anchor itself."
+    ]
+  },
+  "28": {
+    "explanation": "Assigns each value Python's string hash, builds prefix sums of those hashes, and compares range-hash sums for each query.",
+    "nuances": [
+      "Summing per-element hashes makes the fingerprint independent of element order, matching the sorted-subarray comparison.",
+      "The inclusive range formula subtracts prefix[l] and adds the lth hash back."
+    ],
+    "warning": "A single summed hash is not a correctness proof: different multisets can collide, and Python string hashes are randomized between processes."
+  },
+  "29": {
+    "explanation": "Counts A, counts only B values that occur in A, and emits each common value the smaller of its two frequencies.",
+    "nuances": [
+      "Filtering while building countB avoids storing B-only values.",
+      "Dictionary iteration order is acceptable because the result may be returned in any order."
+    ]
+  },
+  "30": {
+    "explanation": "The source document contains only the placeholder 'No code yet' for this problem.",
+    "nuances": [
+      "There is no implementation in the reference snippet to explain or recall.",
+      "A reconstructed solution should explicitly identify itself rather than being presented as source code."
+    ],
+    "warning": "Source-code gap: this node needs a separately authored implementation, typically substring matching over B+B with only the first N rotation starts counted."
+  },
+  "31": {
+    "explanation": "Starts with A[0], appends subsequent A characters only while each is smaller than B[0], then appends B[0].",
+    "nuances": [
+      "Both prefixes stay non-empty because A[0] and B[0] are always included.",
+      "The strict comparison stops on equality; adding an equal character would only make the resulting string longer after an identical prefix."
+    ]
+  },
+  "32": {
+    "explanation": "Counts mirrored mismatches with two pointers and accepts exactly one mismatch, or an unchanged odd-length palindrome whose center can be changed.",
+    "nuances": [
+      "An unchanged even-length palindrome is rejected because exactly one character must change."
+    ]
+  },
+  "33": {
+    "explanation": "Computes KMP LPS for A+'@'+reverse(A) and subtracts the longest palindromic prefix length from len(A).",
+    "nuances": [
+      "The separator prevents matches from crossing directly between the two copies.",
+      "The returned count is how many characters must be prepended."
+    ],
+    "warning": "The captured Python block mixes tabs and spaces unless indentation is normalized."
+  },
+  "34": {
+    "explanation": "Counts occurrences of 'a' and returns c·(c+1)/2 for all choices of starting and ending 'a', including one-character substrings.",
+    "nuances": [
+      "Positions between the endpoint characters do not affect validity."
+    ]
+  },
+  "35": {
+    "explanation": "Uses slow/fast pointers to reach the middle while retaining its predecessor, then bypasses the middle node.",
+    "nuances": [
+      "For even lengths the slow pointer lands on the second middle.",
+      "A single-node list returns None."
+    ],
+    "warning": "Assumes the head itself is not None."
+  },
+  "36": {
+    "explanation": "Recursively processes B-node fragments, reverses each fragment iteratively, and links the old fragment head to the recursively reversed suffix.",
+    "nuances": [
+      "The old head becomes each group’s tail.",
+      "The implementation assumes every processed fragment contains B nodes."
+    ],
+    "warning": "A final partial group can dereference None; this depends on the source constraint that length is divisible by B. The captured Python block mixes tabs and spaces unless indentation is normalized."
+  },
+  "37": {
+    "explanation": "Severs the original head’s next link, then iteratively flips each subsequent next pointer until the old tail becomes the new head.",
+    "nuances": [
+      "Saving curr.next before rewiring preserves the unprocessed suffix."
+    ],
+    "warning": "Assumes A is non-null. The captured Python block mixes tabs and spaces unless indentation is normalized."
+  },
+  "38": {
+    "explanation": "Advances slow by one and fast by two, then returns slow.val when fast reaches the end.",
+    "nuances": [
+      "For an even list this returns the second middle element."
+    ],
+    "warning": "Assumes A is non-null."
+  },
+  "39": {
+    "explanation": "Traverses to positions B..C while reversing links in place, saves the nodes just outside the segment, then reconnects both boundaries.",
+    "nuances": [
+      "The integer parameters A/B/C are reassigned to node references during traversal.",
+      "When B=1 it returns the saved C node as the new head."
+    ],
+    "warning": "Assumes B and C are valid list positions. The captured Python block mixes tabs and spaces unless indentation is normalized."
+  },
+  "40": {
+    "explanation": "Defines a linked-list class with position-based insert, delete, print operations and wraps one global LinkedList instance in the required functions.",
+    "nuances": [
+      "Positions are 1-based.",
+      "Head deletion returns the removed value; invalid positions silently return."
+    ],
+    "warning": "insert_node(position=1) does not return after insertion and unnecessarily traverses to the end because its loop can never reach position−1=0."
+  },
+  "41": {
+    "explanation": "Keeps two pointers B nodes apart, then advances them together so first lands immediately before the node to delete.",
+    "nuances": [
+      "If B reaches or exceeds the list length, it removes the head.",
+      "A one-node list is handled separately."
+    ],
+    "warning": "The captured Python block mixes tabs and spaces unless indentation is normalized."
+  },
+  "42": {
+    "explanation": "For each run in the sorted list, advances temp past every equal-valued node and reconnects the first node directly to the next distinct node.",
+    "nuances": [
+      "It preserves one representative of every duplicate run.",
+      "The inner loop always advances at least once, so the following curr!=temp branch is always taken."
+    ],
+    "warning": "The captured Python block mixes tabs and spaces unless indentation is normalized."
+  },
+  "43": {
+    "explanation": "Handles one- and two-node loop shapes specially, otherwise uses Floyd’s meeting point and a second walk to find the node immediately before the loop entry and cut it.",
+    "nuances": [
+      "The code assumes a loop exists, so Floyd’s loop has no null checks.",
+      "prev follows fast during the entry-finding phase."
+    ],
+    "warning": "A null head or an acyclic one-node list dereferences missing next links; valid inputs must guarantee a cycle."
+  },
+  "44": {
+    "explanation": "Pushes every node onto a stack, then alternates nodes from the front traversal with nodes popped from the tail and terminates the final link.",
+    "nuances": [
+      "Uses O(N) auxiliary space despite rewiring in place.",
+      "Only floor(N/2) tail insertions are performed."
+    ],
+    "warning": "Assumes A is non-null. The captured Python block mixes tabs and spaces unless indentation is normalized."
+  },
+  "45": {
+    "explanation": "Runs linked-list merge sort: slow/fast finds the split predecessor, recursion sorts both halves, and merge rewires nodes in ascending order.",
+    "nuances": [
+      "fast starts at A.next so slow ends at the left-half tail.",
+      "The merge is iterative and reuses existing nodes."
+    ],
+    "warning": "The captured Python block mixes tabs and spaces unless indentation is normalized."
+  },
+  "46": {
+    "explanation": "Merges two sorted lists by choosing an initial head and repeatedly attaching the smaller current node.",
+    "nuances": [
+      "After return merge(A,B), the source contains a second full iterative merge implementation that is unreachable dead code.",
+      "Equal values are taken from the second list first."
+    ],
+    "warning": "The captured Python block mixes tabs and spaces unless indentation is normalized."
+  },
+  "47": {
+    "explanation": "Scans right-to-left with a decreasing value stack, popping values no greater than A[i] so the top is the nearest greater value.",
+    "nuances": [
+      "Answers are appended in reverse order and reversed once at the end.",
+      "The formal definition is a separate text snippet block."
+    ]
+  },
+  "48": {
+    "explanation": "Evaluates reverse Polish notation by pushing operands and applying each operator to the last two popped values in operand-correct order.",
+    "nuances": [
+      "Operands remain strings on the stack until consumed and arithmetic results are integers."
+    ],
+    "warning": "Division uses Python //, which floors negative quotients instead of truncating toward zero as the usual RPN problem requires. The captured Python block mixes tabs and spaces unless indentation is normalized."
+  },
+  "49": {
+    "explanation": "Maintains a decreasing stack and compares each incoming value by XOR with values it resolves and with the remaining nearest larger value.",
+    "nuances": [
+      "The stack stores values, not indices.",
+      "It implements the source’s maximum-XOR observation rather than enumerating all subarrays."
+    ],
+    "warning": "A=[] crashes at A[0]."
+  },
+  "50": {
+    "explanation": "Builds previous/next smaller and greater index arrays, counts how many subarrays use each A[i] as minimum or maximum, then subtracts the totals.",
+    "nuances": [
+      "Strictness is asymmetric on the two sides so duplicate values are attributed once.",
+      "The result is normalized modulo 1,000,000,007."
+    ]
+  },
+  "51": {
+    "explanation": "Computes nearest strictly smaller bars on both sides with monotonic index stacks, then uses each bar as a rectangle height across its maximal width.",
+    "nuances": [
+      "A shared helper scans left or right and reverses right-side output.",
+      "Several boundary cases are expanded explicitly rather than using sentinel indices uniformly."
+    ],
+    "warning": "Empty input indexes A[0] inside the boundary helper."
+  },
+  "52": {
+    "explanation": "Scans left-to-right, popping values at least as large as the current value so the remaining top is the nearest smaller value on the left.",
+    "nuances": [
+      "Stores values rather than indices and emits −1 when none exists."
+    ],
+    "warning": "The captured Python block mixes tabs and spaces unless indentation is normalized."
+  },
+  "53": {
+    "explanation": "Pushes each forward-pass player ID and pops on a 0 back-pass; the top is the final holder, falling back to initial holder B when empty.",
+    "nuances": [
+      "Parameter A is unused because C already contains the pass sequence."
+    ],
+    "warning": "A back-pass when the local stack is already empty raises IndexError; the source constraints must exclude invalid back-passes."
+  },
+  "54": {
+    "explanation": "Tracks each value’s frequency and a stack per frequency, so popping from the current maximum-frequency stack also enforces most-recent tie-breaking.",
+    "nuances": [
+      "Every push query appends −1 to the result.",
+      "maxFreq decreases when its bucket becomes empty."
+    ],
+    "warning": "Zero frequencies are never deleted because the code checks freq[x] < 0 instead of == 0; this leaves stale keys but usually does not change outputs."
+  },
+  "55": {
+    "explanation": "Uses A and a second stack as alternating storage, moving larger items back and forth until the returned stack is ordered.",
+    "nuances": [
+      "It destructively consumes and repopulates the input list.",
+      "It may return from inside the loop as soon as A becomes empty."
+    ]
+  },
+  "56": {
+    "explanation": "Stores all values in one stack and every new minimum, including duplicate minima, in a parallel min_stack for O(1) getMin.",
+    "nuances": [
+      "Using x <= current minimum is what makes duplicate minima pop correctly.",
+      "top/getMin return −1 on empty state."
+    ]
+  },
+  "57": {
+    "explanation": "Emits operands immediately and uses an operator stack, popping by hard-coded precedence and draining parenthesized operators on ')'.",
+    "nuances": [
+      "Precedence is encoded in separate branches for ^, */, and +−.",
+      "Operands are assumed to be single lowercase characters."
+    ],
+    "warning": "Popping an existing '^' before pushing a new '^' makes exponentiation left-associative; conventional '^' is right-associative."
+  },
+  "58": {
+    "explanation": "Stores only opening parentheses and operators; on ')', it declares redundancy if the top is not an operator, otherwise pops one operator and one more stack item.",
+    "nuances": [
+      "Operands are intentionally ignored."
+    ],
+    "warning": "It does not pop all operators back to the matching '(', so expressions with multiple operators can leave stale stack state and rely on incidental nesting behavior. The captured Python block mixes tabs and spaces unless indentation is normalized."
+  },
+  "59": {
+    "explanation": "Normalizes each bracket expression into signed single-letter terms, sorts those terms by variable, and compares the resulting strings.",
+    "nuances": [
+      "A sign stack composes +/− across parentheses.",
+      "The parser assumes single-character variables and no numeric coefficients."
+    ],
+    "warning": "The bespoke bracket/sign bookkeeping is fragile outside the source grammar, especially malformed or multi-character expressions."
+  },
+  "60": {
+    "explanation": "Uses a character stack and pops when the incoming character equals the top, leaving the fully reduced string after repeated adjacent-pair cancellation.",
+    "nuances": [
+      "The inner while is equivalent to a single pop under this stack invariant, but also clears any same-character run present."
+    ]
+  },
+  "61": {
+    "explanation": "Repeats node 57’s operand-output/operator-stack conversion from infix to postfix.",
+    "nuances": [
+      "This source node duplicates the same problem and near-identical code; only insignificant whitespace differs."
+    ],
+    "warning": "Like node 57, it treats '^' as left-associative by popping equal-precedence '^'."
+  },
+  "62": {
+    "explanation": "Builds a vertical consecutive-ones height matrix, then runs the captured largest-histogram routine on every row and returns the maximum area.",
+    "nuances": [
+      "Uses O(R·C) extra memory for all row histograms.",
+      "The histogram helper is duplicated from node 51 inside the class."
+    ],
+    "warning": "Assumes the matrix and its first row are non-empty."
+  }
+}

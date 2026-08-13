@@ -27,6 +27,18 @@ function requireStringArray(record: UnknownRecord, key: string, path: string, er
   }
 }
 
+function requireCodeLines(record: UnknownRecord, key: string, path: string, errors: string[]) {
+  const value = record[key];
+  if (
+    !Array.isArray(value)
+    || value.length === 0
+    || value.some((item) => typeof item !== "string")
+    || !value.some((item) => item.trim())
+  ) {
+    errors.push(`${path}.${key} must be a non-empty array of code lines`);
+  }
+}
+
 function validatePresentation(value: unknown, path: string, challenge: boolean, errors: string[]) {
   const presentation = requireRecord(value, path, errors);
   if (challenge) {
@@ -42,7 +54,7 @@ function validatePresentation(value: unknown, path: string, challenge: boolean, 
     const code = requireRecord(presentation.code, `${path}.code`, errors);
     requireString(code, "language", `${path}.code`, errors);
     requireString(code, "caption", `${path}.code`, errors);
-    requireStringArray(code, "lines", `${path}.code`, errors);
+    requireCodeLines(code, "lines", `${path}.code`, errors);
   }
 }
 
