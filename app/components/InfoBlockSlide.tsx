@@ -4,6 +4,7 @@ import {
   ArrowRight,
   Check,
   Clock3,
+  Code2,
   Copy,
   Eye,
   Lightbulb,
@@ -23,7 +24,7 @@ import { SyntaxHighlightedCode } from "./SyntaxHighlightedCode";
 function CodeSample({
   code,
 }: {
-  code: { language: string; caption: string; lines: string[] };
+  code: { language: string; caption: string; lines: string[]; startLine?: number };
 }) {
   const [copied, setCopied] = useState(false);
 
@@ -91,7 +92,7 @@ function CodeSample({
       {/* A focusable region lets keyboard users scroll long code without moving the reel. */}
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex, jsx-a11y/no-noninteractive-element-interactions */}
       <pre aria-label={code.caption} tabIndex={0} onKeyDown={scrollCodeWithKeyboard}>
-        <SyntaxHighlightedCode language={code.language} lines={code.lines} />
+        <SyntaxHighlightedCode language={code.language} lines={code.lines} startLine={code.startLine} />
       </pre>
     </figure>
   );
@@ -133,6 +134,7 @@ export function InfoBlockSlide({
   const standardPresentation = mode === "challenge" ? null : block.presentations[mode];
   const challengePresentation = block.presentations.challenge;
   const hasVisual = Boolean(block.visual);
+  const explainedSolution = codeRecall ? block.solution : undefined;
 
   return (
     <article
@@ -153,7 +155,49 @@ export function InfoBlockSlide({
           <p className="block-card__eyebrow">{block.eyebrow}</p>
           <h1 id={`title-${block.id}`}>{block.title}</h1>
 
-          {standardPresentation ? (
+          {explainedSolution ? (
+            <div className="dsa-reading">
+              <section className="dsa-section dsa-problem">
+                <div className="dsa-section__label"><Lightbulb size={16} /> Problem statement</div>
+                <p>{challengePresentation.prompt}</p>
+              </section>
+
+              <section className="dsa-section dsa-solution-overview">
+                <div className="dsa-section__label"><Check size={16} /> Core idea</div>
+                <p className="dsa-core-idea">{explainedSolution.coreIdea}</p>
+                <div className="dsa-pattern-connection">
+                  <strong>Pattern connection</strong>
+                  <p>{explainedSolution.patternConnection}</p>
+                </div>
+                <div className="dsa-nuances">
+                  <strong>Problem-specific nuances</strong>
+                  <ul>
+                    {explainedSolution.nuances.map((nuance, nuanceIndex) => (
+                      <li key={`${block.id}-nuance-${nuanceIndex}`}><Check size={14} /><span>{nuance}</span></li>
+                    ))}
+                  </ul>
+                </div>
+              </section>
+
+              <section className="dsa-walkthrough">
+                <div className="dsa-section__label"><Code2 size={16} /> Code walkthrough</div>
+                <div className="dsa-code-steps">
+                  {explainedSolution.codeSteps.map((step, stepIndex) => (
+                    <article className="dsa-code-step" key={`${block.id}-code-step-${stepIndex}`}>
+                      <header>
+                        <span>{String(stepIndex + 1).padStart(2, "0")}</span>
+                        <div>
+                          <h2>{step.title}</h2>
+                          <p>{step.explanation}</p>
+                        </div>
+                      </header>
+                      <CodeSample code={step.code} />
+                    </article>
+                  ))}
+                </div>
+              </section>
+            </div>
+          ) : standardPresentation ? (
             <div className="presentation">
               <p className="presentation__hook">
                 {mode === "story" ? <Sparkles size={17} aria-hidden="true" /> : null}

@@ -76,7 +76,7 @@ export function InfoBlocksApp({
 }) {
   const defaultTopic = topics.find((topic) => topic.id === config.defaults.topicId) ?? topics[0];
   const [topicId, setTopicId] = useState(defaultTopic.id);
-  const lockedMode: ExplanationMode | null = codeRecall ? "challenge" : null;
+  const lockedMode: ExplanationMode | null = codeRecall ? "standard" : null;
   const [mode, setMode] = useState<ExplanationMode>(lockedMode ?? config.defaults.mode);
   const [theme, setTheme] = useState<ThemePreference>(config.defaults.theme);
   const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
@@ -356,7 +356,7 @@ export function InfoBlocksApp({
         <div className="app-header__context" aria-hidden="true">
           <span>{activeMilestone.shortTitle}</span>
           <i />
-          <span>{codeRecall ? "Problem → reference code" : modeLabels[mode].description}</span>
+          <span>{codeRecall ? "Problem · idea · walkthrough" : modeLabels[mode].description}</span>
         </div>
 
         <div className="app-header__actions">
@@ -451,12 +451,12 @@ export function InfoBlocksApp({
         </nav>
       ) : null}
 
-      <div className="mode-dock" aria-label={codeRecall ? "Code recall navigation" : "Explanation mode"}>
+      <div className="mode-dock" aria-label={codeRecall ? "Explained solution navigation" : "Explanation mode"}>
         <button type="button" className="dock-arrow" onClick={() => scrollToIndex(activeIndex - 1)} disabled={activeIndex === 0} aria-label="Previous block">
           <ArrowUp size={17} />
         </button>
         {codeRecall ? (
-          <div className="code-recall-dock"><BookOpenText size={13} /> Problem → Code</div>
+          <div className="code-recall-dock"><BookOpenText size={13} /> Explained solution</div>
         ) : <div className="mode-switch">
           {(Object.keys(modeLabels) as ExplanationMode[]).map((item) => (
             <button type="button" key={item} className={mode === item ? "is-active" : ""} aria-pressed={mode === item} onClick={() => setMode(item)}>

@@ -58,6 +58,29 @@ function validatePresentation(value: unknown, path: string, challenge: boolean, 
   }
 }
 
+function validateDsaSolution(value: unknown, path: string, errors: string[]) {
+  const solution = requireRecord(value, path, errors);
+  requireString(solution, "coreIdea", path, errors);
+  requireString(solution, "patternConnection", path, errors);
+  requireStringArray(solution, "nuances", path, errors);
+
+  if (!Array.isArray(solution.codeSteps) || solution.codeSteps.length < 2) {
+    errors.push(`${path}.codeSteps must contain at least two explained fragments`);
+    return;
+  }
+
+  solution.codeSteps.forEach((value, index) => {
+    const stepPath = `${path}.codeSteps[${index}]`;
+    const step = requireRecord(value, stepPath, errors);
+    requireString(step, "title", stepPath, errors);
+    requireString(step, "explanation", stepPath, errors);
+    const code = requireRecord(step.code, `${stepPath}.code`, errors);
+    requireString(code, "language", `${stepPath}.code`, errors);
+    requireString(code, "caption", `${stepPath}.code`, errors);
+    requireCodeLines(code, "lines", `${stepPath}.code`, errors);
+  });
+}
+
 function topicInvariantErrors(topic: Topic): string[] {
   const errors: string[] = [];
   const milestoneIds = new Set(topic.milestones.map((milestone) => milestone.id));
@@ -141,6 +164,7 @@ export function parseTopic(value: unknown, label: string): Topic {
       validatePresentation(presentations.standard, `${path}.presentations.standard`, false, errors);
       validatePresentation(presentations.story, `${path}.presentations.story`, false, errors);
       validatePresentation(presentations.challenge, `${path}.presentations.challenge`, true, errors);
+      if (block.solution !== undefined) validateDsaSolution(block.solution, `${path}.solution`, errors);
       if (block.visual !== undefined) {
         const visual = requireRecord(block.visual, `${path}.visual`, errors);
         ["type", "title", "caption", "alt"].forEach((key) => requireString(visual, key, `${path}.visual`, errors));

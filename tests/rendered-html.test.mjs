@@ -28,16 +28,20 @@ test("server-renders the InfoBlocks learning feed", async () => {
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Your site is taking shape/i);
 });
 
-test("server-renders the separate DSA code-recall route", async () => {
+test("server-renders the separate always-visible DSA explanation route", async () => {
   const response = await render("/dsa-roadmap");
   assert.equal(response.status, 200);
 
   const html = await response.text();
-  assert.match(html, /<title>DSA Code Recall · InfoBlocks<\/title>/i);
+  assert.match(html, /<title>DSA Explained · InfoBlocks<\/title>/i);
   assert.match(html, /Matrix Search/);
-  assert.match(html, /DSA Code Recall: 62 Problems learning feed/);
+  assert.match(html, /DSA Explained: 62 Problems learning feed/);
   assert.match(html, /Problem statement/);
-  assert.match(html, /Show reference code/);
+  assert.match(html, /Core idea/);
+  assert.match(html, /Pattern connection/);
+  assert.match(html, /Code walkthrough/);
+  assert.match(html, /Start at the top-right corner/);
+  assert.doesNotMatch(html, /Show reference code|Reveal answer|Hide solution/);
 });
 
 test("uses the finished product shell with no starter preview", async () => {

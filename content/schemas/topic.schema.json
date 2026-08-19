@@ -90,6 +90,7 @@
       "properties": {
         "language": { "type": "string", "minLength": 1 },
         "caption": { "type": "string", "minLength": 1 },
+        "startLine": { "type": "integer", "minimum": 1 },
         "lines": {
           "type": "array",
           "minItems": 1,
@@ -138,6 +139,37 @@
           "items": { "type": "string", "minLength": 1 }
         },
         "code": { "$ref": "#/$defs/code" }
+      }
+    },
+    "explainedCodeStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "explanation", "code"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "explanation": { "type": "string", "minLength": 1 },
+        "code": { "$ref": "#/$defs/code" }
+      }
+    },
+    "dsaSolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["coreIdea", "patternConnection", "nuances", "codeSteps"],
+      "properties": {
+        "coreIdea": { "type": "string", "minLength": 1 },
+        "patternConnection": { "type": "string", "minLength": 1 },
+        "nuances": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "codeSteps": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 12,
+          "items": { "$ref": "#/$defs/explainedCodeStep" }
+        }
       }
     },
     "visual": {
@@ -205,6 +237,7 @@
             "challenge": { "$ref": "#/$defs/challengePresentation" }
           }
         },
+        "solution": { "$ref": "#/$defs/dsaSolution" },
         "visual": { "$ref": "#/$defs/visual" },
         "takeaway": { "type": "string", "minLength": 1 },
         "bridge": { "type": "string", "minLength": 1 },

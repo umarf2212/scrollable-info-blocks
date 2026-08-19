@@ -680,7 +680,7 @@ a {
   display: block;
   width: max-content;
   min-width: 100%;
-  counter-reset: code-line;
+  counter-reset: code-line var(--code-line-start, 0);
 }
 
 .code-line {
@@ -730,31 +730,166 @@ a {
   font-size: clamp(30px, 3.4vw, 50px);
 }
 
-.block-card--code-recall .challenge-card__prompt p {
-  max-width: 92ch;
-  font-weight: 530;
+.dsa-reading {
+  display: grid;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.dsa-section,
+.dsa-code-step {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--surface-strong) 82%, transparent);
+}
+
+.dsa-section {
+  padding: clamp(16px, 2.2vw, 24px);
+}
+
+.dsa-section__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: color-mix(in srgb, var(--accent) 74%, var(--text));
+  font-size: 10px;
+  font-weight: 820;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.dsa-problem p,
+.dsa-core-idea,
+.dsa-pattern-connection p,
+.dsa-nuances p {
+  margin: 0;
+}
+
+.dsa-problem p {
+  max-width: 94ch;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 520;
+  line-height: 1.68;
   white-space: pre-line;
 }
 
-.block-card--code-recall .challenge-card__actions {
-  justify-content: flex-end;
+.dsa-core-idea {
+  max-width: 92ch;
+  font-family: "Iowan Old Style", Georgia, serif;
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 560;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
 }
 
-.block-card--code-recall .challenge-card__answer > p:first-of-type {
+.dsa-pattern-connection,
+.dsa-nuances {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.dsa-pattern-connection > strong,
+.dsa-nuances > strong {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 820;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dsa-pattern-connection p {
   max-width: 94ch;
-  color: var(--text);
-  font-size: 13.5px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.dsa-nuances ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dsa-nuances li {
+  display: grid;
+  grid-template-columns: 17px 1fr;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 12px;
   line-height: 1.5;
 }
 
-.block-card--code-recall .presentation__bullets {
-  grid-template-columns: 1fr;
-  max-width: 96ch;
+.dsa-nuances li svg {
+  margin-top: 2px;
+  color: var(--accent);
 }
 
-.block-card--code-recall .code-sample {
-  margin-top: 16px;
-  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+.dsa-walkthrough > .dsa-section__label {
+  margin: 4px 2px 12px;
+}
+
+.dsa-code-steps {
+  display: grid;
+  gap: 12px;
+}
+
+.dsa-code-step {
+  padding: 15px;
+  overflow: hidden;
+}
+
+.dsa-code-step > header {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 11px;
+  align-items: start;
+}
+
+.dsa-code-step > header > span {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  color: var(--accent);
+  font-family: var(--font-geist-mono, ui-monospace), monospace;
+  font-size: 9px;
+  font-weight: 800;
+  background: color-mix(in srgb, var(--accent) 11%, var(--surface));
+}
+
+.dsa-code-step h2 {
+  margin: 0 0 4px;
+  font-family: "Iowan Old Style", Georgia, serif;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.dsa-code-step header p {
+  max-width: 92ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+.dsa-code-step .code-sample {
+  margin-top: 12px;
+  border-color: color-mix(in srgb, var(--accent) 24%, var(--border));
+}
+
+.dsa-code-step .code-sample pre {
+  max-height: none;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .code-recall-dock {
@@ -2164,21 +2299,46 @@ summary:focus-visible,
     font-size: clamp(27px, 8.6vw, 36px);
   }
 
-  .block-card--code-recall .challenge-card__prompt {
-    padding: 12px;
+  .dsa-reading {
+    gap: 12px;
+    margin-top: 16px;
   }
 
-  .block-card--code-recall .challenge-card__prompt p {
+  .dsa-section {
+    padding: 13px;
+    border-radius: 15px;
+  }
+
+  .dsa-problem p {
     font-size: 13px;
-    line-height: 1.48;
+    line-height: 1.58;
   }
 
-  .block-card--code-recall .challenge-card__answer {
+  .dsa-core-idea {
+    font-size: 20px;
+  }
+
+  .dsa-pattern-connection p,
+  .dsa-nuances li {
+    font-size: 11px;
+  }
+
+  .dsa-code-step {
     padding: 11px;
+    border-radius: 15px;
   }
 
-  .block-card--code-recall .challenge-card__answer > p:first-of-type {
-    font-size: 12px;
+  .dsa-code-step > header {
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .dsa-code-step h2 {
+    font-size: 17px;
+  }
+
+  .dsa-code-step header p {
+    font-size: 10.5px;
   }
 
   .challenge-card__actions {
@@ -2199,6 +2359,10 @@ summary:focus-visible,
   .code-sample pre {
     max-height: 56dvh;
     font-size: 10px;
+  }
+
+  .dsa-code-step .code-sample pre {
+    max-height: none;
   }
 
   .code-line { padding-left: 4ch; }

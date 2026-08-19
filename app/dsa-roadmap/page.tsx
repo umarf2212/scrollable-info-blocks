@@ -11,40 +11,40 @@ const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").re
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "DSA Code Recall",
+  title: "DSA Explained",
   description:
-    "Recall 62 DSA problems by reading each exact statement, then revealing its reference Python code and concise implementation notes.",
+    "Review 62 DSA problems through their statement, core idea, problem-specific nuances, and source Python implementation explained fragment by fragment.",
   alternates: { canonical: `${siteUrl}/dsa-roadmap/` },
   openGraph: {
-    title: "DSA Code Recall · InfoBlocks",
-    description: "62 problem statements with reference Python code and concise implementation notes.",
+    title: "DSA Explained · InfoBlocks",
+    description: "62 problem statements with core ideas, specific nuances, and step-by-step Python code walkthroughs.",
     url: `${siteUrl}/dsa-roadmap/`,
     images: [
       {
         url: `${siteUrl}/dsa-roadmap-og.png`,
         width: 1659,
         height: 948,
-        alt: "DSA Code Recall in InfoBlocks",
+        alt: "DSA Explained in InfoBlocks",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "DSA Code Recall · InfoBlocks",
-    description: "62 problem statements with reference Python code and concise implementation notes.",
+    title: "DSA Explained · InfoBlocks",
+    description: "62 problem statements with core ideas, specific nuances, and step-by-step Python code walkthroughs.",
     images: [`${siteUrl}/dsa-roadmap-og.png`],
   },
 };
 
 function loadDsaContent() {
   try {
-    const topic = parseTopic(dsaInterviewRecallData, "DSA Code Recall");
+    const topic = parseTopic(dsaInterviewRecallData, "DSA Explained");
     const config = parseUiConfig({
       ...uiConfigData,
       defaults: {
         ...uiConfigData.defaults,
         topicId: "dsa-interview-recall",
-        mode: "challenge",
+        mode: "standard",
       },
       content: {
         ...uiConfigData.content,

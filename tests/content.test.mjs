@@ -11,11 +11,13 @@ const topicFiles = [
 
 const readJson = async (url) => JSON.parse(await readFile(url, "utf8"));
 
-const normalizedCodeLines = (lines) => {
-  const result = lines.map((line) => line.replaceAll("\t", "    ").replace(/\s+$/, ""));
+const normalizedExecutableLines = (lines) => {
+  const result = lines
+    .map((line) => line.replaceAll("\t", "    ").replace(/\s+$/, ""))
+    .filter((line) => !/^\s*#/.test(line));
   while (result[0] === "") result.shift();
   while (result.at(-1) === "") result.pop();
-  return result;
+  return result.filter((line, index) => line !== "" || result[index - 1] !== "");
 };
 
 test("every learning journey validates and stays pedagogically coherent", async () => {
@@ -67,7 +69,7 @@ test("every learning journey validates and stays pedagogically coherent", async 
   }
 });
 
-test("the DSA code-recall journey preserves all source nodes and reference snippets", async () => {
+test("the DSA journey explains every source problem and walks through its code", async () => {
   const [topic, source] = await Promise.all([
     readJson(new URL("../content/topics/dsa-interview-recall.json", import.meta.url)),
     readJson(new URL("../content/source/dsa-roadmap-extracted.json", import.meta.url)),
@@ -81,25 +83,38 @@ test("the DSA code-recall journey preserves all source nodes and reference snipp
   for (const [index, block] of topic.blocks.entries()) {
     const node = source.nodes[index];
     assert.ok(node.problemStatementParagraphs.every((paragraph) => block.presentations.challenge.prompt.includes(paragraph)));
-    assert.ok(block.presentations.challenge.code, `${block.id} missing reference snippet`);
-    assert.ok(block.presentations.challenge.code.lines.length > 0);
-    assert.ok(block.presentations.challenge.answer.length < 350, `${block.id} explanation should stay brief`);
+    assert.equal(block.presentations.challenge.code, undefined, `${block.id} must not hide one monolithic answer`);
+    assert.ok(block.solution, `${block.id} missing its always-visible explained solution`);
+    assert.ok(block.solution.coreIdea.length > 20);
+    assert.match(block.solution.patternConnection, /(?:Model pattern|pattern):/i);
+    assert.ok(block.solution.nuances.length >= 1);
+    assert.ok(block.solution.codeSteps.length >= 2, `${block.id} must split code into multiple steps`);
+    assert.ok(block.solution.codeSteps.every((step) => step.title.length > 4 && step.explanation.length > 20));
+    assert.ok(block.solution.codeSteps.every((step) => step.code.lines.length <= 20));
+    assert.ok(block.solution.codeSteps.every((step) => !/next part|working state|source implementation/i.test(step.explanation)));
+
+    let expectedStartLine = 1;
+    for (const step of block.solution.codeSteps) {
+      assert.equal(step.code.startLine, expectedStartLine, `${block.id} has discontinuous source line numbers`);
+      expectedStartLine += step.code.lines.length;
+    }
+
     const sourcePython = node.snippets.find((snippet) => snippet.language === "python");
     if (sourcePython) {
       assert.deepEqual(
-        block.presentations.challenge.code.lines,
-        normalizedCodeLines(sourcePython.lines),
-        `${block.id} drifted from its source Python`,
+        block.solution.codeSteps.flatMap((step) => step.code.lines),
+        normalizedExecutableLines(sourcePython.lines),
+        `${block.id} drifted from the executable source Python`,
       );
     }
   }
 
   assert.equal(topic.blocks[56].title, "Infix to Postfix");
   assert.equal(topic.blocks[60].title, "Infix to Postfix");
-  assert.equal(topic.blocks.every((block) => block.presentations.challenge.code.language === "python"), true);
-  assert.match(topic.blocks[29].presentations.challenge.code.caption, /reconstructed/i);
-  assert.match(topic.blocks[29].presentations.challenge.code.lines.join("\n"), /def solve\(self, A, B\)/);
-  assert.match(topic.description, /source-document Python snippet/i);
+  assert.equal(topic.blocks.every((block) => block.solution.codeSteps.every((step) => step.code.language === "python")), true);
+  assert.match(topic.blocks[29].solution.codeSteps[0].code.caption, /reconstructed/i);
+  assert.match(topic.blocks[29].solution.codeSteps.flatMap((step) => step.code.lines).join("\n"), /def solve\(self, A, B\)/);
+  assert.match(topic.description, /explained code fragments/i);
 });
 
 test("the UI configuration validates independently from content", async () => {

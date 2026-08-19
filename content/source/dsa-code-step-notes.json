@@ -1,0 +1,328 @@
+{
+  "1": [
+    { "title": "Start at the top-right corner", "explanation": "Set `i` to the first row and `j` to the last column. Each comparison at `A[i][j]` can eliminate a whole row or column; return immediately on equality." },
+    { "title": "Discard one row or column", "explanation": "A value larger than `B` eliminates the current column, so move left. A smaller value eliminates the current row, so move down; falling out of bounds means the target is absent." }
+  ],
+  "2": [
+    { "title": "Handle the empty-input base case", "explanation": "Keep the required method signature and return `0` only when both arrays are empty. The remaining cases are handled before partition search." },
+    { "title": "Resolve one-array medians", "explanation": "`singleAr` returns the middle item for odd length and averages the two middle items for even length. Use it when either input array is empty." },
+    { "title": "Search only the shorter array", "explanation": "Swap the arrays when needed so binary search runs on the shorter one. `half` is the required size of the combined left partition." },
+    { "title": "Materialize the four partition borders", "explanation": "Use negative and positive infinity when a partition side is empty. These sentinels let the same validity test cover boundary partitions without special branches." },
+    { "title": "Validate or move the partition", "explanation": "The partition is correct when both left borders are no larger than the opposite right borders. Otherwise move left when `Aleft` is too large, or right when it is too small." }
+  ],
+  "3": [
+    { "title": "Define the row-count search", "explanation": "The solution will binary-search a value, so it first defines `findCount(row, num)` to count how many items in one sorted row are `<= num`." },
+    { "title": "Count values at or below a candidate", "explanation": "Binary-search the final index whose value is `<= num`; returning `ans + 1` converts that index into a count." },
+    { "title": "Set the global value range", "explanation": "Take the smallest first element and largest last element across rows as the search bounds. The median rank is half the total element count." },
+    { "title": "Binary-search the matrix median", "explanation": "Sum `findCount(row, mid)` over all rows. If at most half the matrix is `<= mid`, move right; otherwise record `mid` and look for a smaller valid value." }
+  ],
+  "4": [
+    { "title": "Handle tiny values and open the search", "explanation": "Return directly for `0` and `1`, special-case `2`, then binary-search candidate roots from `0` through `A`." },
+    { "title": "Keep the largest safe candidate", "explanation": "Compare with `A / mid` instead of `mid * mid` to avoid multiplication overflow. When `mid` fits, save it and search higher; otherwise search lower." }
+  ],
+  "5": [
+    { "title": "Locate the rotation pivot", "explanation": "Binary-search for the peak where `A[mid]` exceeds both neighbors. The side whose ordering is broken tells the search which half still contains the pivot." },
+    { "title": "Define bounded binary search", "explanation": "Search a supplied inclusive range and return the matching index. This helper is reused for each sorted half of the rotated array." },
+    { "title": "Narrow the selected sorted half", "explanation": "Move `lo` right when the midpoint is smaller than the target, otherwise move `hi` left. Return `-1` when that half contains no match." },
+    { "title": "Search both sides of the pivot", "explanation": "Find the pivot, then binary-search `[0, pivot]` and `[pivot + 1, n - 1]`. Returning the first non-`-1` result restores the original array index." },
+    { "title": "Return the surviving match", "explanation": "Prefer the left-half result when it exists; otherwise return the right-half result, which is already `-1` if the target is absent." }
+  ],
+  "6": [
+    { "title": "Test one window length", "explanation": "`findSums` builds the sum of the first `k` elements. If that window already exceeds `B`, length `k` is infeasible." },
+    { "title": "Slide the fixed-size window", "explanation": "For each next position, subtract the element leaving the window and add the element entering it. Reject as soon as any length-`k` window exceeds `B`." },
+    { "title": "Binary-search the maximum length", "explanation": "Search lengths from `1` to `len(A)`. A feasible midpoint is saved and pushes `lo` right because every smaller length is also feasible." },
+    { "title": "Shrink after an infeasible midpoint", "explanation": "When any window violates the sum limit, move `hi` left. `ans` retains the largest feasible length found so far." }
+  ],
+  "7": [
+    { "title": "Build the arithmetic helpers", "explanation": "Euclid's algorithm computes `gcd`; `lcm(a, b)` uses division before multiplication. A candidate `x` contains `x/B + x/C - x/lcm` magical numbers." },
+    { "title": "Open binary search on the answer", "explanation": "Search the numeric range and evaluate how many magical numbers are `<= mid`. Equality records a candidate and continues left to find the A-th number itself." },
+    { "title": "Move by the candidate count", "explanation": "Too few magical numbers means `mid` is too small, so move right; too many means move left. Return the smallest recorded candidate modulo the required constant." }
+  ],
+  "8": [
+    { "title": "Reject impossible student counts", "explanation": "Every student needs at least one book, so fewer books than students has no valid allocation and returns `-1`." },
+    { "title": "Greedily test a page cap", "explanation": "Accumulate consecutive books for the current student. When the next book would exceed `pages`, start a new student with that book." },
+    { "title": "Set the answer-search bounds", "explanation": "More than `B` students makes a cap infeasible. Search from the largest single book to the sum of all books, because the answer cannot lie outside that range." },
+    { "title": "Minimize the feasible cap", "explanation": "A feasible midpoint becomes the current answer and moves `hi` left. An infeasible midpoint moves `lo` right because a larger page cap is required." }
+  ],
+  "9": [
+    { "title": "Count packets of one size", "explanation": "For a proposed packet size `k`, sum `people // k` across cities. The size works when that count can feed at least `B` people." },
+    { "title": "Search possible packet sizes", "explanation": "Packet size starts at `1` and cannot exceed the smallest city supply. Binary search this monotonic feasibility range." },
+    { "title": "Maximize the feasible size", "explanation": "When `mid` feeds everyone, save it and search larger sizes. Otherwise search smaller sizes; `ans` is the largest working packet size." }
+  ],
+  "10": [
+    { "title": "Initialize three sorted-array pointers", "explanation": "Start one pointer in each array and continue while all three remain valid. The current range is `max(A[i], B[j], C[k]) - min(...)`." },
+    { "title": "Advance the current minimum", "explanation": "Only moving the smallest current value can reduce the range; moving either other pointer cannot improve the present maximum-minus-minimum gap." }
+  ],
+  "11": [
+    { "title": "Measure the current triple", "explanation": "With one pointer per sorted array, compute the minimum and maximum selected values and update the smallest absolute spread seen." },
+    { "title": "Move the limiting pointer", "explanation": "Advance whichever array supplies the current minimum. This is the only move that can produce a tighter spread before one array is exhausted." }
+  ],
+  "12": [
+    { "title": "Count the three colors", "explanation": "Traverse the array once and count how many `0`, `1`, and `2` values occur as red, white, and blue." },
+    { "title": "Overwrite in sorted color order", "explanation": "Walk the indices again, writing all remaining red values first and then white values while decrementing their counts." },
+    { "title": "Fill the remaining positions with blue", "explanation": "Once red and white are exhausted, every remaining slot must be `2`. Return the same rewritten array." }
+  ],
+  "13": [
+    { "title": "Start from opposite ends", "explanation": "Use the smallest element of `A` and largest element of `B`. Their sum can then be adjusted monotonically toward `C`." },
+    { "title": "Apply distance and tie-breaking", "explanation": "Replace the answer on a smaller absolute difference. On a tie, prefer the smaller `A` index, then the smaller `B` index exactly as required." },
+    { "title": "Move the sum toward the target", "explanation": "If the sum is at least `C`, decrease `j`; otherwise increase `i`. Convert the saved indices back to their array values at the end." }
+  ],
+  "14": [
+    { "title": "Sort and fix the first number", "explanation": "After sorting, fix `A[i]` and use two pointers `j` and `k` for the remaining pair. Track the closest sum and its distance from `B`." },
+    { "title": "Capture improvements and exact matches", "explanation": "A smaller absolute difference replaces `ans`. If the sum equals `B`, it is optimal and can be returned immediately." },
+    { "title": "Steer the two-pointer sum", "explanation": "A sum above `B` is reduced by moving `k` left; a smaller sum is increased by moving `j` right. Return the best recorded sum after all triples." }
+  ],
+  "15": [
+    { "title": "Sort side lengths and open two pointers", "explanation": "For sorted side lengths, test the product `A[i] * A[j]` using one pointer at each end." },
+    { "title": "Count an entire valid band", "explanation": "When the product is below `B`, every partner from `i` through `j` works with `A[i]`; count both orientations and the square pair. Otherwise lower `j`." }
+  ],
+  "16": [
+    { "title": "Track seen indices and best distance", "explanation": "Map each value to an index and initialize the answer to infinity. Each repeat can then be compared with the stored occurrence in O(1)." },
+    { "title": "Update on repeats", "explanation": "Save the first occurrence, and on repeats minimize the index gap. This source code never refreshes the stored index, which is why it can miss the nearest repeated pair." }
+  ],
+  "17": [
+    { "title": "Build prefix sums", "explanation": "Create cumulative sums so equal prefix values identify a zero-sum slice between their indices." },
+    { "title": "Record first and last occurrence", "explanation": "For each prefix value, keep its earliest and latest indices. Their separation is the longest zero-sum slice associated with that value." },
+    { "title": "Choose the longest equal-prefix span", "explanation": "Compare every stored index pair, preferring a longer span and then the earlier start on ties." },
+    { "title": "Also handle prefixes that are zero", "explanation": "A zero prefix means the slice starts at array index `0`. Compare those candidates, then translate saved prefix boundaries into the returned array slice." }
+  ],
+  "18": [
+    { "title": "Build the first frequency window", "explanation": "Count the first `B` elements and store its distinct count as the first result. A frequency map supports constant-time additions and removals." },
+    { "title": "Remove the outgoing value", "explanation": "For each shift, decrement `A[i-B]`; when its count reaches zero, the window has lost one distinct value." },
+    { "title": "Add the incoming value", "explanation": "Create a missing key with zero count, increase the distinct total when that count was zero, then increment it and append the new window result." }
+  ],
+  "19": [
+    { "title": "Accumulate prefix sums", "explanation": "Walk the array while maintaining the running prefix sum and a set of sums seen before." },
+    { "title": "Detect a zero-sum slice", "explanation": "A prefix of zero gives a slice from the start; a repeated prefix gives a zero-sum slice between two positions. Return `0` only if neither occurs." }
+  ],
+  "20": [
+    { "title": "Create membership and visited state", "explanation": "Insert each number into a dictionary and mark it unvisited. Each sequence member will be consumed at most once." },
+    { "title": "Expand forward from an unvisited value", "explanation": "Skip values already consumed, then walk `num + 1`, `num + 2`, and so on while present, marking each visited and increasing the sequence length." },
+    { "title": "Expand backward and record the length", "explanation": "Walk downward from `num - 1` in the same way, then maximize the total count. The source returns negative infinity for an empty input." }
+  ],
+  "21": [
+    { "title": "Count every character", "explanation": "Build a frequency table for the characters. Palindrome feasibility depends only on how many frequencies are odd." },
+    { "title": "Allow at most one odd frequency", "explanation": "The first odd count can occupy the middle of an odd-length palindrome. A second odd count makes a rearranged palindrome impossible." }
+  ],
+  "22": [
+    { "title": "Count decimal digits", "explanation": "Repeated integer division by ten determines how many consecutive digit-window lengths must be examined." },
+    { "title": "Compute a window's digit product", "explanation": "Extract digits with `% 10`, multiply them, and return the product. In the captured helper, input zero incorrectly leaves the product as `1`." },
+    { "title": "Enumerate every consecutive digit window", "explanation": "For each width, isolate the current window with `% 10**i`, compute its product, and reject immediately if that product was seen before." },
+    { "title": "Shift to the next window", "explanation": "Store the new product, remove one trailing digit with `temp //= 10`, and repeat. Finishing all widths without a collision returns colorful." }
+  ],
+  "23": [
+    { "title": "Count the values in A", "explanation": "Build a frequency map so values can be emitted in the order requested by `B`, including duplicates." },
+    { "title": "Emit values named by B", "explanation": "Append each `B` value exactly as many times as it occurs in `A`, and remember which values have received priority ordering." },
+    { "title": "Sort only the leftover values", "explanation": "Collect values from `A` that never appeared in `B`, sort that remainder, and append it after the priority-ordered prefix." }
+  ],
+  "24": [
+    { "title": "Store all points for O(1) lookup", "explanation": "Put every `(x, y)` pair into a set so either missing corner of an axis-aligned rectangle can be tested directly." },
+    { "title": "Pair diagonal corners", "explanation": "For points with different x and y coordinates, check whether both opposite corners exist. Every rectangle is discovered twice, so divide the count by two." }
+  ],
+  "25": [
+    { "title": "Count points by x and y coordinate", "explanation": "Build independent frequency maps for each x coordinate and each y coordinate." },
+    { "title": "Count right angles at each point", "explanation": "At point `(x, y)`, choose any other point with x and any other point with y: `(xCount-1) * (yCount-1)`. Sum those choices over all vertices." }
+  ],
+  "26": [
+    { "title": "Count source-string characters", "explanation": "A frequency map captures how many copies of each character must be split among `A` identical substrings." },
+    { "title": "Check divisibility of every frequency", "explanation": "Each character count must be divisible by the replication count `A`. Any remainder makes equal substring replication impossible." }
+  ],
+  "27": [
+    { "title": "Normalize slopes with GCD", "explanation": "Use Euclid's algorithm so direction vectors can be reduced to a canonical integer slope instead of compared as floating-point numbers." },
+    { "title": "Choose an anchor and count overlaps", "explanation": "For each anchor point, reset its slope map. Identical points are counted separately in `overlap` because their direction vector is `(0, 0)`." },
+    { "title": "Reduce and count each direction", "explanation": "Subtract coordinates, divide by the GCD, and normalize signs so the same geometric line produces the same slope key." },
+    { "title": "Combine slope count with overlaps", "explanation": "The largest slope bucket plus the anchor and all overlapping points is the best line through this anchor; maximize it globally." }
+  ],
+  "28": [
+    { "title": "Build additive element hashes", "explanation": "Hash each array value as text and accumulate prefix sums. Equal hash sums are used as a proxy for equal sorted multisets." },
+    { "title": "Read both query ranges", "explanation": "For every query, extract the two inclusive subarray bounds before computing their prefix-hash sums." },
+    { "title": "Compare range hash sums", "explanation": "Subtract prefix hashes to obtain each range's additive hash, then append `1` on equality. Python's randomized hash and collisions make this probabilistic, not exact." }
+  ],
+  "29": [
+    { "title": "Count occurrences in A", "explanation": "Build a frequency table for the first array so duplicate common values can be capped correctly." },
+    { "title": "Intersect the two frequency maps", "explanation": "Count `B`, then for every value present in both arrays append it `min(countA, countB)` times." }
+  ],
+  "30": [
+    { "title": "Initialize KMP state", "explanation": "Reject unequal or empty strings, then allocate the LPS table for pattern `A`. `j` is the current matched-prefix length." },
+    { "title": "Build LPS and expose all rotations", "explanation": "KMP fallback fills `lps` in linear time. `B + B[:-1]` contains exactly the `N` possible cyclic-shift starting positions without duplicating rotation zero." },
+    { "title": "Count overlapping rotation matches", "explanation": "Run KMP over the doubled text. On a full match, increment the count and fall back through LPS so periodic strings can contribute overlapping matches." }
+  ],
+  "31": [
+    { "title": "Start with A's mandatory first character", "explanation": "The answer must contain a non-empty prefix of `A`, so initialize it with `A[0]`." },
+    { "title": "Extend A only while it helps", "explanation": "Append later characters of `A` while each is lexicographically smaller than `B[0]`, then append exactly the first character of `B`." }
+  ],
+  "32": [
+    { "title": "Compare mirrored characters", "explanation": "Move two pointers inward from the ends and permit one mismatched mirrored pair by setting `flag`." },
+    { "title": "Reject a second mismatch", "explanation": "If another unequal pair appears after `flag` is set, more than one replacement is needed and the answer is `NO`." },
+    { "title": "Handle the already-palindromic case", "explanation": "When no mismatch occurred, an even-length string cannot consume exactly one replacement without breaking symmetry; odd length can replace its center." }
+  ],
+  "33": [
+    { "title": "Form the palindrome-overlap pattern", "explanation": "The answer equals the unmatched prefix after overlapping `A` with its reverse. `findLPS` computes that overlap with KMP prefix-function state." },
+    { "title": "Build the LPS table", "explanation": "Advance both indices on a match; on mismatch, fall back to the previous border until a shorter prefix can continue, or write zero." },
+    { "title": "Read the longest palindromic prefix", "explanation": "Run LPS on `A + '@' + reverse(A)`. The final LPS value is the longest palindromic prefix, so the remaining suffix length is the number of front insertions." }
+  ],
+  "34": [
+    { "title": "Count occurrences of a", "explanation": "Only positions containing `'a'` matter, so count them in one scan." },
+    { "title": "Count substrings in the filtered sequence", "explanation": "For `c` occurrences, there are `c * (c + 1) / 2` non-empty contiguous choices in the sequence of those occurrences." }
+  ],
+  "35": [
+    { "title": "Handle the one-node list", "explanation": "Deleting the middle of a single-node list leaves an empty list, so return `None`." },
+    { "title": "Find and unlink the middle", "explanation": "Move `slow` one step and `fast` two steps while retaining `prev`. When `fast` ends, bypass `slow` with `prev.next = prev.next.next`." }
+  ],
+  "36": [
+    { "title": "Reverse exactly one K-node group", "explanation": "`reverse` rewires `n` links beginning at `head`, carrying `prev`, `curr`, and `temp` so no remainder of the list is lost." },
+    { "title": "Locate the next group boundary", "explanation": "`reverseFragment` walks at most `B` nodes to find where the current group ends and where the next group begins." },
+    { "title": "Reverse and reconnect recursively", "explanation": "Reverse the current group, attach its original head to the recursively processed remainder, and return the group's new head." },
+    { "title": "Process from the original head", "explanation": "The outer method starts recursive group reversal at `A` and returns the new head of the complete list." }
+  ],
+  "37": [
+    { "title": "Handle the one-node base case", "explanation": "A list with no second node is already reversed, so return its head unchanged." },
+    { "title": "Reverse links iteratively", "explanation": "Set the original head's next pointer to `None`, then repeatedly save `curr.next`, point `curr` backward to `prev`, and advance both pointers." }
+  ],
+  "38": [
+    { "title": "Initialize slow and fast pointers", "explanation": "Both pointers start at the head; `slow` will move one node for every two nodes traversed by `fast`." },
+    { "title": "Stop with slow at the middle", "explanation": "Continue while `fast` can take two steps. When it cannot, `slow` is the middle node (the second middle for even length), so return its value." }
+  ],
+  "39": [
+    { "title": "Handle an empty reversal range", "explanation": "When `B == C`, the selected segment contains one node and the list can be returned unchanged. Save the original head and numeric boundaries." },
+    { "title": "Find the left boundary", "explanation": "Traverse with a 1-based counter. At position `B`, save the node before the segment in `A` and the segment's original first node in `B`." },
+    { "title": "Reverse links through the right boundary", "explanation": "At position `C`, save the segment's new head and following node. For every position inside `[B, C]`, reverse the current link and advance using the saved next pointer." },
+    { "title": "Reconnect both sides", "explanation": "Attach the old segment head `B` to `D`. If reversal began at position one, return `C`; otherwise attach the left predecessor `A` to `C` and keep the original head." }
+  ],
+  "40": [
+    { "title": "Define node and list state", "explanation": "Each `Node` stores a value and next pointer; `LinkedList` stores only its head." },
+    { "title": "Insert at the head", "explanation": "Position `1` creates a new head and points it to the previous head. The captured method should return here but does not, which causes unnecessary traversal." },
+    { "title": "Walk to the insertion predecessor", "explanation": "Advance until `position - 1`, stopping if the list ends before that predecessor exists." },
+    { "title": "Splice in a middle or tail node", "explanation": "Reject an invalid predecessor; otherwise save its old successor, link the new node after the predecessor, then reconnect the saved successor." },
+    { "title": "Delete the head", "explanation": "For position `1`, advance `self.head` and return the removed head's value when the list is non-empty." },
+    { "title": "Walk to the deletion predecessor", "explanation": "Advance to the node immediately before the requested 1-based position, stopping when the list is too short." },
+    { "title": "Bypass the deleted node", "explanation": "If both predecessor and target exist, link around the target and return its value; invalid positions return nothing." },
+    { "title": "Print every node", "explanation": "Traverse from the head, printing spaces between values and a newline after the final value. Then create the shared list instance." },
+    { "title": "Expose the required function API", "explanation": "The global `insert_node`, `delete_node`, and `print_ll` functions delegate to the single shared `LinkedList` object expected by the judge." }
+  ],
+  "41": [
+    { "title": "Handle invalid and trivial inputs", "explanation": "Return `None` for no list and return the only node unchanged when its next pointer is absent." },
+    { "title": "Create a B-node lead", "explanation": "Advance `second` by `B` nodes while `first` stays at the head. If `second` becomes null exactly there, the node to remove is the head." },
+    { "title": "Move both pointers to the target", "explanation": "Advance both until `second` reaches the tail. `first.next` is then the B-th node from the end, so bypass it and return the head." }
+  ],
+  "42": [
+    { "title": "Start at the first sorted run", "explanation": "`curr` anchors the value to keep, while `temp` scans forward through nodes with the same value." },
+    { "title": "Link each run to the next distinct node", "explanation": "After skipping an equal-value run, set `curr.next` to the first different node and continue from there. Each distinct value keeps one node." }
+  ],
+  "43": [
+    { "title": "Handle one- and two-node loops", "explanation": "Break a self-loop directly. The next special case detects a two-node cycle returning to the head and severs its second link." },
+    { "title": "Detect a meeting inside the cycle", "explanation": "Move `slow` one step and `fast` two steps until they meet. Floyd's meeting proves a loop exists without extra storage." },
+    { "title": "Find the loop entry and its predecessor", "explanation": "Reset `slow` to the head and move both one step; `fast` reaches the entry while `prev` trails it at the final cycle node. Set `prev.next` to `None`." }
+  ],
+  "44": [
+    { "title": "Handle a one-node list", "explanation": "A single node already satisfies the reorder, so return it unchanged." },
+    { "title": "Store nodes and count half the list", "explanation": "Push every node onto a stack, then use half the stack length as the number of tail nodes that must be interleaved." },
+    { "title": "Interleave head and tail nodes", "explanation": "Pop the current tail, insert it after the current front node, then advance to the saved next front node. Finally terminate the list to remove stale links." }
+  ],
+  "45": [
+    { "title": "Establish merge-sort helpers", "explanation": "Return immediately for lists of length zero or one, then define an in-place merge for two already sorted linked lists." },
+    { "title": "Choose the merged head", "explanation": "Compare the first nodes of both lists, take the smaller as `head`, and advance only that source list." },
+    { "title": "Merge while both lists remain", "explanation": "Repeatedly attach the smaller current node to `temp`, advance that source, and move the merged tail forward." },
+    { "title": "Attach the remaining suffix", "explanation": "Once one source is exhausted, its competitor is already sorted, so attach that entire remainder and return the merged head." },
+    { "title": "Find the left-half tail", "explanation": "Start `fast` one node ahead so `slow` stops at the predecessor of the right half for both odd and even lengths." },
+    { "title": "Split, recurse, and merge", "explanation": "Cut the link after `mid`, recursively sort both independent halves, merge them, and invoke the recursive helper on the original head." }
+  ],
+  "46": [
+    { "title": "Define the reusable merge helper", "explanation": "If either list is empty, return the other. Otherwise prepare to merge by node value without allocating replacement nodes." },
+    { "title": "Choose the helper's head", "explanation": "Select the smaller first node as the merged head and advance the list that supplied it." },
+    { "title": "Merge the helper inputs", "explanation": "While both inputs remain, append the smaller current node and advance its source pointer." },
+    { "title": "Finish the helper and handle empty main inputs", "explanation": "Attach whichever helper input remains. The main implementation then applies the same empty-list base cases to `A` and `B`." },
+    { "title": "Choose the result head", "explanation": "Select the smaller of `A` and `B` as `head`, set `curr` to it, and advance the corresponding source." },
+    { "title": "Splice nodes in sorted order", "explanation": "Compare current nodes while both lists remain, attach the smaller one after `curr`, and advance both `curr` and that source." },
+    { "title": "Attach the last suffix", "explanation": "Link `curr.next` to whichever list is not empty. Its existing order is already correct, so no further comparisons are needed." }
+  ],
+  "47": [
+    { "title": "Scan from right with a decreasing stack", "explanation": "For each value from right to left, pop candidates `<= A[i]`; they can never be the next greater element for this or any earlier larger value." },
+    { "title": "Record the nearest surviving greater value", "explanation": "The stack top is the next greater element, or `-1` when none survives. Push the current value and reverse the accumulated answers back to input order." }
+  ],
+  "48": [
+    { "title": "Push operands and pop operand pairs", "explanation": "Numbers go onto the stack. On an operator, pop the right operand first and the left operand second; order matters for subtraction and division." },
+    { "title": "Evaluate and push each operation", "explanation": "Apply the token's operator, truncate division toward zero through `int(op2 / op1)`, and push the intermediate result. The final stack item is the expression value." }
+  ],
+  "49": [
+    { "title": "Maintain a decreasing candidate stack", "explanation": "Start with the first value. For each next value, pop every smaller-or-equal stack value and evaluate its XOR with the current value." },
+    { "title": "Compare the nearest larger neighbor", "explanation": "After popping, the stack top is the nearest surviving larger value; compare that XOR too, then push the current value. These are the only pairs that can maximize the required expression." }
+  ],
+  "50": [
+    { "title": "Set modulo arithmetic", "explanation": "Initialize the required modulus before computing boundary arrays and contribution totals." },
+    { "title": "Find previous smaller boundaries", "explanation": "Maintain increasing indices from left to right, popping strictly larger values. The surviving top is the previous `<=` boundary for each element." },
+    { "title": "Find previous greater boundaries", "explanation": "Maintain decreasing indices from left to right, popping strictly smaller values. The top becomes the previous `>=` boundary." },
+    { "title": "Find next smaller boundaries", "explanation": "Scan right to left and pop values `>= A[i]`. Using non-strict comparison on this side assigns duplicate minimum contributions exactly once." },
+    { "title": "Find next greater boundaries", "explanation": "Scan right to left and pop values `<= A[i]`. This is the duplicate-safe counterpart for maximum contributions." },
+    { "title": "Accumulate minimum contributions", "explanation": "For each index, count left and right choices before a smaller boundary. Their product is the number of subarrays where `A[i]` is the selected minimum." },
+    { "title": "Accumulate maxima and subtract minima", "explanation": "Repeat the contribution formula with greater boundaries, then return `(totalMax - totalMin)` normalized by the modulus." }
+  ],
+  "51": [
+    { "title": "Handle the one-bar histogram", "explanation": "A single bar's height is its full rectangle area; all longer histograms use nearest-smaller boundaries." },
+    { "title": "Build nearest-smaller indices", "explanation": "`nextSmaller` scans in a chosen direction with an increasing stack, popping heights `>=` the current bar so the top is strictly smaller." },
+    { "title": "Advance in the requested direction", "explanation": "Move left-to-right for `L` and right-to-left for `R`, then reverse right-scan results so both arrays align with original indices." },
+    { "title": "Compute both boundary arrays", "explanation": "`NSL` and `NSR` delimit how far every bar can extend while remaining the rectangle's minimum height." },
+    { "title": "Calculate widths with available boundaries", "explanation": "When both boundaries exist, width is `NSR - NSL - 1`; when neither exists, the bar spans the whole histogram. The one-sided case uses the existing boundary." },
+    { "title": "Handle an absent right boundary", "explanation": "If there is no smaller bar on the right, extend through the final index using `len(A) - NSL - 1`, then return the maximum area." }
+  ],
+  "52": [
+    { "title": "Remove unusable left candidates", "explanation": "Scan left to right with an increasing stack. Pop values `>= A[i]` because the answer must be strictly smaller." },
+    { "title": "Read and save the nearest smaller value", "explanation": "The surviving top is the nearest smaller element to the left; use `-1` when the stack is empty, then push the current value." }
+  ],
+  "53": [
+    { "title": "Represent valid passes as a stack", "explanation": "Keep the initial player `B` outside the stack and process each pass id in order." },
+    { "title": "Undo or record each pass", "explanation": "Id `0` cancels the previous pass by popping; any other id records a new holder. Return the initial player if every pass was canceled." }
+  ],
+  "54": [
+    { "title": "Initialize frequency-stack state", "explanation": "`freq` maps values to counts, `freqStack` groups values by current count, and `maxFreq` identifies the bucket to pop from." },
+    { "title": "Increase a pushed value's frequency", "explanation": "For push operations, increment `freq[x]` and raise `maxFreq` when this value reaches a new global frequency." },
+    { "title": "Push by frequency or pop the winning bucket", "explanation": "Append pushes to the stack for their new frequency, preserving recency. A pop removes the most recent value from the current `maxFreq` bucket." },
+    { "title": "Repair state after a pop", "explanation": "Delete an emptied top bucket and decrement `maxFreq`; decrease the popped value's count and append it to the output." }
+  ],
+  "55": [
+    { "title": "Move values through the auxiliary stack", "explanation": "Pop one value from `A`; while it is smaller than the auxiliary top, move larger values back to `A`, then insert it in order." },
+    { "title": "Restore displaced values and finish", "explanation": "Move qualifying values from `A` back onto the auxiliary stack before the next iteration. When `A` empties, the auxiliary stack contains the required sorted order." }
+  ],
+  "56": [
+    { "title": "Maintain data and minimum stacks", "explanation": "The main stack stores every value; `min_stack` stores each value that establishes or ties the current minimum." },
+    { "title": "Push while preserving the minimum", "explanation": "Push `x` to `min_stack` when it is `<=` the current minimum, then always push it to the data stack. Ties are retained so one pop does not lose the minimum." },
+    { "title": "Pop from both stacks when needed", "explanation": "Return nothing for an empty stack. Otherwise pop the data value and also pop `min_stack` when that value equals its top." },
+    { "title": "Read top and minimum in O(1)", "explanation": "`top` returns the latest data value and `getMin` returns the latest minimum, each using only the corresponding stack top or `-1` when empty." }
+  ],
+  "57": [
+    { "title": "Emit operands and open parentheses", "explanation": "Operands go directly to the postfix result. Opening parentheses are pushed as barriers between operator scopes." },
+    { "title": "Close groups and handle high precedence", "explanation": "A closing parenthesis pops operators until `(`. Exponentiation and multiplication/division pop operators of the precedence encoded by the source before being pushed." },
+    { "title": "Handle addition and subtraction", "explanation": "For low-precedence operators, flush every pending arithmetic operator above a parenthesis, then push the new operator." },
+    { "title": "Drain remaining operators", "explanation": "Any other character is appended as an operand. After the scan, pop all remaining operators to complete the postfix expression." }
+  ],
+  "58": [
+    { "title": "Push expression tokens", "explanation": "Scan the expression and push every token except `)`, preserving the contents of each parenthesized group." },
+    { "title": "Require an operator inside each group", "explanation": "On `)`, pop tokens until `(` and record whether an arithmetic operator appeared. No operator means the braces are redundant; otherwise remove `(` and continue." }
+  ],
+  "59": [
+    { "title": "Define sign composition", "explanation": "`evalSigns` returns plus when two signs agree and minus when they differ. This composes a term's local sign with the sign of its surrounding brackets." },
+    { "title": "Normalize the first term and scan", "explanation": "Add an explicit leading plus when needed, then walk the expression while maintaining whether each open bracket preserves or flips signs." },
+    { "title": "Apply signs through parentheses", "explanation": "On `+` or `-`, combine with the current bracket context before recording the variable term. Opening and closing parentheses push and pop that context." },
+    { "title": "Canonicalize and compare", "explanation": "Sort signed variables by name, evaluate both expressions into the same canonical form, and return whether the two normalized lists match." }
+  ],
+  "60": [
+    { "title": "Use a stack as the reduced string", "explanation": "Process characters left to right; the stack always represents the fully reduced prefix." },
+    { "title": "Cancel adjacent equal characters", "explanation": "If the current character equals the stack top, pop the pair; otherwise push it. Joining the final stack yields the stable reduced string." }
+  ],
+  "61": [
+    { "title": "Emit operands and open parentheses", "explanation": "Operands go directly to the postfix result. Opening parentheses are pushed as barriers between operator scopes." },
+    { "title": "Close groups and handle high precedence", "explanation": "A closing parenthesis pops operators until `(`. Exponentiation and multiplication/division pop operators according to the captured precedence rules." },
+    { "title": "Handle addition and subtraction", "explanation": "For low-precedence operators, flush every pending arithmetic operator above a parenthesis, then push the new operator." },
+    { "title": "Drain remaining operators", "explanation": "Append operands directly throughout the scan, then pop all remaining operators to complete the postfix expression." }
+  ],
+  "62": [
+    { "title": "Allocate vertical-height histograms", "explanation": "Create one height row per matrix row and copy the first binary row as the initial histogram." },
+    { "title": "Accumulate heights and test each row", "explanation": "A zero resets its column height; a one extends the height above it. Run largest-histogram-area on every completed row and keep the maximum." },
+    { "title": "Enter the histogram helper", "explanation": "Return the matrix-wide answer after all rows, while `largestRectangleArea` handles a single row and directly returns a one-bar case." },
+    { "title": "Build nearest-smaller indices", "explanation": "The local `nextSmaller` helper uses an increasing index stack and pops heights `>=` the current bar to find strict boundaries." },
+    { "title": "Complete directional scans", "explanation": "Move according to `L` or `R`; reverse the right-to-left result so every boundary aligns with the original histogram index." },
+    { "title": "Compute left and right boundaries", "explanation": "Call the helper in both directions. Those boundaries define the maximal width over which each bar remains the minimum height." },
+    { "title": "Calculate full and bounded widths", "explanation": "A bar with no smaller boundary spans the whole row; with both boundaries, its width is `NSR - NSL - 1`; one-sided cases use the existing edge." },
+    { "title": "Handle an open right edge", "explanation": "When the right boundary is absent, extend to the final column with `len(A) - NSL - 1`, then return the largest histogram area." }
+  ]
+}

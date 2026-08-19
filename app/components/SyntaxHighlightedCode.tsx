@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 type TokenKind =
   | "plain"
@@ -132,7 +132,15 @@ function tokenNode(token: Token, index: number): ReactNode {
   return <span className={`syntax-${token.kind}`} key={`${token.kind}-${index}`}>{token.value}</span>;
 }
 
-export function SyntaxHighlightedCode({ language, lines }: { language: string; lines: string[] }) {
+export function SyntaxHighlightedCode({
+  language,
+  lines,
+  startLine = 1,
+}: {
+  language: string;
+  lines: string[];
+  startLine?: number;
+}) {
   const rendered: ReactNode[] = [];
   let openTriple: string | null = null;
 
@@ -149,5 +157,12 @@ export function SyntaxHighlightedCode({ language, lines }: { language: string; l
     );
   });
 
-  return <code className={`syntax-code syntax-code--${language.toLowerCase()}`}>{rendered}</code>;
+  return (
+    <code
+      className={`syntax-code syntax-code--${language.toLowerCase()}`}
+      style={{ "--code-line-start": startLine - 1 } as CSSProperties}
+    >
+      {rendered}
+    </code>
+  );
 }

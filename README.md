@@ -3,7 +3,7 @@
 The public site includes two entry points:
 
 - `/` — the original Agent Orchestration and Graph Fundamentals demo library.
-- `/dsa-roadmap/` — a separate code-recall journey covering all 62 nodes from Umar Farooque's DSA roadmap.
+- `/dsa-roadmap/` — a separate explained-problem journey covering all 62 nodes from Umar Farooque's DSA roadmap.
 
 Regenerate the curated DSA topic JSON with `npm run content:generate-dsa` after editing the normalized extraction or code notes in `content/source/`.
 
@@ -13,9 +13,9 @@ The bundled content contains three complete journeys across two entry points:
 
 - **AI Agent Orchestration** — 26 blocks covering agent loops, workflow boundaries, orchestration patterns, contracts, context, reliability, evaluation, and an end-to-end production design.
 - **Graph Fundamentals for Interviews** — 28 blocks covering graph representations, traversal, connectivity, DSU, Kruskal, Prim, MST correctness, complexity, and edge cases.
-- **DSA Code Recall** — 62 question-and-answer blocks: the source problem statement first, then the captured reference code with concise implementation notes.
+- **DSA Explained** — 62 always-visible problem blocks: source statement, core idea, model-pattern connection, problem-specific nuances, and the captured Python implementation split into explained fragments.
 
-The two demo journeys support Clear, Story, and Challenge modes. The DSA route is intentionally locked to its problem → code recall flow.
+The two demo journeys support Clear, Story, and Challenge modes. The DSA route is intentionally locked to its simpler problem → idea → code walkthrough flow.
 
 ## Run locally
 

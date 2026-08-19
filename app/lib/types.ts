@@ -18,6 +18,20 @@ export interface CodeSample {
   language: string;
   caption: string;
   lines: string[];
+  startLine?: number;
+}
+
+export interface ExplainedCodeStep {
+  title: string;
+  explanation: string;
+  code: CodeSample;
+}
+
+export interface DsaSolution {
+  coreIdea: string;
+  patternConnection: string;
+  nuances: string[];
+  codeSteps: ExplainedCodeStep[];
 }
 
 export interface StandardPresentation {
@@ -69,6 +83,7 @@ export interface InfoBlock {
     story: StandardPresentation;
     challenge: ChallengePresentation;
   };
+  solution?: DsaSolution;
   visual?: BlockVisual;
   takeaway: string;
   bridge: string;
