@@ -69,10 +69,12 @@ export function InfoBlocksApp({
   topics,
   config,
   codeRecall = false,
+  linkedJourneys = [],
 }: {
   topics: Topic[];
   config: UiConfig;
   codeRecall?: boolean;
+  linkedJourneys?: Array<{ topic: Topic; href: string }>;
 }) {
   const defaultTopic = topics.find((topic) => topic.id === config.defaults.topicId) ?? topics[0];
   const [topicId, setTopicId] = useState(defaultTopic.id);
@@ -516,6 +518,20 @@ export function InfoBlocksApp({
                     </button>
                   );
                 })}
+                {linkedJourneys.map(({ topic: item, href }, index) => (
+                  <a className="topic-card topic-card--linked" href={href} key={item.id}>
+                    <span className="topic-card__number" style={{ "--topic-accent": item.accent } as CSSProperties}>
+                      {String(topics.length + index + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <span>{item.category} · {item.estimatedMinutes} min</span>
+                      <h3>{item.title}</h3>
+                      <p>{item.description}</p>
+                      <small><i style={{ width: "0%", backgroundColor: item.accent }} /> Dedicated explained-code journey</small>
+                    </div>
+                    <em>Open</em>
+                  </a>
+                ))}
               </div>
             ) : (
               <div className="journey-list">

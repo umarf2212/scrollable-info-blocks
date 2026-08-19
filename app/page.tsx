@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { InfoBlocksApp } from "@/app/components/InfoBlocksApp";
 import { parseTopic, parseUiConfig } from "@/app/lib/validate-content";
 import agentOrchestrationData from "@/content/topics/agent-orchestration.json";
+import dsaInterviewRecallData from "@/content/topics/dsa-interview-recall.json";
 import graphFundamentalsData from "@/content/topics/graph-fundamentals.json";
 import uiConfigData from "@/content/config/ui-config.json";
 
@@ -17,11 +18,13 @@ function loadContent() {
       parseTopic(agentOrchestrationData, "AI Agent Orchestration"),
       parseTopic(graphFundamentalsData, "Graph Fundamentals"),
     ];
+    const dsaJourney = parseTopic(dsaInterviewRecallData, "DSA Explained");
     const config = parseUiConfig(uiConfigData);
-    return { topics, config, error: null };
+    return { topics, dsaJourney, config, error: null };
   } catch (error) {
     return {
       topics: null,
+      dsaJourney: null,
       config: null,
       error: error instanceof Error ? error.message : "Unknown content error",
     };
@@ -30,7 +33,7 @@ function loadContent() {
 
 export default function Home() {
   const result = loadContent();
-  if (result.error || !result.topics || !result.config) {
+  if (result.error || !result.topics || !result.dsaJourney || !result.config) {
     return (
       <main className="content-error">
         <div>
@@ -42,5 +45,12 @@ export default function Home() {
       </main>
     );
   }
-  return <InfoBlocksApp topics={result.topics} config={result.config} />;
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  return (
+    <InfoBlocksApp
+      topics={result.topics}
+      config={result.config}
+      linkedJourneys={[{ topic: result.dsaJourney, href: `${basePath}/dsa-roadmap/` }]}
+    />
+  );
 }

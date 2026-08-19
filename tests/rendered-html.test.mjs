@@ -55,6 +55,9 @@ test("uses the finished product shell with no starter preview", async () => {
   assert.match(page, /InfoBlocksApp/);
   assert.match(page, /agent-orchestration\.json/);
   assert.match(page, /graph-fundamentals\.json/);
+  assert.match(page, /dsa-interview-recall\.json/);
+  assert.match(page, /linkedJourneys/);
+  assert.match(page, /dsa-roadmap/);
   assert.match(dsaPage, /dsa-interview-recall\.json/);
   assert.match(layout, /Scroll with somewhere to arrive/);
   assert.doesNotMatch(page + layout + dsaPage + packageJson, /SkeletonPreview|codex-preview|react-loading-skeleton/);

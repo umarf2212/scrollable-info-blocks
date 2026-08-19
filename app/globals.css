@@ -1735,7 +1735,12 @@ a {
   text-align: left;
   background: var(--surface);
   cursor: pointer;
+  text-decoration: none;
   transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.topic-card--linked {
+  --topic-accent: #e86f51;
 }
 
 .topic-card:hover {
